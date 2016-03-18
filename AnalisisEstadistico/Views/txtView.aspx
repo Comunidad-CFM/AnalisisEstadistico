@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="txtView.aspx.cs" Inherits="AnalisisEstadistico.Views.txtView" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="txtView.aspx.cs" Inherits="AnalisisEstadistico.txtView" %>
 
 <!DOCTYPE html>
 

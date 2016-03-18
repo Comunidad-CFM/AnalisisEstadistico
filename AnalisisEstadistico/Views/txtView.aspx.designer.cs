@@ -7,7 +7,7 @@
 // </generado automáticamente>
 //------------------------------------------------------------------------------
 
-namespace AnalisisEstadistico.Views {
+namespace AnalisisEstadistico {
     
     
     public partial class txtView {
