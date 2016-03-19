@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html ng-app="myApp">
+<head>
+	<title>Teams</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+	<meta charset="utf-8">
+	<style type="text/css">
+		.box {
+    		padding: 0 5px 0 5px;
+		}
+		.box .inner {
+    		background-color: #FAFAFA;
+		    border: 1px solid #E5E5E5;
+		    padding: 15px;
+		    border-radius: 5px;
+		    margin: 5px 0px 5px 0px;
+		    -moz-box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+		    -webkit-box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+		    box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+		}
+		.box .inner:hover {
+    		-moz-box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.3);
+		    -webkit-box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.3);
+		    box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.3);
+		}
+		.subtitle {
+			font: bold;
+    		font-size: 18px;
+		}
+		.footer-card {
+			border-top: 1px solid #E5E5E5;
+			padding-top: 10px;
+			-webkit-box-shadow: inset 0 1px 1px -1px rgba(0, 0, 0, 0.8);
+    		-moz-box-shadow: inset 0 1px 1px -1px rgba(0, 0, 0, 0.8);
+    		box-shadow: 1px 1px -1px rgba(0, 0, 0, 0.8);
+		}
+	</style>
+</head>
+<body ng-controller="myCtrl" class="container">
+  	<div class="col-md-12">
+  		<div class="col-md-3 col-sm-4 box"  ng-repeat="team in teams">
+	        <div class="inner">
+		        <div class="title-card">
+		        	<label class="subtitle">{{team.name}}</label>
+	        	</div>
+	        	<div class="body-card">
+      				<p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+    			</div>
+    			<div class="footer-card">
+      				<button class="btn btn-warning" title="Modificar"><span class="glyphicon glyphicon-pencil"></span></button>
+      				&nbsp;
+      				<button class="btn btn-danger" title="Eliminar"><span class="glyphicon glyphicon-trash"></span></button>
+    			</div>
+	        </div>
+		</div>
+	</div>
+
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular.min.js"></script>
+	<script type="text/javascript">
+		angular
+			.module('myApp', [])
+			.controller('myCtrl', myCtrl);
+
+		function myCtrl($scope){
+			$scope.teams = [
+				{
+					id: 1,
+					name: 'Real Madrid CF',
+					stadium: 'Santiago Bernabéu',
+					champions: 10
+				},
+				{
+					id: 2,
+					name: 'AC Milán',
+					stadium: 'San Siro',
+					champions: 7
+				},
+				{
+					id: 3,
+					name: 'Bayer Munchen',
+					stadium: 'Allianz Arena',
+					champions: 5
+				},
+				{
+					id: 4,
+					name: 'Liverpool FC',
+					stadium: 'Anfield',
+					champions: 5
+				},
+				{
+					id: 5,
+					name: 'FC Barcelona',
+					stadium: 'Camp Nou',
+					champions: 5
+				}
+			];
+		}
+	</script>
+</body>
+</html>

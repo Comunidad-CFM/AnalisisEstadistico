@@ -1,0 +1,24 @@
+[
+    {
+        "AppName": {
+            "Description": "Lorem ipsum dolor sit amet",
+            "Value": "1"
+        },
+        "AnotherAppName": {
+            "Description": "consectetur adipisicing elit",
+            "Value": "String"
+        },
+        "ThirdAppName": {
+            "Description": "sed do eiusmod tempor incididunt ut labore et dolore magna aliqua",
+            "Value": "Text"
+        },
+        "Application": {
+            "Description": "Ut enim ad minim veniam",
+            "Value": "100"
+        },
+        "LastAppName": {
+            "Description": "quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat",
+            "Value": "ZZZ"
+        }
+    }
+]

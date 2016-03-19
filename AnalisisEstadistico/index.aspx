@@ -17,6 +17,15 @@
         <p>
             <asp:Label ID="Label1" runat="server" Text="Label"></asp:Label>
         </p>
+        <asp:FileUpload ID="fileReader" runat="server" />
+            <asp:Button ID="buttonUpload" runat="server" OnClick="buttonUpload_Click" Text="Upload" />
+        &nbsp;&nbsp;
+        <p>
+            <asp:TextBox ID="textLink" runat="server"></asp:TextBox>
+&nbsp;&nbsp;
+            <asp:Button ID="buttonCargar" runat="server" OnClick="buttonCargar_Click" Text="Cargar" />
+        </p>
+        <asp:Label ID="message" runat="server"></asp:Label>
     </form>
 </body>
 </html>

@@ -3,3 +3,15 @@ C:\Users\Fauricio\Documents\Visual Studio 2012\Projects\AnalisisEstadistico\Anal
 C:\Users\Fauricio\Documents\Visual Studio 2012\Projects\AnalisisEstadistico\AnalisisEstadistico\obj\Debug\AnalisisEstadistico.csprojResolveAssemblyReference.cache
 C:\Users\Fauricio\Documents\Visual Studio 2012\Projects\AnalisisEstadistico\AnalisisEstadistico\obj\Debug\AnalisisEstadistico.dll
 C:\Users\Fauricio\Documents\Visual Studio 2012\Projects\AnalisisEstadistico\AnalisisEstadistico\obj\Debug\AnalisisEstadistico.pdb
+C:\Users\Fauricio\Documents\Visual Studio 2012\Projects\AnalisisEstadistico\AnalisisEstadistico\obj\Debug\AnalisisEstadistico.csproj.ResolveComReference.cache
+C:\Users\Fauricio\Documents\Visual Studio 2012\Projects\AnalisisEstadistico\AnalisisEstadistico\bin\Aspose.Words.dll
+C:\Users\Fauricio\Documents\Visual Studio 2012\Projects\AnalisisEstadistico\AnalisisEstadistico\bin\OfficeApi.dll
+C:\Users\Fauricio\Documents\Visual Studio 2012\Projects\AnalisisEstadistico\AnalisisEstadistico\bin\VBIDEApi.dll
+C:\Users\Fauricio\Documents\Visual Studio 2012\Projects\AnalisisEstadistico\AnalisisEstadistico\bin\WordApi.dll
+C:\Users\Fauricio\Documents\Visual Studio 2012\Projects\AnalisisEstadistico\AnalisisEstadistico\bin\NetOffice.dll
+C:\Users\Fauricio\Documents\Visual Studio 2012\Projects\AnalisisEstadistico\AnalisisEstadistico\bin\Aspose.Words.xml
+C:\Users\Fauricio\Documents\Visual Studio 2012\Projects\AnalisisEstadistico\AnalisisEstadistico\bin\OfficeApi.xml
+C:\Users\Fauricio\Documents\Visual Studio 2012\Projects\AnalisisEstadistico\AnalisisEstadistico\bin\VBIDEApi.xml
+C:\Users\Fauricio\Documents\Visual Studio 2012\Projects\AnalisisEstadistico\AnalisisEstadistico\bin\WordApi.xml
+C:\Users\Fauricio\Documents\Visual Studio 2012\Projects\AnalisisEstadistico\AnalisisEstadistico\bin\NetOffice.xml
+C:\Users\Fauricio\Documents\Visual Studio 2012\Projects\AnalisisEstadistico\AnalisisEstadistico\obj\Debug\Interop.InteropExtensionLib.dll
