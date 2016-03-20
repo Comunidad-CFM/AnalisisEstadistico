@@ -26,6 +26,12 @@
             <asp:Button ID="buttonCargar" runat="server" OnClick="buttonCargar_Click" Text="Cargar" />
         </p>
         <asp:Label ID="message" runat="server"></asp:Label>
+        <p>
+            &nbsp;</p>
+        <p>
+            <asp:TextBox ID="searchTweetsTB" runat="server" Width="422px" Height="143px" TextMode="MultiLine"></asp:TextBox>
+            <asp:Button ID="tweetSearchButton" runat="server" Text="Buscar" OnClick="searchTweets" Width="57px" />
+        </p>
     </form>
 </body>
 </html>
