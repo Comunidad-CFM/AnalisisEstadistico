@@ -11,6 +11,7 @@ using Ionic.Zip;
 using Microsoft.Office;
 using System.Runtime.InteropServices.ComTypes;
 using System.Text.RegularExpressions;
+using TweetSharp;
 
 namespace AnalisisEstadistico
 {
@@ -167,6 +168,27 @@ namespace AnalisisEstadistico
         protected void buttonAnalizar_Click(object sender, EventArgs e)
         {
             
+        }
+
+    
+        protected void searchTweets(object sender, EventArgs e)
+        {
+            string txtTwitterName = textTwitter.Text;
+            if(txtTwitterName != ""){
+             var service = new TwitterService("C98uX0MU7n24kXYROPs1YfZGd", "nDEBrbJXszSZKfrOmmDfAm4NNrvDsfqkE5BwvsXsdFVZKJMdQg");
+
+            //AuthenticateWith("Access Token", "AccessTokenSecret");
+            service.AuthenticateWith("711043579699982336-scPSu5YliFK6yov7Jf5aQOLrtklaQFU", "ZiwI7zz8oAX37Ht7jLJ0rjlzaT44CQdsyzjarz1xTRmOC");
+
+            //ScreenName="screeen name not username", Count=Number of Tweets / www.Twitter.com/mcansozeri. 
+            IEnumerable<TwitterStatus> tweets = service.ListTweetsOnUserTimeline(new ListTweetsOnUserTimelineOptions { ScreenName = txtTwitterName, Count = 10, });
+            var tweetsList = tweets.ToList();
+            string strTweets = "Tweets de "+txtTwitterName+":\n";
+            for (int i = 0; i < tweetsList.Count; i++) {
+                strTweets += tweetsList[i].Text+"\n";
+            }
+            contentBox.Text = strTweets;
+            }
         }
     }
 }

@@ -31,7 +31,7 @@
                     <label>Cargar desde la web</label>
                     <div>
                         <div class="input-group">
-                          <asp:TextBox class="form-control" ID="textLink" runat="server"></asp:TextBox>
+                          <asp:TextBox class="form-control" ID="textLink" runat="server" placeholder="Url"></asp:TextBox>
                           <span class="input-group-btn">
                             <asp:Button class="btn btn-primary" ID="buttonCargar" runat="server" OnClick="buttonCargar_Click" Text="Cargar" />
                           </span>
@@ -41,7 +41,12 @@
                 <div class="col-md-3">
                     <label>Twitter</label>
                     <div>
-                        
+                        <div class="input-group">
+                          <asp:TextBox class="form-control" ID="textTwitter" runat="server" placeholder="Nombre de usuario"></asp:TextBox>
+                          <span class="input-group-btn">
+                            <asp:Button class="btn btn-primary" ID="buttonTwitter" runat="server" OnClick="searchTweets" Text="Cargar" />
+                          </span>
+                        </div>
                     </div>
                 </div>
                 <div class="col-md-3">
