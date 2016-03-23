@@ -18,7 +18,7 @@
         <div class="container content">
             <div class="row col-md-12">
                 <div class="col-md-3">
-                    <label>Cargar desde archivos</label>
+                    <label><span class="label label-default">Archivos</span></label>
                     <div>
                         <span class="btn btn-default btn-file">
 	            	        <span class="glyphicon glyphicon-folder-open"></span>&nbsp;
@@ -28,7 +28,7 @@
                     </div>
                 </div>
                 <div class="col-md-3">
-                    <label>Cargar desde la web</label>
+                    <label><span class="label label-default">Web</span></label>
                     <div>
                         <div class="input-group">
                           <asp:TextBox class="form-control" ID="textLink" runat="server" placeholder="Url"></asp:TextBox>
@@ -39,7 +39,7 @@
                     </div>
                 </div>
                 <div class="col-md-3">
-                    <label>Twitter</label>
+                    <label><span class="label label-default">Twitter</span></label>
                     <div>
                         <div class="input-group">
                           <asp:TextBox class="form-control" ID="textTwitter" runat="server" placeholder="Nombre de usuario"></asp:TextBox>
@@ -50,7 +50,7 @@
                     </div>
                 </div>
                 <div class="col-md-3">
-                    <label>Analizar</label>
+                    <label><span class="label label-default">Realizar análisis</span></label>
                     <div>
                         <asp:Button class="btn btn-success" ID="buttonAnalizar" runat="server" OnClick="buttonAnalizar_Click" Text="Analizar"/>
                     </div>

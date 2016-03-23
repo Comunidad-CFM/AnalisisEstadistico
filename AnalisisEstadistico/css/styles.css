@@ -76,3 +76,6 @@
     color: white;
     background-color: #5CB85C;
 }
+.col-md-3 label {
+    font-size: 18px;   
+}
