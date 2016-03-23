@@ -4,28 +4,68 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta charset="utf-8"/>
     <title>Análisis estadístico</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"/>
+    <link rel="stylesheet" type="text/css" href="./node_modules/bootstrap/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" type="text/css" href="./css/ubuntu.css"/>
+    <link rel="stylesheet" type="text/css" href="./css/styles.css"/>
 </head>
 <body>
     <form id="form1" runat="server">
-    <div>
-        <h1>Hola desde el proyecto</h1>
-    </div>
-        <asp:Button ID="Button1" runat="server" OnClick="Button1_Click" Text="Saludar" />
-        <p>
-            <asp:Label ID="Label1" runat="server" Text="Label"></asp:Label>
-        </p>
-        <asp:FileUpload ID="fileReader" runat="server" />
-            <asp:Button ID="buttonUpload" runat="server" OnClick="buttonUpload_Click" Text="Upload" />
-        &nbsp;&nbsp;
-        <p>
-            <asp:TextBox ID="textLink" runat="server"></asp:TextBox>
-&nbsp;&nbsp;
-            <asp:Button ID="buttonCargar" runat="server" OnClick="buttonCargar_Click" Text="Cargar" />
-        </p>
-        <asp:Label ID="message" runat="server"></asp:Label>
+        <div class="header">
+            <label>Clasificación y análisis estadístico</label>
+        </div>
+        <div class="container content">
+            <div class="row col-md-12">
+                <div class="col-md-3">
+                    <label>Cargar desde archivos</label>
+                    <div>
+                        <span class="btn btn-default btn-file">
+	            	        <span class="glyphicon glyphicon-folder-open"></span>&nbsp;
+    				        Elegir archivo <asp:FileUpload ID="fileReader" runat="server" />
+				        </span>
+                        <asp:Button class="btn btn-primary" ID="button1" runat="server" OnClick="buttonUpload_Click" Text="Cargar"/>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <label>Cargar desde la web</label>
+                    <div>
+                        <div class="input-group">
+                          <asp:TextBox class="form-control" ID="textLink" runat="server"></asp:TextBox>
+                          <span class="input-group-btn">
+                            <asp:Button class="btn btn-primary" ID="buttonCargar" runat="server" OnClick="buttonCargar_Click" Text="Cargar" />
+                          </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <label>Twitter</label>
+                    <div>
+                        
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <label>Analizar</label>
+                    <div>
+                        <asp:Button class="btn btn-success" ID="buttonAnalizar" runat="server" OnClick="buttonAnalizar_Click" Text="Analizar"/>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 results-box">
+                <div class="col-md-6 nopadding">
+                    <div>
+                        <label>Contenido previo</label>
+                    </div>
+                    <asp:TextBox class="textArea" ID="contentBox" runat="server" ReadOnly="True" TextMode="MultiLine"></asp:TextBox>
+                </div>
+                <div class="col-md-6 nopadding">
+                    <div>
+                        <label>Resultado del análisis</label>
+                    </div>
+                    <asp:TextBox class="textArea" ID="resultBox" runat="server" ReadOnly="True" TextMode="MultiLine"></asp:TextBox>
+                </div>
+            </div>
+        </div>
     </form>
 </body>
 </html>

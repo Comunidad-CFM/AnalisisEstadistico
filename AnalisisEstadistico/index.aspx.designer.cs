@@ -22,24 +22,6 @@ namespace AnalisisEstadistico {
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
         
         /// <summary>
-        /// Control Button1.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button Button1;
-        
-        /// <summary>
-        /// Control Label1.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label Label1;
-        
-        /// <summary>
         /// Control fileReader.
         /// </summary>
         /// <remarks>
@@ -49,13 +31,13 @@ namespace AnalisisEstadistico {
         protected global::System.Web.UI.WebControls.FileUpload fileReader;
         
         /// <summary>
-        /// Control buttonUpload.
+        /// Control button1.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button buttonUpload;
+        protected global::System.Web.UI.WebControls.Button button1;
         
         /// <summary>
         /// Control textLink.
@@ -76,12 +58,30 @@ namespace AnalisisEstadistico {
         protected global::System.Web.UI.WebControls.Button buttonCargar;
         
         /// <summary>
-        /// Control message.
+        /// Control buttonAnalizar.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label message;
+        protected global::System.Web.UI.WebControls.Button buttonAnalizar;
+        
+        /// <summary>
+        /// Control contentBox.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox contentBox;
+        
+        /// <summary>
+        /// Control resultBox.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox resultBox;
     }
 }

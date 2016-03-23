@@ -10,6 +10,7 @@ using System.Net;
 using Ionic.Zip;
 using Microsoft.Office;
 using System.Runtime.InteropServices.ComTypes;
+using System.Text.RegularExpressions;
 
 namespace AnalisisEstadistico
 {
@@ -18,12 +19,6 @@ namespace AnalisisEstadistico
         protected void Page_Load(object sender, EventArgs e)
         {
 
-        }
-
-        protected void Button1_Click(object sender, EventArgs e)
-        {
-            Lenguaje l = new Lenguaje();
-            Label1.Text = l.saludar();
         }
 
         /// <summary>
@@ -83,12 +78,13 @@ namespace AnalisisEstadistico
                 }
                 else
                 {
-                    message.Text = "Fallo al descomprimir";
+                    contentBox.Text = "Fallo al descomprimir";
+                    //message.Text = "Fallo al descomprimir";
                 }
             }
             else
             {
-                message.Text = "unkown";
+                contentBox.Text = "unkown";
             }
         }
 
@@ -114,7 +110,7 @@ namespace AnalisisEstadistico
                 saveFile(ruta);
 
             string content = File.ReadAllText(ruta, Encoding.UTF8);
-            message.Text = content;
+            contentBox.Text = content;
         }
 
         protected void readDoc(string fileName, string dir)
@@ -133,14 +129,13 @@ namespace AnalisisEstadistico
             {
                 totaltext += " \r\n " + docs.Paragraphs[i + 1].Range.Text.ToString();
             }
-            message.Text = totaltext;
+            contentBox.Text = totaltext;
             docs.Close();
             word.Quit();
         }
 
         protected void saveFile(string ruta)
         {
-            message.Text = ruta;
             fileReader.SaveAs(ruta);
         }
 
@@ -151,7 +146,7 @@ namespace AnalisisEstadistico
 
         protected void buttonCargar_Click(object sender, EventArgs e)
         {
-            string link = textLink.Text;
+            /*string link = textLink.Text;
 
             String strResult;
             WebResponse objResponse;
@@ -162,7 +157,16 @@ namespace AnalisisEstadistico
                 strResult = sr.ReadToEnd();
                 sr.Close();
             }
-            message.Text = strResult;
+            contentBox.Text = strResult;*/
+
+            var wc = new WebClient();
+            var html = wc.DownloadString(textLink.Text);
+            contentBox.Text = Regex.Replace(html, "<(.|\\n)*?>", string.Empty);
+        }
+
+        protected void buttonAnalizar_Click(object sender, EventArgs e)
+        {
+            
         }
     }
 }
