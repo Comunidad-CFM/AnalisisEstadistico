@@ -79,3 +79,27 @@
 .col-md-3 label {
     font-size: 18px;   
 }
+.btn-analizar {
+    text-align: center;
+    background: transparent;
+    color:black;
+    width: 100%;
+    margin: 0px;
+}
+.btn-analizar:hover {
+    text-transform: uppercase;
+}
+
+.rotate{
+    cursor: pointer;
+    padding-top: 3px;
+    -moz-transition: all 0.1s linear;
+    -webkit-transition: all 0.1s linear;
+    transition: all 0.1s linear;
+}
+
+.rotate:hover {
+    -moz-transform:rotate(30deg);
+    -webkit-transform:rotate(30deg);
+    transform:rotate(30deg);
+}

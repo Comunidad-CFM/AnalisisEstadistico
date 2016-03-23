@@ -13,7 +13,13 @@
 <body>
     <form id="form1" runat="server">
         <div class="header">
-            <label>Clasificación y análisis estadístico</label>
+            <label>&nbsp;&nbsp;&nbsp;&nbsp;Clasificación y análisis estadístico</label>
+            <div class="dropdown" style="float: left;">
+              <span class="glyphicon glyphicon-cog rotate dropdown-toggle" data-toggle="dropdown"></span>
+              <ul class="dropdown-menu">
+                <asp:Button class="btn btn-analizar" runat="server" OnClick="buttonAnalizar_Click" Text="Analizar"/>
+              </ul>
+            </div>
         </div>
         <div class="container content">
             <div class="row col-md-12">
@@ -50,9 +56,9 @@
                     </div>
                 </div>
                 <div class="col-md-3">
-                    <label><span class="label label-default">Realizar análisis</span></label>
+                    <label><span class="label label-default">Facebook</span></label>
                     <div>
-                        <asp:Button class="btn btn-success" ID="buttonAnalizar" runat="server" OnClick="buttonAnalizar_Click" Text="Analizar"/>
+                        
                     </div>
                 </div>
             </div>
@@ -72,5 +78,8 @@
             </div>
         </div>
     </form>
+
+    <script type="text/javascript" src="./node_modules/jquery/dist/jquery.min.js"></script>
+    <script type="text/javascript" src="./node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
 </body>
 </html>
