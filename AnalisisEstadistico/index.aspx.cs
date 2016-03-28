@@ -166,8 +166,8 @@ namespace AnalisisEstadistico
 
         protected void buttonCargar_Click(object sender, EventArgs e)
         {
-            /*string link = textLink.Text;
-
+            string link = textLink.Text;
+            
             String strResult;
             WebResponse objResponse;
             WebRequest objRequest = HttpWebRequest.Create(link);
@@ -177,11 +177,16 @@ namespace AnalisisEstadistico
                 strResult = sr.ReadToEnd();
                 sr.Close();
             }
-            contentBox.Text = strResult;*/
+            //contentBox.Text = strResult;
+            contentBox.Text = Regex.Replace(strResult, "<(.|\\n)*?>", string.Empty);
 
-            var wc = new WebClient();
-            var html = wc.DownloadString(textLink.Text);
-            contentBox.Text = Regex.Replace(html, "<(.|\\n)*?>", string.Empty);
+            //var wc = new WebClient();
+            //var html = wc.DownloadString(textLink.Text);
+            //contentBox.Text = Regex.Replace(html, "<(.|\\n)*?>", string.Empty);
+           
+          
+ 
+
         }
 
         protected void buttonAnalizar_Click(object sender, EventArgs e)
