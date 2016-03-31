@@ -44,3 +44,7 @@ C:\Users\Fauricio\Documents\Visual Studio 2012\Projects\AnalisisEstadistico\Anal
 C:\Users\Fauricio\Documents\Visual Studio 2012\Projects\AnalisisEstadistico\AnalisisEstadistico\bin\Hammock.ClientProfile.pdb
 C:\Users\Fauricio\Documents\Visual Studio 2012\Projects\AnalisisEstadistico\AnalisisEstadistico\bin\Newtonsoft.Json.xml
 C:\Users\Fauricio\Documents\Visual Studio 2012\Projects\AnalisisEstadistico\AnalisisEstadistico\bin\TweetSharp.pdb
+C:\Users\Fauricio\Documents\Visual Studio 2012\Projects\AnalisisEstadistico\AnalisisEstadistico\bin\EntityFramework.dll
+C:\Users\Fauricio\Documents\Visual Studio 2012\Projects\AnalisisEstadistico\AnalisisEstadistico\bin\EntityFramework.xml
+C:\Users\Fauricio\Documents\Visual Studio 2012\Projects\AnalisisEstadistico\AnalisisEstadistico\bin\EntityFramework.SqlServer.dll
+C:\Users\Fauricio\Documents\Visual Studio 2012\Projects\AnalisisEstadistico\AnalisisEstadistico\bin\EntityFramework.SqlServer.xml
