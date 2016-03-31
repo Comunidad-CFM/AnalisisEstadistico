@@ -11,16 +11,11 @@ namespace AnalisisEstadistico.Data
 {
     using System;
     using System.Collections.Generic;
-    using System.Runtime.Serialization;
     
-    [DataContract(IsReference = true)]
     public partial class emoji
     {
-        [DataMember]
         public int emojiID { get; set; }
-        [DataMember]
         public string emoticon { get; set; }
-        [DataMember]
         public Nullable<int> score { get; set; }
     }
 }

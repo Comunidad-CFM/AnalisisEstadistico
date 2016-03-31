@@ -2,7 +2,7 @@
 <#@ include file="EF.Utility.CS.ttinclude"#><#@
  output extension=".cs"#><#
 
-const string inputFile = @"AnalizadorModel.edmx";
+const string inputFile = @"AnalizadorMolde.edmx";
 var textTransform = DynamicTextTransformation.Create(this);
 var code = new CodeGenerationTools(this);
 var ef = new MetadataTools(this);
@@ -23,7 +23,7 @@ if (container == null)
 // <#=GetResourceString("Template_GeneratedCodeCommentLine1")#>
 //
 // <#=GetResourceString("Template_GeneratedCodeCommentLine2")#>
-// <#=GetResourceString("Template_GeneratedCodeCommentLine3")#> 
+// <#=GetResourceString("Template_GeneratedCodeCommentLine3")#>
 // </auto-generated>
 //------------------------------------------------------------------------------
 
@@ -56,10 +56,7 @@ using System.Linq;
 
 <#=Accessibility.ForType(container)#> partial class <#=code.Escape(container)#> : DbContext
 {
-  public <#=code.Escape(container)#>()
-    : this(false) { }
-
-    public <#=code.Escape(container)#>(bool proxyCreationEnabled)	    
+    public <#=code.Escape(container)#>()
         : base("name=<#=container.Name#>")
     {
 <#
@@ -70,26 +67,8 @@ if (!loader.IsLazyLoadingEnabled(container))
 <#
 }
 #>
-        this.Configuration.ProxyCreationEnabled = proxyCreationEnabled;
     }
 
-    public <#=code.Escape(container)#>(string connectionString)
-      : this(connectionString, false) { }
-
-    public <#=code.Escape(container)#>(string connectionString, bool proxyCreationEnabled)
-        : base(connectionString)
-    {
-<#
-if (!loader.IsLazyLoadingEnabled(container))
-{
-#>
-        this.Configuration.LazyLoadingEnabled = false;
-<#
-}
-#>
-        this.Configuration.ProxyCreationEnabled = proxyCreationEnabled;
-    }	
-  
     protected override void OnModelCreating(DbModelBuilder modelBuilder)
     {
         throw new UnintentionalCodeFirstException();

@@ -26,7 +26,13 @@
                 <div class="col-md-3">
                     <label><span class="label label-default">Archivos</span></label>
                     <div>
-                        <span class="btn btn-default btn-file">
+                        <span class="btn btn-default btn-
+                            
+                            
+                            
+                            
+                            
+                            ">
 	            	        <span class="glyphicon glyphicon-folder-open"></span>&nbsp;
     				        Elegir archivo <asp:FileUpload ID="fileReader" runat="server" />
 				        </span>

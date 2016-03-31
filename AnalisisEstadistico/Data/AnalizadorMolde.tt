@@ -2,16 +2,14 @@
 <#@ include file="EF.Utility.CS.ttinclude"#><#@ 
  output extension=".cs"#><#
 
-const string inputFile = @"AnalizadorModel.edmx";
+const string inputFile = @"AnalizadorMolde.edmx";
 var textTransform = DynamicTextTransformation.Create(this);
-CodeGenerationTools code = new CodeGenerationTools(this);
-MetadataTools ef = new MetadataTools(this);
+var code = new CodeGenerationTools(this);
+var ef = new MetadataTools(this);
 var typeMapper = new TypeMapper(code, ef, textTransform.Errors);
 var	fileManager = EntityFrameworkTemplateFileManager.Create(this);
-var loader = new EdmMetadataLoader(textTransform.Host, textTransform.Errors);
-EdmItemCollection itemCollection = (EdmItemCollection)loader.CreateEdmItemCollection(inputFile);
+var itemCollection = new EdmMetadataLoader(textTransform.Host, textTransform.Errors).CreateEdmItemCollection(inputFile);
 var codeStringGenerator = new CodeStringGenerator(code, typeMapper, ef);
-
 
 if (!typeMapper.VerifyCaseInsensitiveTypeUniqueness(typeMapper.GetAllGlobalItems(itemCollection), inputFile))
 {
@@ -26,7 +24,7 @@ foreach (var entity in typeMapper.GetItemsToGenerate<EntityType>(itemCollection)
     BeginNamespace(code);
 #>
 <#=codeStringGenerator.UsingDirectives(inHeader: false)#>
-<#=codeStringGenerator.EntityClassOpening(entity, itemCollection, ef)#>
+<#=codeStringGenerator.EntityClassOpening(entity)#>
 {
 <#
     var propertiesWithDefaultValues = typeMapper.GetPropertiesWithDefaultValues(entity);
@@ -114,7 +112,6 @@ foreach (var complex in typeMapper.GetItemsToGenerate<ComplexType>(itemCollectio
     BeginNamespace(code);
 #>
 <#=codeStringGenerator.UsingDirectives(inHeader: false, includeCollections: false)#>
-[DataContract(IsReference = true)]
 <#=Accessibility.ForType(complex)#> partial class <#=code.Escape(complex)#>
 {
 <#
@@ -198,7 +195,6 @@ foreach (var enumType in typeMapper.GetEnumItemsToGenerate(itemCollection))
     {
         foundOne = true;
 #>
-    [EnumMember]
     <#=code.Escape(typeMapper.GetEnumMemberName(member))#> = <#=typeMapper.GetEnumMemberValue(member)#>,
 <#
     }
@@ -280,19 +276,22 @@ public class CodeStringGenerator
 
     public string Property(EdmProperty edmProperty)
     {
-        return "[DataMember]" + Environment.NewLine + 
-            string.Format(CultureInfo.InvariantCulture, "    {0} {1} {2} {{ {3}get; {4}set; }}",
+        return string.Format(
+            CultureInfo.InvariantCulture,
+            "{0} {1} {2} {{ {3}get; {4}set; }}",
             Accessibility.ForProperty(edmProperty),
             _typeMapper.GetTypeName(edmProperty.TypeUsage),
-            _code.Escape(edmProperty),_code.SpaceAfter(Accessibility.ForGetter(edmProperty)),
+            _code.Escape(edmProperty),
+            _code.SpaceAfter(Accessibility.ForGetter(edmProperty)),
             _code.SpaceAfter(Accessibility.ForSetter(edmProperty)));
     }
 
     public string NavigationProperty(NavigationProperty navigationProperty)
     {
         var endType = _typeMapper.GetTypeName(navigationProperty.ToEndMember.GetEntityType());
-        return "[DataMember]" + Environment.NewLine + string.Format(
-            CultureInfo.InvariantCulture, "    {0} {1} {2} {{ {3}get; {4}set; }}",
+        return string.Format(
+            CultureInfo.InvariantCulture,
+            "{0} {1} {2} {{ {3}get; {4}set; }}",
             AccessibilityAndVirtual(Accessibility.ForProperty(navigationProperty)),
             navigationProperty.ToEndMember.RelationshipMultiplicity == RelationshipMultiplicity.Many ? ("ICollection<" + endType + ">") : endType,
             _code.Escape(navigationProperty),
@@ -305,22 +304,9 @@ public class CodeStringGenerator
         return accessibility + (accessibility != "private" ? " virtual" : "");
     }
     
-    public string EntityClassOpening(EntityType entity, EdmItemCollection itemCollection, MetadataTools tools)
+    public string EntityClassOpening(EntityType entity)
     {
-        var navigationProperties = _typeMapper.GetCollectionNavigationProperties(entity);
-        var outStr = "";
-        //foreach (var navigationProperty in navigationProperties)
-        //{
-        //    outStr += "[KnownType(typeof(" + _typeMapper.GetTypeName(navigationProperty.ToEndMember.GetEntityType()) + "))]" + Environment.NewLine;
-        //}
-
-        foreach(EntityType subtype in tools.GetSubtypesOf(entity, itemCollection, true))
-        {		   
-            outStr += "[KnownType(typeof(" + _typeMapper.GetTypeName(subtype) + "))]" + Environment.NewLine;
-        }		   
-
-        return "[DataContract(IsReference = true)]" + Environment.NewLine + outStr + 
-            string.Format(
+        return string.Format(
             CultureInfo.InvariantCulture,
             "{0} {1}partial class {2}{3}",
             Accessibility.ForType(entity),
@@ -330,8 +316,8 @@ public class CodeStringGenerator
     }
     
     public string EnumOpening(SimpleType enumType)
-    {    
-        return "[DataContract]" + Environment.NewLine + string.Format(
+    {
+        return string.Format(
             CultureInfo.InvariantCulture,
             "{0} enum {1} : {2}",
             Accessibility.ForType(enumType),
@@ -355,8 +341,7 @@ public class CodeStringGenerator
     {
         var parameters = _typeMapper.GetParameters(edmFunction);
         
-        return "[DataMember]" + Environment.NewLine +
-         string.Format(
+        return string.Format(
             CultureInfo.InvariantCulture,
             "{0} IQueryable<{1}> {2}({3})",
             AccessibilityAndVirtual(Accessibility.ForMethod(edmFunction)),
@@ -434,11 +419,11 @@ public class CodeStringGenerator
             ? string.Format(
                 CultureInfo.InvariantCulture,
                 "{0}using System;{1}" +
-                "{2}" +
-                "{3}",
+                "{2}",
                 inHeader ? Environment.NewLine : "",
                 includeCollections ? (Environment.NewLine + "using System.Collections.Generic;") : "",
-                inHeader ? "" : Environment.NewLine, "using System.Runtime.Serialization;" + Environment.NewLine) : "";
+                inHeader ? "" : Environment.NewLine)
+            : "";
     }
 }
 

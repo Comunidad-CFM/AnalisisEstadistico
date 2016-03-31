@@ -1,77 +1,27 @@
-C:\Users\Fauricio\Documents\Visual Studio 2012\Projects\AnalisisEstadistico\AnalisisEstadistico\bin\AnalisisEstadistico.dll
-C:\Users\Fauricio\Documents\Visual Studio 2012\Projects\AnalisisEstadistico\AnalisisEstadistico\bin\AnalisisEstadistico.pdb
-C:\Users\Fauricio\Documents\Visual Studio 2012\Projects\AnalisisEstadistico\AnalisisEstadistico\obj\Debug\AnalisisEstadistico.csprojResolveAssemblyReference.cache
-C:\Users\Fauricio\Documents\Visual Studio 2012\Projects\AnalisisEstadistico\AnalisisEstadistico\obj\Debug\AnalisisEstadistico.dll
-C:\Users\Fauricio\Documents\Visual Studio 2012\Projects\AnalisisEstadistico\AnalisisEstadistico\obj\Debug\AnalisisEstadistico.pdb
-C:\Users\Fauricio\Documents\Visual Studio 2012\Projects\AnalisisEstadistico\AnalisisEstadistico\obj\Debug\AnalisisEstadistico.csproj.ResolveComReference.cache
-C:\Users\Fauricio\Documents\Visual Studio 2012\Projects\AnalisisEstadistico\AnalisisEstadistico\bin\Aspose.Words.dll
-C:\Users\Fauricio\Documents\Visual Studio 2012\Projects\AnalisisEstadistico\AnalisisEstadistico\bin\OfficeApi.dll
-C:\Users\Fauricio\Documents\Visual Studio 2012\Projects\AnalisisEstadistico\AnalisisEstadistico\bin\VBIDEApi.dll
-C:\Users\Fauricio\Documents\Visual Studio 2012\Projects\AnalisisEstadistico\AnalisisEstadistico\bin\WordApi.dll
-C:\Users\Fauricio\Documents\Visual Studio 2012\Projects\AnalisisEstadistico\AnalisisEstadistico\bin\NetOffice.dll
-C:\Users\Fauricio\Documents\Visual Studio 2012\Projects\AnalisisEstadistico\AnalisisEstadistico\bin\Aspose.Words.xml
-C:\Users\Fauricio\Documents\Visual Studio 2012\Projects\AnalisisEstadistico\AnalisisEstadistico\bin\OfficeApi.xml
-C:\Users\Fauricio\Documents\Visual Studio 2012\Projects\AnalisisEstadistico\AnalisisEstadistico\bin\VBIDEApi.xml
-C:\Users\Fauricio\Documents\Visual Studio 2012\Projects\AnalisisEstadistico\AnalisisEstadistico\bin\WordApi.xml
-C:\Users\Fauricio\Documents\Visual Studio 2012\Projects\AnalisisEstadistico\AnalisisEstadistico\bin\NetOffice.xml
-C:\Users\Fauricio\Documents\Visual Studio 2012\Projects\AnalisisEstadistico\AnalisisEstadistico\obj\Debug\Interop.InteropExtensionLib.dll
 C:\Users\Admin\Documents\Visual Studio 2012\Projects\AnalisisEstadistico\AnalisisEstadistico\bin\AnalisisEstadistico.dll
 C:\Users\Admin\Documents\Visual Studio 2012\Projects\AnalisisEstadistico\AnalisisEstadistico\bin\AnalisisEstadistico.pdb
 C:\Users\Admin\Documents\Visual Studio 2012\Projects\AnalisisEstadistico\AnalisisEstadistico\bin\Aspose.Words.dll
+C:\Users\Admin\Documents\Visual Studio 2012\Projects\AnalisisEstadistico\AnalisisEstadistico\bin\EntityFramework.dll
+C:\Users\Admin\Documents\Visual Studio 2012\Projects\AnalisisEstadistico\AnalisisEstadistico\bin\EntityFramework.SqlServer.dll
+C:\Users\Admin\Documents\Visual Studio 2012\Projects\AnalisisEstadistico\AnalisisEstadistico\bin\Hammock.ClientProfile.dll
+C:\Users\Admin\Documents\Visual Studio 2012\Projects\AnalisisEstadistico\AnalisisEstadistico\bin\Newtonsoft.Json.dll
 C:\Users\Admin\Documents\Visual Studio 2012\Projects\AnalisisEstadistico\AnalisisEstadistico\bin\OfficeApi.dll
+C:\Users\Admin\Documents\Visual Studio 2012\Projects\AnalisisEstadistico\AnalisisEstadistico\bin\TweetSharp.dll
 C:\Users\Admin\Documents\Visual Studio 2012\Projects\AnalisisEstadistico\AnalisisEstadistico\bin\VBIDEApi.dll
 C:\Users\Admin\Documents\Visual Studio 2012\Projects\AnalisisEstadistico\AnalisisEstadistico\bin\WordApi.dll
 C:\Users\Admin\Documents\Visual Studio 2012\Projects\AnalisisEstadistico\AnalisisEstadistico\bin\NetOffice.dll
 C:\Users\Admin\Documents\Visual Studio 2012\Projects\AnalisisEstadistico\AnalisisEstadistico\bin\Aspose.Words.xml
+C:\Users\Admin\Documents\Visual Studio 2012\Projects\AnalisisEstadistico\AnalisisEstadistico\bin\EntityFramework.xml
+C:\Users\Admin\Documents\Visual Studio 2012\Projects\AnalisisEstadistico\AnalisisEstadistico\bin\EntityFramework.SqlServer.xml
+C:\Users\Admin\Documents\Visual Studio 2012\Projects\AnalisisEstadistico\AnalisisEstadistico\bin\Hammock.ClientProfile.pdb
+C:\Users\Admin\Documents\Visual Studio 2012\Projects\AnalisisEstadistico\AnalisisEstadistico\bin\Newtonsoft.Json.xml
 C:\Users\Admin\Documents\Visual Studio 2012\Projects\AnalisisEstadistico\AnalisisEstadistico\bin\OfficeApi.xml
+C:\Users\Admin\Documents\Visual Studio 2012\Projects\AnalisisEstadistico\AnalisisEstadistico\bin\TweetSharp.pdb
 C:\Users\Admin\Documents\Visual Studio 2012\Projects\AnalisisEstadistico\AnalisisEstadistico\bin\VBIDEApi.xml
 C:\Users\Admin\Documents\Visual Studio 2012\Projects\AnalisisEstadistico\AnalisisEstadistico\bin\WordApi.xml
 C:\Users\Admin\Documents\Visual Studio 2012\Projects\AnalisisEstadistico\AnalisisEstadistico\bin\NetOffice.xml
-C:\Users\Admin\Documents\Visual Studio 2012\Projects\AnalisisEstadistico\AnalisisEstadistico\obj\Debug\AnalisisEstadistico.csprojResolveAssemblyReference.cache
 C:\Users\Admin\Documents\Visual Studio 2012\Projects\AnalisisEstadistico\AnalisisEstadistico\obj\Debug\Interop.InteropExtensionLib.dll
 C:\Users\Admin\Documents\Visual Studio 2012\Projects\AnalisisEstadistico\AnalisisEstadistico\obj\Debug\AnalisisEstadistico.csproj.ResolveComReference.cache
 C:\Users\Admin\Documents\Visual Studio 2012\Projects\AnalisisEstadistico\AnalisisEstadistico\obj\Debug\AnalisisEstadistico.dll
 C:\Users\Admin\Documents\Visual Studio 2012\Projects\AnalisisEstadistico\AnalisisEstadistico\obj\Debug\AnalisisEstadistico.pdb
-C:\Users\Admin\Documents\Visual Studio 2012\Projects\AnalisisEstadistico\AnalisisEstadistico\bin\Hammock.ClientProfile.dll
-C:\Users\Admin\Documents\Visual Studio 2012\Projects\AnalisisEstadistico\AnalisisEstadistico\bin\Newtonsoft.Json.dll
-C:\Users\Admin\Documents\Visual Studio 2012\Projects\AnalisisEstadistico\AnalisisEstadistico\bin\TweetSharp.dll
-C:\Users\Admin\Documents\Visual Studio 2012\Projects\AnalisisEstadistico\AnalisisEstadistico\bin\Hammock.ClientProfile.pdb
-C:\Users\Admin\Documents\Visual Studio 2012\Projects\AnalisisEstadistico\AnalisisEstadistico\bin\Newtonsoft.Json.xml
-C:\Users\Admin\Documents\Visual Studio 2012\Projects\AnalisisEstadistico\AnalisisEstadistico\bin\TweetSharp.pdb
-C:\Users\Fauricio\Documents\Visual Studio 2012\Projects\AnalisisEstadistico\AnalisisEstadistico\bin\Hammock.ClientProfile.dll
-C:\Users\Fauricio\Documents\Visual Studio 2012\Projects\AnalisisEstadistico\AnalisisEstadistico\bin\Newtonsoft.Json.dll
-C:\Users\Fauricio\Documents\Visual Studio 2012\Projects\AnalisisEstadistico\AnalisisEstadistico\bin\TweetSharp.dll
-C:\Users\Fauricio\Documents\Visual Studio 2012\Projects\AnalisisEstadistico\AnalisisEstadistico\bin\Hammock.ClientProfile.pdb
-C:\Users\Fauricio\Documents\Visual Studio 2012\Projects\AnalisisEstadistico\AnalisisEstadistico\bin\Newtonsoft.Json.xml
-C:\Users\Fauricio\Documents\Visual Studio 2012\Projects\AnalisisEstadistico\AnalisisEstadistico\bin\TweetSharp.pdb
-<<<<<<< HEAD
-C:\Users\car_e\Documents\Proyecto\AnalisisEstadistico\AnalisisEstadistico\bin\AnalisisEstadistico.dll.config
-C:\Users\car_e\Documents\Proyecto\AnalisisEstadistico\AnalisisEstadistico\bin\AnalisisEstadistico.dll
-C:\Users\car_e\Documents\Proyecto\AnalisisEstadistico\AnalisisEstadistico\bin\AnalisisEstadistico.pdb
-C:\Users\car_e\Documents\Proyecto\AnalisisEstadistico\AnalisisEstadistico\bin\Aspose.Words.dll
-C:\Users\car_e\Documents\Proyecto\AnalisisEstadistico\AnalisisEstadistico\bin\Hammock.ClientProfile.dll
-C:\Users\car_e\Documents\Proyecto\AnalisisEstadistico\AnalisisEstadistico\bin\Newtonsoft.Json.dll
-C:\Users\car_e\Documents\Proyecto\AnalisisEstadistico\AnalisisEstadistico\bin\OfficeApi.dll
-C:\Users\car_e\Documents\Proyecto\AnalisisEstadistico\AnalisisEstadistico\bin\TweetSharp.dll
-C:\Users\car_e\Documents\Proyecto\AnalisisEstadistico\AnalisisEstadistico\bin\VBIDEApi.dll
-C:\Users\car_e\Documents\Proyecto\AnalisisEstadistico\AnalisisEstadistico\bin\WordApi.dll
-C:\Users\car_e\Documents\Proyecto\AnalisisEstadistico\AnalisisEstadistico\bin\NetOffice.dll
-C:\Users\car_e\Documents\Proyecto\AnalisisEstadistico\AnalisisEstadistico\bin\Aspose.Words.xml
-C:\Users\car_e\Documents\Proyecto\AnalisisEstadistico\AnalisisEstadistico\bin\Hammock.ClientProfile.pdb
-C:\Users\car_e\Documents\Proyecto\AnalisisEstadistico\AnalisisEstadistico\bin\Newtonsoft.Json.xml
-C:\Users\car_e\Documents\Proyecto\AnalisisEstadistico\AnalisisEstadistico\bin\OfficeApi.xml
-C:\Users\car_e\Documents\Proyecto\AnalisisEstadistico\AnalisisEstadistico\bin\TweetSharp.pdb
-C:\Users\car_e\Documents\Proyecto\AnalisisEstadistico\AnalisisEstadistico\bin\VBIDEApi.xml
-C:\Users\car_e\Documents\Proyecto\AnalisisEstadistico\AnalisisEstadistico\bin\WordApi.xml
-C:\Users\car_e\Documents\Proyecto\AnalisisEstadistico\AnalisisEstadistico\bin\NetOffice.xml
-C:\Users\car_e\Documents\Proyecto\AnalisisEstadistico\AnalisisEstadistico\obj\Debug\AnalisisEstadistico.csprojResolveAssemblyReference.cache
-C:\Users\car_e\Documents\Proyecto\AnalisisEstadistico\AnalisisEstadistico\obj\Debug\Interop.InteropExtensionLib.dll
-C:\Users\car_e\Documents\Proyecto\AnalisisEstadistico\AnalisisEstadistico\obj\Debug\AnalisisEstadistico.csproj.ResolveComReference.cache
-C:\Users\car_e\Documents\Proyecto\AnalisisEstadistico\AnalisisEstadistico\obj\Debug\AnalisisEstadistico.dll
-C:\Users\car_e\Documents\Proyecto\AnalisisEstadistico\AnalisisEstadistico\obj\Debug\AnalisisEstadistico.pdb
-=======
-C:\Users\Fauricio\Documents\Visual Studio 2012\Projects\AnalisisEstadistico\AnalisisEstadistico\bin\EntityFramework.dll
-C:\Users\Fauricio\Documents\Visual Studio 2012\Projects\AnalisisEstadistico\AnalisisEstadistico\bin\EntityFramework.xml
-C:\Users\Fauricio\Documents\Visual Studio 2012\Projects\AnalisisEstadistico\AnalisisEstadistico\bin\EntityFramework.SqlServer.dll
-C:\Users\Fauricio\Documents\Visual Studio 2012\Projects\AnalisisEstadistico\AnalisisEstadistico\bin\EntityFramework.SqlServer.xml
->>>>>>> 28b35942a7d1e78d7ac9696cad61ea683b3bc6c1
+C:\Users\Admin\Documents\Visual Studio 2012\Projects\AnalisisEstadistico\AnalisisEstadistico\obj\Debug\AnalisisEstadistico.csprojResolveAssemblyReference.cache

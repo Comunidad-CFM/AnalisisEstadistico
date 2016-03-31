@@ -3,7 +3,7 @@
 //    Este código se generó a partir de una plantilla.
 //
 //    Los cambios manuales en este archivo pueden causar un comportamiento inesperado de la aplicación.
-//    Los cambios manuales en este archivo se sobrescribirán si se regenera el código. 
+//    Los cambios manuales en este archivo se sobrescribirán si se regenera el código.
 // </auto-generated>
 //------------------------------------------------------------------------------
 
@@ -13,26 +13,13 @@ namespace AnalisisEstadistico.Data
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class AnalizadorBDEntities1 : DbContext
+    public partial class AnalizadorBDEntities : DbContext
     {
-      public AnalizadorBDEntities1()
-        : this(false) { }
-    
-        public AnalizadorBDEntities1(bool proxyCreationEnabled)	    
-            : base("name=AnalizadorBDEntities1")
+        public AnalizadorBDEntities()
+            : base("name=AnalizadorBDEntities")
         {
-            this.Configuration.ProxyCreationEnabled = proxyCreationEnabled;
         }
     
-        public AnalizadorBDEntities1(string connectionString)
-          : this(connectionString, false) { }
-    
-        public AnalizadorBDEntities1(string connectionString, bool proxyCreationEnabled)
-            : base(connectionString)
-        {
-            this.Configuration.ProxyCreationEnabled = proxyCreationEnabled;
-        }	
-      
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             throw new UnintentionalCodeFirstException();
@@ -40,6 +27,8 @@ namespace AnalisisEstadistico.Data
     
         public DbSet<emoji> emojis { get; set; }
         public DbSet<feelingWord> feelingWords { get; set; }
+        public DbSet<idiom> idioms { get; set; }
         public DbSet<stopword> stopwords { get; set; }
+        public DbSet<word> words { get; set; }
     }
 }

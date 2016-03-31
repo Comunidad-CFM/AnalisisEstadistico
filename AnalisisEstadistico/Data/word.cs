@@ -12,10 +12,13 @@ namespace AnalisisEstadistico.Data
     using System;
     using System.Collections.Generic;
     
-    public partial class feelingWord
+    public partial class word
     {
-        public int feelwordID { get; set; }
-        public string word { get; set; }
-        public Nullable<int> score { get; set; }
+        public int wordID { get; set; }
+        public string word1 { get; set; }
+        public string category { get; set; }
+        public int idiomID { get; set; }
+    
+        public virtual idiom idiom { get; set; }
     }
 }

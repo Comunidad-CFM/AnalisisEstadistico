@@ -11,14 +11,10 @@ namespace AnalisisEstadistico.Data
 {
     using System;
     using System.Collections.Generic;
-    using System.Runtime.Serialization;
     
-    [DataContract(IsReference = true)]
     public partial class stopword
     {
-        [DataMember]
         public int stopwordID { get; set; }
-        [DataMember]
         public string word { get; set; }
     }
 }

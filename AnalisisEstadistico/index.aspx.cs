@@ -29,6 +29,19 @@ namespace AnalisisEstadistico
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            List<string> strWords = new List<string>();
+
+            //strWords.Add("hola");
+            //strWords.Add("hello");
+            //strWords.Add("no");
+            strWords.Add("ja");
+            strWords.Add("junge");
+            strWords.Add("gracias");
+            //strWords.Add("não");
+            
+
+            identificarIdioma(strWords);
+
             // Add words to positivecorpus list for find a new word
             positiveCorpus.Add("and");
             positiveCorpus.Add("y");
@@ -134,7 +147,7 @@ namespace AnalisisEstadistico
             emoticons.Add(new emoji { emoticon = "?_?", score = -3 });
             emoticons.Add(new emoji { emoticon = "-\"-", score = -3 });
 
-            using (var db = new AnalizadorBDEntities1())
+            using (var db = new AnalizadorBDEntities())
             {
                 foreach (var emoticon in emoticons)
                 {
@@ -380,7 +393,7 @@ namespace AnalisisEstadistico
             feelingWords.Add(new feelingWord { word = "enojado", score = -3 });
             feelingWords.Add(new feelingWord { word = "hambre", score = -1 });
 
-            using (var db = new AnalizadorBDEntities1())
+            using (var db = new AnalizadorBDEntities())
             {
                 foreach (var feelingWord in feelingWords)
                 {
@@ -608,7 +621,7 @@ namespace AnalisisEstadistico
             List<dynamic> listWords = new List<dynamic>();
             string content = removeStopWords();
 
-            foreach (dynamic word in dictionary)
+            foreach (dynamic word in listWords)
             {
                 if (content.Contains(word.word.ToString())) {
                     listWords.Add(word);
@@ -616,6 +629,60 @@ namespace AnalisisEstadistico
             }
 
             return listWords;
+        }
+
+        protected void identificarIdioma(List<string> strWords) {
+            // detección de Idioma
+            int contEsp = 0;
+            int contEng = 0;
+            int contPort = 0;
+            int contAlem = 0;
+
+            using (var db = new AnalizadorBDEntities())
+            {                                
+                foreach (string strWord in strWords)
+                {
+                    var wordsEsp = from w in db.words where w.idiomID == 1 && w.word1 == strWord select w;
+                    var wordsEng = from w in db.words where w.idiomID == 2 && w.word1 == strWord select w;
+                    var wordsAlem = from w in db.words where w.idiomID == 3 && w.word1 == strWord select w;
+                    var wordsPort = from w in db.words where w.idiomID == 4 && w.word1 == strWord select w;
+
+                    if (wordsEsp.Count() > 0)
+                        contEsp++;
+                    if (wordsEng.Count() > 0)
+                        contEng++;
+                    if (wordsAlem.Count() > 0)
+                        contAlem++;
+                    if (wordsPort.Count() > 0)
+                        contPort++;
+                }
+                string strApariciones = contEsp + ", " + contEng + ", " + contAlem + ", " + contPort;
+                int porcentajeEsp = (contEsp * 100) / strWords.Count();
+                int porcentajeEng = (contEng * 100) / strWords.Count();
+                int porcentajeAlem = (contAlem * 100) / strWords.Count();
+                int porcentajePort = (contPort * 100) / strWords.Count();
+
+                string idiomaTexto;
+
+                if (porcentajeEsp > porcentajeEng && porcentajeEsp > porcentajeAlem && porcentajeEsp > porcentajePort) {
+                    idiomaTexto = "El texto se encuentra en Español";
+                }
+                else if(porcentajeEng > porcentajeEsp  && porcentajeEng > porcentajeAlem && porcentajeEng > porcentajePort) {
+                    idiomaTexto = "El texto se encuentra en Inglés";
+                }
+                else if(porcentajeAlem > porcentajeEsp  && porcentajeAlem > porcentajeEng && porcentajeAlem > porcentajePort) {
+                    idiomaTexto = "El texto se encuentra en Alemán";
+                }
+                else if(porcentajePort > porcentajeEsp && porcentajePort > porcentajeEng && porcentajePort > porcentajeAlem) {
+                    idiomaTexto = "El texto se encuentra en Portugués";
+                }else{
+                    idiomaTexto = "No se ha podido definir el idioma del texto";
+                }
+
+
+                Console.WriteLine(porcentajeEsp);
+                Console.WriteLine(strApariciones);           
+            }
         }
     }
 }
