@@ -44,6 +44,7 @@ C:\Users\Fauricio\Documents\Visual Studio 2012\Projects\AnalisisEstadistico\Anal
 C:\Users\Fauricio\Documents\Visual Studio 2012\Projects\AnalisisEstadistico\AnalisisEstadistico\bin\Hammock.ClientProfile.pdb
 C:\Users\Fauricio\Documents\Visual Studio 2012\Projects\AnalisisEstadistico\AnalisisEstadistico\bin\Newtonsoft.Json.xml
 C:\Users\Fauricio\Documents\Visual Studio 2012\Projects\AnalisisEstadistico\AnalisisEstadistico\bin\TweetSharp.pdb
+<<<<<<< HEAD
 C:\Users\car_e\Documents\Proyecto\AnalisisEstadistico\AnalisisEstadistico\bin\AnalisisEstadistico.dll.config
 C:\Users\car_e\Documents\Proyecto\AnalisisEstadistico\AnalisisEstadistico\bin\AnalisisEstadistico.dll
 C:\Users\car_e\Documents\Proyecto\AnalisisEstadistico\AnalisisEstadistico\bin\AnalisisEstadistico.pdb
@@ -68,3 +69,9 @@ C:\Users\car_e\Documents\Proyecto\AnalisisEstadistico\AnalisisEstadistico\obj\De
 C:\Users\car_e\Documents\Proyecto\AnalisisEstadistico\AnalisisEstadistico\obj\Debug\AnalisisEstadistico.csproj.ResolveComReference.cache
 C:\Users\car_e\Documents\Proyecto\AnalisisEstadistico\AnalisisEstadistico\obj\Debug\AnalisisEstadistico.dll
 C:\Users\car_e\Documents\Proyecto\AnalisisEstadistico\AnalisisEstadistico\obj\Debug\AnalisisEstadistico.pdb
+=======
+C:\Users\Fauricio\Documents\Visual Studio 2012\Projects\AnalisisEstadistico\AnalisisEstadistico\bin\EntityFramework.dll
+C:\Users\Fauricio\Documents\Visual Studio 2012\Projects\AnalisisEstadistico\AnalisisEstadistico\bin\EntityFramework.xml
+C:\Users\Fauricio\Documents\Visual Studio 2012\Projects\AnalisisEstadistico\AnalisisEstadistico\bin\EntityFramework.SqlServer.dll
+C:\Users\Fauricio\Documents\Visual Studio 2012\Projects\AnalisisEstadistico\AnalisisEstadistico\bin\EntityFramework.SqlServer.xml
+>>>>>>> 28b35942a7d1e78d7ac9696cad61ea683b3bc6c1

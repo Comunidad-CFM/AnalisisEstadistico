@@ -41,6 +41,13 @@
     <Reference Include="Aspose.Words">
       <HintPath>..\packages\Aspose.Words.16.2.0\lib\net40\Aspose.Words.dll</HintPath>
     </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
     <Reference Include="Hammock.ClientProfile, Version=1.0.0.0, Culture=neutral, PublicKeyToken=c148cfba29ed1a4d, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\TweetSharp.2.3.1\lib\4.0\Hammock.ClientProfile.dll</HintPath>
@@ -57,6 +64,8 @@
       <HintPath>..\packages\NetOffice.Core.Net45.1.7.3.0\lib\net45\OfficeApi.dll</HintPath>
       <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -93,6 +102,30 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Data\AnalizadorModel.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AnalizadorModel.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\AnalizadorModel.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AnalizadorModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\AnalizadorModel.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AnalizadorModel.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Data\emoji.cs">
+      <DependentUpon>AnalizadorModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\feelingWord.cs">
+      <DependentUpon>AnalizadorModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\stopword.cs">
+      <DependentUpon>AnalizadorModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="index.aspx.cs">
       <DependentUpon>index.aspx</DependentUpon>
@@ -104,6 +137,23 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
+    <EntityDeploy Include="Data\AnalizadorModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>AnalizadorModel.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="Data\AnalizadorModel.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>AnalizadorModel.edmx</DependentUpon>
+      <LastGenOutput>AnalizadorModel.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Data\AnalizadorModel.edmx.diagram">
+      <DependentUpon>AnalizadorModel.edmx</DependentUpon>
+    </Content>
+    <Content Include="Data\AnalizadorModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>AnalizadorModel.edmx</DependentUpon>
+      <LastGenOutput>AnalizadorModel.cs</LastGenOutput>
+    </Content>
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -111,7 +161,9 @@
       <DependentUpon>Web.config</DependentUpon>
     </None>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
   <ItemGroup>
     <COMReference Include="InteropExtensionLib">
       <Guid>{C3D19104-7A67-4EB0-B459-D5B2E734D430}</Guid>
@@ -150,6 +202,7 @@
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </COMReference>
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

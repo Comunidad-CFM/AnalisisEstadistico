@@ -12,33 +12,382 @@ using Microsoft.Office;
 using System.Runtime.InteropServices.ComTypes;
 using System.Text.RegularExpressions;
 using TweetSharp;
+using Newtonsoft.Json.Linq;
+using AnalisisEstadistico.Data;
 
 namespace AnalisisEstadistico
 {
     public partial class index : System.Web.UI.Page
     {
-        List<string> listPositiveWords = new List<string>();
-        List<string> listNegativeWords = new List<string>();
+        List<feelingWord> feelingWords = new List<feelingWord>();
+        List<emoji> emoticons = new List<emoji>();
+        List<string> stopWords = new List<string>();
+        List<string> positiveCorpus = new List<string>();
+        List<string> negativeCorpus = new List<string>();
+        List<string> enhancers = new List<string>();
+        List<string> reducers = new List<string>();
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            listPositiveWords.Add("bueno");
-            listPositiveWords.Add("genial");
-            listPositiveWords.Add("si");
-            listPositiveWords.Add("feliz");
-            listPositiveWords.Add("alegre");
-            listPositiveWords.Add("contento");
-            listPositiveWords.Add(":)");
-            listPositiveWords.Add(":D");
+            // Add words to positivecorpus list for find a new word
+            positiveCorpus.Add("and");
+            positiveCorpus.Add("y");
+            positiveCorpus.Add("mas");
 
-            listNegativeWords.Add("malo");
-            listNegativeWords.Add("horrible");
-            listNegativeWords.Add("no");
-            listNegativeWords.Add("triste");
-            listNegativeWords.Add("enojado");
-            listNegativeWords.Add("hambre");
-            listNegativeWords.Add(":(");
-            listNegativeWords.Add(":c");
+            negativeCorpus.Add("but");
+            negativeCorpus.Add("or");
+            negativeCorpus.Add("either");
+            negativeCorpus.Add("pero");
+            negativeCorpus.Add("o");
+
+            // Add words to enhancers/reducers list for multiply de score of the words
+            enhancers.Add("muy");
+            enhancers.Add("más");
+            enhancers.Add("mas");
+            enhancers.Add("bastante");
+
+            reducers.Add("poco");
+            reducers.Add("menos");
+            reducers.Add("casi");
+        }
+
+        protected void insertIntoEmoji() 
+        {
+            // Add emoticons to emoticons list
+            emoticons.Add(new emoji { emoticon = ":-)", score = 3 });
+            emoticons.Add(new emoji { emoticon = ":)", score = 3 });
+            emoticons.Add(new emoji { emoticon = "=)", score = 3 });
+            emoticons.Add(new emoji { emoticon = ":D", score = 3 });
+            emoticons.Add(new emoji { emoticon = ":o)", score = 3 });
+            emoticons.Add(new emoji { emoticon = ":]", score = 3 });
+            emoticons.Add(new emoji { emoticon = ":3", score = 3 });
+            emoticons.Add(new emoji { emoticon = ":>", score = 3 });
+            emoticons.Add(new emoji { emoticon = "=]", score = 3 });
+            emoticons.Add(new emoji { emoticon = ":}", score = 3 });
+            emoticons.Add(new emoji { emoticon = ":-D", score = 3 });
+            emoticons.Add(new emoji { emoticon = "8-D", score = 3 });
+            emoticons.Add(new emoji { emoticon = "xD", score = 3 });
+            emoticons.Add(new emoji { emoticon = "X-D", score = 3 });
+            emoticons.Add(new emoji { emoticon = "XD", score = 3 });
+            emoticons.Add(new emoji { emoticon = "=-D", score = 3 });
+            emoticons.Add(new emoji { emoticon = "=D", score = 3 });
+            emoticons.Add(new emoji { emoticon = "=-3", score = 3 });
+            emoticons.Add(new emoji { emoticon = "=3", score = 3 });
+            emoticons.Add(new emoji { emoticon = ":'-)", score = 3 });
+            emoticons.Add(new emoji { emoticon = ":')", score = 3 });
+            emoticons.Add(new emoji { emoticon = ":*", score = 3 });
+            emoticons.Add(new emoji { emoticon = ";*", score = 3 });
+            emoticons.Add(new emoji { emoticon = "", score = 3 });
+            emoticons.Add(new emoji { emoticon = ";-)", score = 3 });
+            emoticons.Add(new emoji { emoticon = ";)", score = 3 });
+            emoticons.Add(new emoji { emoticon = ";-]", score = 3 });
+            emoticons.Add(new emoji { emoticon = ";]", score = 3 });
+            emoticons.Add(new emoji { emoticon = ";D", score = 3 });
+            emoticons.Add(new emoji { emoticon = ":-,", score = 3 });
+            emoticons.Add(new emoji { emoticon = ":P", score = 3 });
+            emoticons.Add(new emoji { emoticon = ";-P", score = 3 });
+            emoticons.Add(new emoji { emoticon = "X-P", score = 3 });
+            emoticons.Add(new emoji { emoticon = "xp", score = 3 });
+            emoticons.Add(new emoji { emoticon = "x-p", score = 3 });
+            emoticons.Add(new emoji { emoticon = ":-p", score = 3 });
+            emoticons.Add(new emoji { emoticon = ":p", score = 3 });
+            emoticons.Add(new emoji { emoticon = "=p", score = 3 });
+            emoticons.Add(new emoji { emoticon = "#-)", score = 3 });
+            emoticons.Add(new emoji { emoticon = ":v", score = 3 });
+            emoticons.Add(new emoji { emoticon = ":'v", score = 3 });
+            emoticons.Add(new emoji { emoticon = ";v", score = 3 });
+            emoticons.Add(new emoji { emoticon = "<3", score = 3 });
+            emoticons.Add(new emoji { emoticon = "^^", score = 3 });
+            emoticons.Add(new emoji { emoticon = "^.^", score = 3 });
+            emoticons.Add(new emoji { emoticon = "*.*", score = 3 });
+            emoticons.Add(new emoji { emoticon = ":-(", score = -3 });
+            emoticons.Add(new emoji { emoticon = ":(", score = -3 });
+            emoticons.Add(new emoji { emoticon = "=(", score = -3 });
+            emoticons.Add(new emoji { emoticon = ";(", score = -3 });
+            emoticons.Add(new emoji { emoticon = ":c", score = -3 });
+            emoticons.Add(new emoji { emoticon = ">:v", score = -3 });
+            emoticons.Add(new emoji { emoticon = ":'c", score = -3 });
+            emoticons.Add(new emoji { emoticon = ":-<", score = -3 });
+            emoticons.Add(new emoji { emoticon = ":<", score = -3 });
+            emoticons.Add(new emoji { emoticon = ":-[", score = -3 });
+            emoticons.Add(new emoji { emoticon = ":[", score = -3 });
+            emoticons.Add(new emoji { emoticon = ":{", score = -3 });
+            emoticons.Add(new emoji { emoticon = ":-|", score = -3 });
+            emoticons.Add(new emoji { emoticon = ":'(", score = -3 });
+            emoticons.Add(new emoji { emoticon = ":@", score = -3 });
+            emoticons.Add(new emoji { emoticon = ">:[", score = -3 });
+            emoticons.Add(new emoji { emoticon = "Q.Q", score = -3 });
+            emoticons.Add(new emoji { emoticon = ":#", score = -3 });
+            emoticons.Add(new emoji { emoticon = ":-#", score = -3 });
+            emoticons.Add(new emoji { emoticon = "-.-", score = -3 });
+            emoticons.Add(new emoji { emoticon = ".-.", score = -3 });
+            emoticons.Add(new emoji { emoticon = "._.", score = -3 });
+            emoticons.Add(new emoji { emoticon = "x_x", score = -3 });
+            emoticons.Add(new emoji { emoticon = "X_X", score = -3 });
+            emoticons.Add(new emoji { emoticon = "-.-'", score = -3 });
+            emoticons.Add(new emoji { emoticon = ":/", score = -3 });
+            emoticons.Add(new emoji { emoticon = ":-/", score = -3 });
+            emoticons.Add(new emoji { emoticon = ";/", score = -3 });
+            emoticons.Add(new emoji { emoticon = ":|", score = -3 });
+            emoticons.Add(new emoji { emoticon = "=_=", score = -3 });
+            emoticons.Add(new emoji { emoticon = "-_-", score = -3 });
+            emoticons.Add(new emoji { emoticon = "?_?", score = -3 });
+            emoticons.Add(new emoji { emoticon = "-\"-", score = -3 });
+
+            using (var db = new AnalizadorBDEntities1())
+            {
+                foreach (var emoticon in emoticons)
+                {
+                    db.emojis.Add(emoticon);
+                    db.SaveChanges();
+                }
+            }
+        }
+
+        protected void insertIntoFeelingWord()
+        {
+            //// Add words to dictionary list
+            feelingWords.Add(new feelingWord { word = "abiertamente", score = 2 });
+            feelingWords.Add(new feelingWord { word = "abrazo", score = 3 });
+            feelingWords.Add(new feelingWord { word = "absoluta", score = 3 });
+            feelingWords.Add(new feelingWord { word = "absolutamente", score = 3 });
+            feelingWords.Add(new feelingWord { word = "absorbe", score = 3 });
+            feelingWords.Add(new feelingWord { word = "absorbente", score = 3 });
+            feelingWords.Add(new feelingWord { word = "absorto", score = 3 });
+            feelingWords.Add(new feelingWord { word = "abunda", score = 3 });
+            feelingWords.Add(new feelingWord { word = "abundan", score = 3 });
+            feelingWords.Add(new feelingWord { word = "abundancia", score = 3 });
+            feelingWords.Add(new feelingWord { word = "abundando", score = 3 });
+            feelingWords.Add(new feelingWord { word = "abundante", score = 3 });
+            feelingWords.Add(new feelingWord { word = "acariciado", score = 3 });
+            feelingWords.Add(new feelingWord { word = "accesible", score = 3 });
+            feelingWords.Add(new feelingWord { word = "acción", score = 3 });
+            feelingWords.Add(new feelingWord { word = "acelerado", score = 3 });
+            feelingWords.Add(new feelingWord { word = "aceptable", score = 3 });
+            feelingWords.Add(new feelingWord { word = "aceptación", score = 3 });
+            feelingWords.Add(new feelingWord { word = "aceptada", score = 3 });
+            feelingWords.Add(new feelingWord { word = "aceptar", score = 3 });
+            feelingWords.Add(new feelingWord { word = "aclamación", score = 3 });
+            feelingWords.Add(new feelingWord { word = "aclamada", score = 3 });
+            feelingWords.Add(new feelingWord { word = "aclara", score = 3 });
+            feelingWords.Add(new feelingWord { word = "acogedor", score = 3 });
+            feelingWords.Add(new feelingWord { word = "acomodación", score = 3 });
+            feelingWords.Add(new feelingWord { word = "acomodado", score = 3 });
+            feelingWords.Add(new feelingWord { word = "acomodar", score = 3 });
+            feelingWords.Add(new feelingWord { word = "acomodaticia", score = 3 });
+            feelingWords.Add(new feelingWord { word = "actitud", score = 3 });
+            feelingWords.Add(new feelingWord { word = "actitud", score = 3 });
+            feelingWords.Add(new feelingWord { word = "activar", score = 3 });
+            feelingWords.Add(new feelingWord { word = "activo", score = 3 });
+            feelingWords.Add(new feelingWord { word = "actualidad", score = 3 });
+            feelingWords.Add(new feelingWord { word = "actualizable", score = 3 });
+            feelingWords.Add(new feelingWord { word = "actualización", score = 3 });
+            feelingWords.Add(new feelingWord { word = "actualizado", score = 3 });
+            feelingWords.Add(new feelingWord { word = "acuerdan", score = 3 });
+            feelingWords.Add(new feelingWord { word = "adaptabilidad", score = 3 });
+            feelingWords.Add(new feelingWord { word = "adaptación", score = 3 });
+            feelingWords.Add(new feelingWord { word = "adecuada", score = 3 });
+            feelingWords.Add(new feelingWord { word = "adecuadamente", score = 3 });
+            feelingWords.Add(new feelingWord { word = "adecuado", score = 3 });
+            feelingWords.Add(new feelingWord { word = "además", score = 3 });
+            feelingWords.Add(new feelingWord { word = "adelante", score = 3 });
+            feelingWords.Add(new feelingWord { word = "admirablemente", score = 3 });
+            feelingWords.Add(new feelingWord { word = "admiración", score = 3 });
+            feelingWords.Add(new feelingWord { word = "adorable", score = 3 });
+            feelingWords.Add(new feelingWord { word = "afable", score = 3 });
+            feelingWords.Add(new feelingWord { word = "afecto", score = 3 });
+            feelingWords.Add(new feelingWord { word = "afirmación", score = 3 });
+            feelingWords.Add(new feelingWord { word = "afirmar", score = 3 });
+            feelingWords.Add(new feelingWord { word = "afirmativa", score = 3 });
+            feelingWords.Add(new feelingWord { word = "afortunado", score = 3 });
+            feelingWords.Add(new feelingWord { word = "afortunadamente", score = 3 });
+            feelingWords.Add(new feelingWord { word = "agrada", score = 3 });
+            feelingWords.Add(new feelingWord { word = "agradable", score = 3 });
+            feelingWords.Add(new feelingWord { word = "agradecido", score = 3 });
+            feelingWords.Add(new feelingWord { word = "agradecimiento", score = 3 });
+            feelingWords.Add(new feelingWord { word = "ahorro", score = 3 });
+            feelingWords.Add(new feelingWord { word = "ahorros", score = 3 });
+            feelingWords.Add(new feelingWord { word = "alcanzable", score = 3 });
+            feelingWords.Add(new feelingWord { word = "alcanzar", score = 3 });
+            feelingWords.Add(new feelingWord { word = "alegre", score = 3 });
+            feelingWords.Add(new feelingWord { word = "alegremente", score = 3 });
+            feelingWords.Add(new feelingWord { word = "alegría", score = 3 });
+            feelingWords.Add(new feelingWord { word = "alentar", score = 3 });
+            feelingWords.Add(new feelingWord { word = "alimentos", score = 3 });
+            feelingWords.Add(new feelingWord { word = "aliviado", score = 3 });
+            feelingWords.Add(new feelingWord { word = "aliviar", score = 3 });
+            feelingWords.Add(new feelingWord { word = "alivio", score = 3 });
+            feelingWords.Add(new feelingWord { word = "amable", score = 3 });
+            feelingWords.Add(new feelingWord { word = "amado", score = 3 });
+            feelingWords.Add(new feelingWord { word = "amigo", score = 3 });
+            feelingWords.Add(new feelingWord { word = "amistad", score = 3 });
+            feelingWords.Add(new feelingWord { word = "amor", score = 3 });
+            feelingWords.Add(new feelingWord { word = "amistoso", score = 3 });
+            feelingWords.Add(new feelingWord { word = "amistosa", score = 3 });
+            feelingWords.Add(new feelingWord { word = "animar", score = 3 });
+            feelingWords.Add(new feelingWord { word = "ánimo", score = 3 });
+            feelingWords.Add(new feelingWord { word = "apertura", score = 3 });
+            feelingWords.Add(new feelingWord { word = "aprecio", score = 3 });
+            feelingWords.Add(new feelingWord { word = "aprender", score = 3 });
+            feelingWords.Add(new feelingWord { word = "apropiado", score = 3 });
+            feelingWords.Add(new feelingWord { word = "aprendizaje", score = 3 });
+            feelingWords.Add(new feelingWord { word = "armonía", score = 3 });
+            feelingWords.Add(new feelingWord { word = "atención", score = 3 });
+            feelingWords.Add(new feelingWord { word = "atractivo", score = 3 });
+            feelingWords.Add(new feelingWord { word = "auténtico", score = 3 });
+            feelingWords.Add(new feelingWord { word = "autónoma", score = 3 });
+            feelingWords.Add(new feelingWord { word = "autonomía", score = 3 });
+            feelingWords.Add(new feelingWord { word = "avance", score = 3 });
+            feelingWords.Add(new feelingWord { word = "avanzada", score = 3 });
+            feelingWords.Add(new feelingWord { word = "aventajado", score = 3 });
+            feelingWords.Add(new feelingWord { word = "ayudado", score = 3 });
+            feelingWords.Add(new feelingWord { word = "ayudando", score = 3 });
+            feelingWords.Add(new feelingWord { word = "barato", score = 3 });
+            feelingWords.Add(new feelingWord { word = "bastante", score = 3 });
+            feelingWords.Add(new feelingWord { word = "bella", score = 3 });
+            feelingWords.Add(new feelingWord { word = "belleza", score = 3 });
+            feelingWords.Add(new feelingWord { word = "bendición", score = 3 });
+            feelingWords.Add(new feelingWord { word = "bendita", score = 3 });
+            feelingWords.Add(new feelingWord { word = "beneficio", score = 3 });
+            feelingWords.Add(new feelingWord { word = "beneficios", score = 3 });
+            feelingWords.Add(new feelingWord { word = "beneficioso", score = 3 });
+            feelingWords.Add(new feelingWord { word = "beneficiosamente", score = 3 });
+            feelingWords.Add(new feelingWord { word = "beso", score = 3 });
+            feelingWords.Add(new feelingWord { word = "bien", score = 3 });
+            feelingWords.Add(new feelingWord { word = "bienestar", score = 3 });
+            feelingWords.Add(new feelingWord { word = "bondad", score = 3 });
+            feelingWords.Add(new feelingWord { word = "bonitamente", score = 3 });
+            feelingWords.Add(new feelingWord { word = "bono", score = 3 });
+            feelingWords.Add(new feelingWord { word = "brilla", score = 3 });
+            feelingWords.Add(new feelingWord { word = "brillante", score = 3 });
+            feelingWords.Add(new feelingWord { word = "brillo", score = 3 });
+            feelingWords.Add(new feelingWord { word = "caballerosidad", score = 3 });
+            feelingWords.Add(new feelingWord { word = "calidad", score = 3 });
+            feelingWords.Add(new feelingWord { word = "calificado", score = 3 });
+            feelingWords.Add(new feelingWord { word = "calificar", score = 3 });
+            feelingWords.Add(new feelingWord { word = "calma", score = 3 });
+            feelingWords.Add(new feelingWord { word = "cambio", score = 3 });
+            feelingWords.Add(new feelingWord { word = "capacidad", score = 3 });
+            feelingWords.Add(new feelingWord { word = "capaz", score = 3 });
+            feelingWords.Add(new feelingWord { word = "cariño", score = 3 });
+            feelingWords.Add(new feelingWord { word = "cariñoso", score = 3 });
+            feelingWords.Add(new feelingWord { word = "cautivar", score = 3 });
+            feelingWords.Add(new feelingWord { word = "cautivó", score = 3 });
+            feelingWords.Add(new feelingWord { word = "celebración", score = 3 });
+            feelingWords.Add(new feelingWord { word = "celebrar", score = 3 });
+            feelingWords.Add(new feelingWord { word = "certeza", score = 3 });
+            feelingWords.Add(new feelingWord { word = "cercanía", score = 3 });
+            feelingWords.Add(new feelingWord { word = "chistoso", score = 3 });
+            feelingWords.Add(new feelingWord { word = "cielo", score = 3 });
+            feelingWords.Add(new feelingWord { word = "chistosa", score = 3 });
+            feelingWords.Add(new feelingWord { word = "cierto", score = 3 });
+            feelingWords.Add(new feelingWord { word = "citas", score = 3 });
+            feelingWords.Add(new feelingWord { word = "clara", score = 3 });
+            feelingWords.Add(new feelingWord { word = "claramente", score = 3 });
+            feelingWords.Add(new feelingWord { word = "claridad", score = 3 });
+            feelingWords.Add(new feelingWord { word = "claro", score = 3 });
+            feelingWords.Add(new feelingWord { word = "clásico", score = 3 });
+            feelingWords.Add(new feelingWord { word = "coherencia", score = 3 });
+            feelingWords.Add(new feelingWord { word = "comfortable", score = 3 });
+            feelingWords.Add(new feelingWord { word = "cómodamente", score = 3 });
+            feelingWords.Add(new feelingWord { word = "cómodo", score = 3 });
+            feelingWords.Add(new feelingWord { word = "compañerismo", score = 3 });
+            feelingWords.Add(new feelingWord { word = "compartir", score = 3 });
+            feelingWords.Add(new feelingWord { word = "compasión", score = 3 });
+            feelingWords.Add(new feelingWord { word = "competencia", score = 3 });
+            feelingWords.Add(new feelingWord { word = "complementado", score = 3 });
+            feelingWords.Add(new feelingWord { word = "complemento", score = 3 });
+            feelingWords.Add(new feelingWord { word = "comprensivo", score = 3 });
+            feelingWords.Add(new feelingWord { word = "comprobado", score = 3 });
+            feelingWords.Add(new feelingWord { word = "comprometido", score = 3 });
+            feelingWords.Add(new feelingWord { word = "compromiso", score = 3 });
+            feelingWords.Add(new feelingWord { word = "competitiva", score = 3 });
+            feelingWords.Add(new feelingWord { word = "comunicación", score = 3 });
+            feelingWords.Add(new feelingWord { word = "comunión", score = 3 });
+            feelingWords.Add(new feelingWord { word = "concentración", score = 3 });
+            feelingWords.Add(new feelingWord { word = "conciencia", score = 3 });
+            feelingWords.Add(new feelingWord { word = "conectividad", score = 3 });
+            feelingWords.Add(new feelingWord { word = "conexión", score = 3 });
+            feelingWords.Add(new feelingWord { word = "confiabilidad", score = 3 });
+            feelingWords.Add(new feelingWord { word = "confiable", score = 3 });
+            feelingWords.Add(new feelingWord { word = "confianza", score = 3 });
+            feelingWords.Add(new feelingWord { word = "confiar", score = 3 });
+            feelingWords.Add(new feelingWord { word = "confort", score = 3 });
+            feelingWords.Add(new feelingWord { word = "conocimiento", score = 3 });
+            feelingWords.Add(new feelingWord { word = "consciente", score = 3 });
+            feelingWords.Add(new feelingWord { word = "consideración", score = 3 });
+            feelingWords.Add(new feelingWord { word = "consistencia", score = 3 });
+            feelingWords.Add(new feelingWord { word = "consolidación", score = 3 });
+            feelingWords.Add(new feelingWord { word = "constancia", score = 3 });
+            feelingWords.Add(new feelingWord { word = "contento", score = 3 });
+            feelingWords.Add(new feelingWord { word = "continuidad", score = 3 });
+            feelingWords.Add(new feelingWord { word = "contribución", score = 3 });
+            feelingWords.Add(new feelingWord { word = "conveniencia", score = 3 });
+            feelingWords.Add(new feelingWord { word = "conveniente", score = 3 });
+            feelingWords.Add(new feelingWord { word = "convincente", score = 3 });
+            feelingWords.Add(new feelingWord { word = "convicción", score = 3 });
+            feelingWords.Add(new feelingWord { word = "cooperación", score = 3 });
+            feelingWords.Add(new feelingWord { word = "coraje", score = 3 });
+            feelingWords.Add(new feelingWord { word = "corazón", score = 3 });
+            feelingWords.Add(new feelingWord { word = "correctamente", score = 3 });
+            feelingWords.Add(new feelingWord { word = "correcto", score = 3 });
+            feelingWords.Add(new feelingWord { word = "cortés", score = 3 });
+            feelingWords.Add(new feelingWord { word = "cortesía", score = 3 });
+            feelingWords.Add(new feelingWord { word = "creativo", score = 3 });
+            feelingWords.Add(new feelingWord { word = "crecer", score = 3 });
+            feelingWords.Add(new feelingWord { word = "cuidado", score = 3 });
+            feelingWords.Add(new feelingWord { word = "cumplido", score = 3 });
+            feelingWords.Add(new feelingWord { word = "cumple", score = 3 });
+            feelingWords.Add(new feelingWord { word = "curiosidad", score = 3 });
+            feelingWords.Add(new feelingWord { word = "cumplir", score = 3 });
+            feelingWords.Add(new feelingWord { word = "cumplimiento", score = 3 });
+            feelingWords.Add(new feelingWord { word = "deber", score = 3 });
+            feelingWords.Add(new feelingWord { word = "decente", score = 3 });
+            feelingWords.Add(new feelingWord { word = "decisivo", score = 3 });
+            feelingWords.Add(new feelingWord { word = "decencia", score = 3 });
+            feelingWords.Add(new feelingWord { word = "delicado", score = 3 });
+            feelingWords.Add(new feelingWord { word = "deliciosa", score = 3 });
+            feelingWords.Add(new feelingWord { word = "delicioso", score = 3 });
+            feelingWords.Add(new feelingWord { word = "deportivo", score = 3 });
+            feelingWords.Add(new feelingWord { word = "derecho", score = 3 });
+            feelingWords.Add(new feelingWord { word = "", score = 3 });
+            feelingWords.Add(new feelingWord { word = "", score = 3 });
+            feelingWords.Add(new feelingWord { word = "", score = 3 });
+            feelingWords.Add(new feelingWord { word = "", score = 3 });
+            feelingWords.Add(new feelingWord { word = "", score = 3 });
+            feelingWords.Add(new feelingWord { word = "", score = 3 });
+            feelingWords.Add(new feelingWord { word = "", score = 3 });
+            feelingWords.Add(new feelingWord { word = "", score = 3 });
+            feelingWords.Add(new feelingWord { word = "", score = 3 });
+            feelingWords.Add(new feelingWord { word = "", score = 3 });
+            feelingWords.Add(new feelingWord { word = "", score = 3 });
+            feelingWords.Add(new feelingWord { word = "", score = 3 });
+            feelingWords.Add(new feelingWord { word = "", score = 3 });
+            feelingWords.Add(new feelingWord { word = "", score = 3 });
+            feelingWords.Add(new feelingWord { word = "", score = 3 });
+            feelingWords.Add(new feelingWord { word = "", score = 3 });
+            feelingWords.Add(new feelingWord { word = "", score = 3 });
+            feelingWords.Add(new feelingWord { word = "", score = 3 });
+            feelingWords.Add(new feelingWord { word = "", score = 3 });
+            feelingWords.Add(new feelingWord { word = "", score = 3 });
+
+            // deliciosas, , , , derrame, derrota, derrotado, derrotando, derrotas, descansamos, descaradamente, descubrimiento, deseable, deseando, deseo, desinterés, deslumbrado, desmontable, despejado, despertó, despierte, despliegue, desprendimiento, despreocupación, despreocupada, destacar, destino, destreza, desvergonzado, determinación, deuda, devoción, devolucion de dinero, devoto, devuelto, dichosamente, dichoso, diestramente, diestro, dificultad para respirar, digna, dignidad, dignificar, digno, diligencia, diligente, diligentemente, diluyente, dinámica, dios, dios manda, dios mio, diosa, diplomática, direccion, disciplina, discreción, disfruta, disfruta de, disfrutado, disfrutar, disfrute, disponible, dispuestos, distinción, distinguido, distintivo, diversidad, diversificada, divertida, divertido, divina, divinamente, divino, dócil, domina, dominado, dominar, dorado, dotado, dulce, dulzura, dummy-prueba, duradero
+
+            feelingWords.Add(new feelingWord { word = "malo", score = -2 });
+            feelingWords.Add(new feelingWord { word = "horrible", score = -3 });
+            feelingWords.Add(new feelingWord { word = "no", score = -2 });
+            feelingWords.Add(new feelingWord { word = "triste", score = -3 });
+            feelingWords.Add(new feelingWord { word = "enojado", score = -3 });
+            feelingWords.Add(new feelingWord { word = "hambre", score = -1 });
+
+            using (var db = new AnalizadorBDEntities1())
+            {
+                foreach (var feelingWord in feelingWords)
+                {
+                    db.feelingWords.Add(feelingWord);
+                    db.SaveChanges();
+                }
+            }
         }
 
         /// <summary>
@@ -99,7 +448,6 @@ namespace AnalisisEstadistico
                 else
                 {
                     contentBox.Text = "Fallo al descomprimir";
-                    //message.Text = "Fallo al descomprimir";
                 }
             }
             else
@@ -167,26 +515,12 @@ namespace AnalisisEstadistico
         protected void buttonCargar_Click(object sender, EventArgs e)
         {
             string link = textLink.Text;
-            
-            String strResult;
-            WebResponse objResponse;
-            WebRequest objRequest = HttpWebRequest.Create(link);
-            objResponse = objRequest.GetResponse();
-            using (StreamReader sr = new StreamReader(objResponse.GetResponseStream()))
-            {
-                strResult = sr.ReadToEnd();
-                sr.Close();
-            }
-            //contentBox.Text = strResult;
-            contentBox.Text = Regex.Replace(strResult, "<(.|\\n)*?>", string.Empty);
+            WebClient client = new WebClient();
+            byte[] byteData = null;
+            byteData = client.DownloadData(link);
 
-            //var wc = new WebClient();
-            //var html = wc.DownloadString(textLink.Text);
-            //contentBox.Text = Regex.Replace(html, "<(.|\\n)*?>", string.Empty);
-           
-          
- 
-
+            UTF8Encoding UTF8Encod = new UTF8Encoding();
+            contentBox.Text = Regex.Replace(UTF8Encod.GetString(byteData), "<(.|\\n)*?>", string.Empty);
         }
 
         protected void buttonAnalizar_Click(object sender, EventArgs e)
@@ -218,77 +552,70 @@ namespace AnalisisEstadistico
         }
 
         protected void sentimentAnalysis() {
-            List<string> listWordsP = crawler(listPositiveWords);
-            List<string> listWordsN = crawler(listNegativeWords);
+            List<dynamic> listWords = crawler();
+            // Call a method that returns the score of the words.
 
-            if (listWordsP.Count() > 0 || listWordsN.Count() > 0)
-            {
-                if (listWordsP.Count() > listWordsN.Count())
-                {
-                    resultBox.Text = "Positivo. ";
+            //if (listWordsP.Count() > 0 || listWordsN.Count() > 0)
+            //{
+            //    if (listWordsP.Count() > listWordsN.Count())
+            //    {
+            //        resultBox.Text = "Positivo. ";
 
-                    foreach (string word in listWordsP)
-                    {
-                        resultBox.Text = resultBox.Text + word;
-                    }
-                }
-                else if (listWordsP.Count() < listWordsN.Count())
-                {
-                    resultBox.Text = "Negativo. ";
+            //        foreach (dynamic word in listWordsP)
+            //        {
+            //            resultBox.Text = resultBox.Text + word.word;
+            //        }
+            //    }
+            //    else if (listWordsP.Count() < listWordsN.Count())
+            //    {
+            //        resultBox.Text = "Negativo. ";
 
-                    foreach (string word in listWordsN)
-                    {
-                        resultBox.Text = resultBox.Text + word;
-                    }
-                }
-                else
-                {
-                    resultBox.Text = "Neutro.";
-                }
-            }
-            else 
-            {
-                resultBox.Text = "No detectado.";
-            }
+            //        foreach (dynamic word in listWordsN)
+            //        {
+            //            resultBox.Text = resultBox.Text + word.word;
+            //        }
+            //    }
+            //    else
+            //    {
+            //        resultBox.Text = "Neutro.";
+            //    }
+            //}
+            //else
+            //{
+            //    resultBox.Text = "No detectado.";
+            //}
         }
 
+        protected string removeStopWords() {
+            string[] words = contentBox.Text.Replace(",", " ").Replace(".", " ").Split(' ');
+            string content = "";
+
+            foreach (string word in words)
+            {
+                if (!stopWords.Contains(word))
+                {
+                    content += word + " ";
+                }
+            }
+
+            return content;
+        }
         /// <summary>
         /// Busca las palabras en el texto que coincidan con las que se buscan.
         /// </summary>
         /// <returns>Una lista con las palabras encontradas</returns>
-        protected List<string> crawler(List<string> listWordsToSearch) { 
-            List<string> listWords = new List<string>();
-            string content = contentBox.Text;
+        protected List<dynamic> crawler() {
+            List<dynamic> listWords = new List<dynamic>();
+            string content = removeStopWords();
 
-            foreach (string word in listWordsToSearch)
+            foreach (dynamic word in dictionary)
             {
-                if (content.Contains(word)) {
+                if (content.Contains(word.word.ToString())) {
                     listWords.Add(word);
                 }
             }
 
             return listWords;
-        }
-
-        /// <summary>
-        /// Cuenta la cantidad de apariciones de una determinada palabra en el texto a analizar.
-        /// </summary>
-        /// <param name="wordToSearch">Palabra a buscar</param>
-        /// <returns>Cantidad de apariciones</returns>
-        protected int countWords(string wordToSearch) {
-            string content = contentBox.Text.Replace(",", " ").Replace(".", " ");
-            string[] words = contentBox.Text.Split(' ');
-            int cant = 0;
-
-            foreach (string word in words)
-            {
-                if (word.Equals(wordToSearch))
-                {
-                    cant++;
-                }
-            }
-
-            return cant;
         }
     }
 }

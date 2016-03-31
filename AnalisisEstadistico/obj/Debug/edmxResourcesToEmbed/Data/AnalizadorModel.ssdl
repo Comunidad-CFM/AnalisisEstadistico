@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="AnalizadorBDModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityContainer Name="AnalizadorBDModelStoreContainer">
+    <EntitySet Name="emoji" EntityType="AnalizadorBDModel.Store.emoji" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="feelingWord" EntityType="AnalizadorBDModel.Store.feelingWord" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="stopword" EntityType="AnalizadorBDModel.Store.stopword" store:Type="Tables" Schema="dbo" />
+  </EntityContainer>
+  <EntityType Name="emoji">
+    <Key>
+      <PropertyRef Name="emojiID" />
+    </Key>
+    <Property Name="emojiID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="emoticon" Type="varchar" Nullable="false" MaxLength="4" />
+    <Property Name="score" Type="int" />
+  </EntityType>
+  <EntityType Name="feelingWord">
+    <Key>
+      <PropertyRef Name="feelwordID" />
+    </Key>
+    <Property Name="feelwordID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="word" Type="varchar" Nullable="false" MaxLength="4" />
+    <Property Name="score" Type="int" />
+  </EntityType>
+  <EntityType Name="stopword">
+    <Key>
+      <PropertyRef Name="stopwordID" />
+    </Key>
+    <Property Name="stopwordID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="word" Type="varchar" Nullable="false" MaxLength="80" />
+  </EntityType>
+</Schema>
