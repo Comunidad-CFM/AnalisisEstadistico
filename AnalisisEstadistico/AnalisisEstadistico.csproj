@@ -102,30 +102,6 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Data\AnalizadorModel.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>AnalizadorModel.Context.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Data\AnalizadorModel.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>AnalizadorModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Data\AnalizadorModel.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>AnalizadorModel.edmx</DependentUpon>
-    </Compile>
-    <Compile Include="Data\emoji.cs">
-      <DependentUpon>AnalizadorModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Data\feelingWord.cs">
-      <DependentUpon>AnalizadorModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Data\stopword.cs">
-      <DependentUpon>AnalizadorModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="index.aspx.cs">
       <DependentUpon>index.aspx</DependentUpon>
@@ -137,23 +113,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
-    <EntityDeploy Include="Data\AnalizadorModel.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>AnalizadorModel.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <Content Include="Data\AnalizadorModel.Context.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>AnalizadorModel.edmx</DependentUpon>
-      <LastGenOutput>AnalizadorModel.Context.cs</LastGenOutput>
-    </Content>
-    <Content Include="Data\AnalizadorModel.edmx.diagram">
-      <DependentUpon>AnalizadorModel.edmx</DependentUpon>
-    </Content>
-    <Content Include="Data\AnalizadorModel.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>AnalizadorModel.edmx</DependentUpon>
-      <LastGenOutput>AnalizadorModel.cs</LastGenOutput>
-    </Content>
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
