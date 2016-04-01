@@ -133,6 +133,7 @@
     <Compile Include="Data\word.cs">
       <DependentUpon>AnalizadorMolde.tt</DependentUpon>
     </Compile>
+    <Compile Include="Model\Coincidencia.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="index.aspx.cs">
       <DependentUpon>index.aspx</DependentUpon>

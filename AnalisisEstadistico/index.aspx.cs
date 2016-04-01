@@ -14,6 +14,7 @@ using System.Text.RegularExpressions;
 using TweetSharp;
 using Newtonsoft.Json.Linq;
 using AnalisisEstadistico.Data;
+using AnalisisEstadistico.Model;
 
 namespace AnalisisEstadistico
 {
@@ -36,9 +37,11 @@ namespace AnalisisEstadistico
             //strWords.Add("no");
             strWords.Add("ja");
             strWords.Add("junge");
+            strWords.Add("junge");
+            strWords.Add("junge");
             strWords.Add("gracias");
             //strWords.Add("não");
-            
+
 
             identificarIdioma(strWords);
 
@@ -64,7 +67,7 @@ namespace AnalisisEstadistico
             reducers.Add("casi");
         }
 
-        protected void insertIntoEmoji() 
+        protected void insertIntoEmoji()
         {
             // Add emoticons to emoticons list
             emoticons.Add(new emoji { emoticon = ":-)", score = 3 });
@@ -541,12 +544,13 @@ namespace AnalisisEstadistico
             sentimentAnalysis();
         }
 
-    
+
         protected void searchTweets(object sender, EventArgs e)
         {
             string txtTwitterName = textTwitter.Text;
 
-            if(txtTwitterName != ""){
+            if (txtTwitterName != "")
+            {
                 var service = new TwitterService("C98uX0MU7n24kXYROPs1YfZGd", "nDEBrbJXszSZKfrOmmDfAm4NNrvDsfqkE5BwvsXsdFVZKJMdQg");
 
                 //AuthenticateWith("Access Token", "AccessTokenSecret");
@@ -555,16 +559,18 @@ namespace AnalisisEstadistico
                 //ScreenName="screeen name not username", Count=Number of Tweets / www.Twitter.com/mcansozeri. 
                 IEnumerable<TwitterStatus> tweets = service.ListTweetsOnUserTimeline(new ListTweetsOnUserTimelineOptions { ScreenName = txtTwitterName, Count = 10, });
                 var tweetsList = tweets.ToList();
-                string strTweets = "Tweets de "+txtTwitterName+":\n";
-                for (int i = 0; i < tweetsList.Count; i++) {
-                    strTweets += tweetsList[i].Text+"\n";
+                string strTweets = "Tweets de " + txtTwitterName + ":\n";
+                for (int i = 0; i < tweetsList.Count; i++)
+                {
+                    strTweets += tweetsList[i].Text + "\n";
                 }
 
                 contentBox.Text = strTweets;
             }
         }
 
-        protected void sentimentAnalysis() {
+        protected void sentimentAnalysis()
+        {
             List<dynamic> listWords = crawler();
             // Call a method that returns the score of the words.
 
@@ -599,7 +605,8 @@ namespace AnalisisEstadistico
             //}
         }
 
-        protected string removeStopWords() {
+        protected string removeStopWords()
+        {
             string[] words = contentBox.Text.Replace(",", " ").Replace(".", " ").Split(' ');
             string content = "";
 
@@ -617,13 +624,15 @@ namespace AnalisisEstadistico
         /// Busca las palabras en el texto que coincidan con las que se buscan.
         /// </summary>
         /// <returns>Una lista con las palabras encontradas</returns>
-        protected List<dynamic> crawler() {
+        protected List<dynamic> crawler()
+        {
             List<dynamic> listWords = new List<dynamic>();
             string content = removeStopWords();
 
             foreach (dynamic word in listWords)
             {
-                if (content.Contains(word.word.ToString())) {
+                if (content.Contains(word.word.ToString()))
+                {
                     listWords.Add(word);
                 }
             }
@@ -631,15 +640,31 @@ namespace AnalisisEstadistico
             return listWords;
         }
 
-        protected void identificarIdioma(List<string> strWords) {
-            // detección de Idioma
+        protected void identificarIdioma(List<string> strWords)
+        {
+            // contadores de coincidencias
             int contEsp = 0;
             int contEng = 0;
             int contPort = 0;
             int contAlem = 0;
 
+            //listas con palabras que coinciden
+            List<Coincidencia> coincidenciasEsp = new List<Coincidencia>();
+            List<Coincidencia> coincidenciasEng = new List<Coincidencia>();
+            List<Coincidencia> coincidenciasAlem = new List<Coincidencia>(); ;
+            List<Coincidencia> coincidenciasPort = new List<Coincidencia>(); ;
+
+
+            //strWords.Add("hola");
+            //strWords.Add("hello");
+            //strWords.Add("no");
+                     ///strWords.Add("ja");
+                     ///strWords.Add("junge");
+                    ///strWords.Add("gracias");
+            //strWords.Add("não");
+
             using (var db = new AnalizadorBDEntities())
-            {                                
+            {
                 foreach (string strWord in strWords)
                 {
                     var wordsEsp = from w in db.words where w.idiomID == 1 && w.word1 == strWord select w;
@@ -648,13 +673,58 @@ namespace AnalisisEstadistico
                     var wordsPort = from w in db.words where w.idiomID == 4 && w.word1 == strWord select w;
 
                     if (wordsEsp.Count() > 0)
+                    {
                         contEsp++;
+                        if (coincidenciasEsp.Count() < 1)// si la lista no tiene coincidencias registradas
+                        {
+                            Coincidencia coincidencia = new Coincidencia(strWord);
+                            coincidenciasEsp.Add(coincidencia);
+                        }
+                        else
+                        {
+                            coincidenciasEsp = registrarCoincidencia(strWord, coincidenciasEsp);
+                        }
+
+                    }
                     if (wordsEng.Count() > 0)
+                    {
                         contEng++;
+                        if (coincidenciasEng.Count() < 1)// si la lista no tiene coincidencias registradas
+                        {
+                            Coincidencia coincidencia = new Coincidencia(strWord);
+                            coincidenciasEng.Add(coincidencia);
+                        }
+                        else
+                        {
+                            coincidenciasEng = registrarCoincidencia(strWord, coincidenciasEng);
+                        }
+                    }
                     if (wordsAlem.Count() > 0)
+                    {
                         contAlem++;
+                        if (coincidenciasAlem.Count() < 1)// si la lista no tiene coincidencias registradas
+                        {
+                            Coincidencia coincidencia = new Coincidencia(strWord);
+                            coincidenciasAlem.Add(coincidencia);
+                        }
+                        else
+                        {
+                            coincidenciasAlem = registrarCoincidencia(strWord, coincidenciasAlem);
+                        }
+                    }
                     if (wordsPort.Count() > 0)
+                    {
                         contPort++;
+                        if (coincidenciasPort.Count() < 1)// si la lista no tiene coincidencias registradas
+                        {
+                            Coincidencia coincidencia = new Coincidencia(strWord);
+                            coincidenciasPort.Add(coincidencia);
+                        }
+                        else
+                        {
+                            coincidenciasPort = registrarCoincidencia(strWord, coincidenciasPort);
+                        }
+                    }
                 }
                 string strApariciones = contEsp + ", " + contEng + ", " + contAlem + ", " + contPort;
                 int porcentajeEsp = (contEsp * 100) / strWords.Count();
@@ -664,25 +734,54 @@ namespace AnalisisEstadistico
 
                 string idiomaTexto;
 
-                if (porcentajeEsp > porcentajeEng && porcentajeEsp > porcentajeAlem && porcentajeEsp > porcentajePort) {
+                if (porcentajeEsp > porcentajeEng && porcentajeEsp > porcentajeAlem && porcentajeEsp > porcentajePort)
+                {
                     idiomaTexto = "El texto se encuentra en Español";
                 }
-                else if(porcentajeEng > porcentajeEsp  && porcentajeEng > porcentajeAlem && porcentajeEng > porcentajePort) {
+                else if (porcentajeEng > porcentajeEsp && porcentajeEng > porcentajeAlem && porcentajeEng > porcentajePort)
+                {
                     idiomaTexto = "El texto se encuentra en Inglés";
                 }
-                else if(porcentajeAlem > porcentajeEsp  && porcentajeAlem > porcentajeEng && porcentajeAlem > porcentajePort) {
+                else if (porcentajeAlem > porcentajeEsp && porcentajeAlem > porcentajeEng && porcentajeAlem > porcentajePort)
+                {
                     idiomaTexto = "El texto se encuentra en Alemán";
                 }
-                else if(porcentajePort > porcentajeEsp && porcentajePort > porcentajeEng && porcentajePort > porcentajeAlem) {
+                else if (porcentajePort > porcentajeEsp && porcentajePort > porcentajeEng && porcentajePort > porcentajeAlem)
+                {
                     idiomaTexto = "El texto se encuentra en Portugués";
-                }else{
+                }
+                else
+                {
                     idiomaTexto = "No se ha podido definir el idioma del texto";
                 }
 
 
                 Console.WriteLine(porcentajeEsp);
-                Console.WriteLine(strApariciones);           
+                Console.WriteLine(strApariciones);
             }
+        }
+
+        /// <summary>
+        /// Método para registrar la incidencia de una palabra, si ya está registrada esa palabra entonces se modifica el
+        /// numero de apariciones de esa palabra
+        /// </summary>
+        /// <param name="palabra">Palabra a buscar</param>
+        /// <param name="coincidencias">Lista donde están registradas la coincidencias</param>
+        /// <returns></returns>
+        protected List<Coincidencia> registrarCoincidencia(string palabra, List<Coincidencia> coincidencias)
+        {
+            foreach (Coincidencia item in coincidencias)
+            {
+                if (item.palabra == palabra)
+                {
+                    item.apariciones++;
+                    return coincidencias;
+                }
+            }
+            Coincidencia coincidencia = new Coincidencia(palabra);
+            coincidencias.Add(coincidencia);
+            return coincidencias;
+
         }
     }
 }
