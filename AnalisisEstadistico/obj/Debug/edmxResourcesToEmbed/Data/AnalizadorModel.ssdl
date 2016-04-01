@@ -2,8 +2,15 @@
 <Schema Namespace="AnalizadorBDModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
   <EntityContainer Name="AnalizadorBDModelStoreContainer">
     <EntitySet Name="emoji" EntityType="AnalizadorBDModel.Store.emoji" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="enhancers" EntityType="AnalizadorBDModel.Store.enhancers" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="feelingWord" EntityType="AnalizadorBDModel.Store.feelingWord" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="idiom" EntityType="AnalizadorBDModel.Store.idiom" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="stopword" EntityType="AnalizadorBDModel.Store.stopword" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="word" EntityType="AnalizadorBDModel.Store.word" store:Type="Tables" Schema="dbo" />
+    <AssociationSet Name="fk_PerOrders" Association="AnalizadorBDModel.Store.fk_PerOrders">
+      <End Role="idiom" EntitySet="idiom" />
+      <End Role="word" EntitySet="word" />
+    </AssociationSet>
   </EntityContainer>
   <EntityType Name="emoji">
     <Key>
@@ -13,13 +20,28 @@
     <Property Name="emoticon" Type="varchar" Nullable="false" MaxLength="4" />
     <Property Name="score" Type="int" />
   </EntityType>
+  <EntityType Name="enhancers">
+    <Key>
+      <PropertyRef Name="enhancersID" />
+    </Key>
+    <Property Name="enhancersID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="word" Type="varchar" Nullable="false" MaxLength="80" />
+    <Property Name="score" Type="int" />
+  </EntityType>
   <EntityType Name="feelingWord">
     <Key>
       <PropertyRef Name="feelwordID" />
     </Key>
     <Property Name="feelwordID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
-    <Property Name="word" Type="varchar" Nullable="false" MaxLength="4" />
+    <Property Name="word" Type="varchar" Nullable="false" MaxLength="80" />
     <Property Name="score" Type="int" />
+  </EntityType>
+  <EntityType Name="idiom">
+    <Key>
+      <PropertyRef Name="idiomID" />
+    </Key>
+    <Property Name="idiomID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="idiom" Type="varchar" Nullable="false" MaxLength="50" />
   </EntityType>
   <EntityType Name="stopword">
     <Key>
@@ -28,4 +50,25 @@
     <Property Name="stopwordID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
     <Property Name="word" Type="varchar" Nullable="false" MaxLength="80" />
   </EntityType>
+  <EntityType Name="word">
+    <Key>
+      <PropertyRef Name="wordID" />
+    </Key>
+    <Property Name="wordID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="word" Type="varchar" Nullable="false" MaxLength="80" />
+    <Property Name="category" Type="varchar" MaxLength="50" />
+    <Property Name="idiomID" Type="int" Nullable="false" />
+  </EntityType>
+  <Association Name="fk_PerOrders">
+    <End Role="idiom" Type="AnalizadorBDModel.Store.idiom" Multiplicity="1" />
+    <End Role="word" Type="AnalizadorBDModel.Store.word" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="idiom">
+        <PropertyRef Name="idiomID" />
+      </Principal>
+      <Dependent Role="word">
+        <PropertyRef Name="idiomID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
 </Schema>

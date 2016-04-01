@@ -14,120 +14,597 @@ using System.Text.RegularExpressions;
 using TweetSharp;
 using Newtonsoft.Json.Linq;
 using AnalisisEstadistico.Data;
+using AnalisisEstadistico.Model;
 
 namespace AnalisisEstadistico
 {
     public partial class index : System.Web.UI.Page
     {
         List<feelingWord> feelingWords = new List<feelingWord>();
-        List<emoji> emoticons = new List<emoji>();
-        List<string> stopWords = new List<string>();
+        List<emoji> emojis = new List<emoji>();
+        List<stopword> stopWords = new List<stopword>();
         List<string> positiveCorpus = new List<string>();
         List<string> negativeCorpus = new List<string>();
-        List<string> enhancers = new List<string>();
+        List<enhancer> enhancers = new List<enhancer>();
+        List<string> reducers = new List<string>();
+
+        List<feelingWord> feelingWordsList = new List<feelingWord>();
+        List<emoji> emojisList = new List<emoji>();
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            insertIntoEmoji();
-            insertIntoFeelingWord();
             // Add words to positivecorpus list for find a new word
-            positiveCorpus.Add("and");
-            positiveCorpus.Add("y");
-            positiveCorpus.Add("mas");
+            //positiveCorpus.Add("and");
+            //positiveCorpus.Add("y");
+            //positiveCorpus.Add("mas");
 
-            negativeCorpus.Add("but");
-            negativeCorpus.Add("or");
-            negativeCorpus.Add("either");
-            negativeCorpus.Add("pero");
-            negativeCorpus.Add("o");
+            //negativeCorpus.Add("but");
+            //negativeCorpus.Add("or");
+            //negativeCorpus.Add("either");
+            //negativeCorpus.Add("pero");
+            //negativeCorpus.Add("o");
         }
 
-        protected void insertIntoEmoji() 
+        protected void readFolder(object sender, EventArgs e)
         {
-            // Add emoticons to emoticons list
-            emoticons.Add(new emoji { emoticon = ":-)", score = 3 });
-            emoticons.Add(new emoji { emoticon = ":)", score = 3 });
-            emoticons.Add(new emoji { emoticon = "=)", score = 3 });
-            emoticons.Add(new emoji { emoticon = ":D", score = 3 });
-            emoticons.Add(new emoji { emoticon = ":o)", score = 3 });
-            emoticons.Add(new emoji { emoticon = ":]", score = 3 });
-            emoticons.Add(new emoji { emoticon = ":3", score = 3 });
-            emoticons.Add(new emoji { emoticon = ":>", score = 3 });
-            emoticons.Add(new emoji { emoticon = "=]", score = 3 });
-            emoticons.Add(new emoji { emoticon = ":}", score = 3 });
-            emoticons.Add(new emoji { emoticon = ":-D", score = 3 });
-            emoticons.Add(new emoji { emoticon = "8-D", score = 3 });
-            emoticons.Add(new emoji { emoticon = "xD", score = 3 });
-            emoticons.Add(new emoji { emoticon = "X-D", score = 3 });
-            emoticons.Add(new emoji { emoticon = "XD", score = 3 });
-            emoticons.Add(new emoji { emoticon = "=-D", score = 3 });
-            emoticons.Add(new emoji { emoticon = "=D", score = 3 });
-            emoticons.Add(new emoji { emoticon = "=-3", score = 3 });
-            emoticons.Add(new emoji { emoticon = "=3", score = 3 });
-            emoticons.Add(new emoji { emoticon = ":'-)", score = 3 });
-            emoticons.Add(new emoji { emoticon = ":')", score = 3 });
-            emoticons.Add(new emoji { emoticon = ":*", score = 3 });
-            emoticons.Add(new emoji { emoticon = ";*", score = 3 });
-            emoticons.Add(new emoji { emoticon = "", score = 3 });
-            emoticons.Add(new emoji { emoticon = ";-)", score = 3 });
-            emoticons.Add(new emoji { emoticon = ";)", score = 3 });
-            emoticons.Add(new emoji { emoticon = ";-]", score = 3 });
-            emoticons.Add(new emoji { emoticon = ";]", score = 3 });
-            emoticons.Add(new emoji { emoticon = ";D", score = 3 });
-            emoticons.Add(new emoji { emoticon = ":-,", score = 3 });
-            emoticons.Add(new emoji { emoticon = ":P", score = 3 });
-            emoticons.Add(new emoji { emoticon = ";-P", score = 3 });
-            emoticons.Add(new emoji { emoticon = "X-P", score = 3 });
-            emoticons.Add(new emoji { emoticon = "xp", score = 3 });
-            emoticons.Add(new emoji { emoticon = "x-p", score = 3 });
-            emoticons.Add(new emoji { emoticon = ":-p", score = 3 });
-            emoticons.Add(new emoji { emoticon = ":p", score = 3 });
-            emoticons.Add(new emoji { emoticon = "=p", score = 3 });
-            emoticons.Add(new emoji { emoticon = "#-)", score = 3 });
-            emoticons.Add(new emoji { emoticon = ":v", score = 3 });
-            emoticons.Add(new emoji { emoticon = ":'v", score = 3 });
-            emoticons.Add(new emoji { emoticon = ";v", score = 3 });
-            emoticons.Add(new emoji { emoticon = "<3", score = 3 });
-            emoticons.Add(new emoji { emoticon = "^^", score = 3 });
-            emoticons.Add(new emoji { emoticon = "^.^", score = 3 });
-            emoticons.Add(new emoji { emoticon = "*.*", score = 3 });
-            emoticons.Add(new emoji { emoticon = ":-(", score = -3 });
-            emoticons.Add(new emoji { emoticon = ":(", score = -3 });
-            emoticons.Add(new emoji { emoticon = "=(", score = -3 });
-            emoticons.Add(new emoji { emoticon = ";(", score = -3 });
-            emoticons.Add(new emoji { emoticon = ":c", score = -3 });
-            emoticons.Add(new emoji { emoticon = ">:v", score = -3 });
-            emoticons.Add(new emoji { emoticon = ":'c", score = -3 });
-            emoticons.Add(new emoji { emoticon = ":-<", score = -3 });
-            emoticons.Add(new emoji { emoticon = ":<", score = -3 });
-            emoticons.Add(new emoji { emoticon = ":-[", score = -3 });
-            emoticons.Add(new emoji { emoticon = ":[", score = -3 });
-            emoticons.Add(new emoji { emoticon = ":{", score = -3 });
-            emoticons.Add(new emoji { emoticon = ":-|", score = -3 });
-            emoticons.Add(new emoji { emoticon = ":'(", score = -3 });
-            emoticons.Add(new emoji { emoticon = ":@", score = -3 });
-            emoticons.Add(new emoji { emoticon = ">:[", score = -3 });
-            emoticons.Add(new emoji { emoticon = "Q.Q", score = -3 });
-            emoticons.Add(new emoji { emoticon = ":#", score = -3 });
-            emoticons.Add(new emoji { emoticon = ":-#", score = -3 });
-            emoticons.Add(new emoji { emoticon = "-.-", score = -3 });
-            emoticons.Add(new emoji { emoticon = ".-.", score = -3 });
-            emoticons.Add(new emoji { emoticon = "._.", score = -3 });
-            emoticons.Add(new emoji { emoticon = "x_x", score = -3 });
-            emoticons.Add(new emoji { emoticon = "X_X", score = -3 });
-            emoticons.Add(new emoji { emoticon = "-.-'", score = -3 });
-            emoticons.Add(new emoji { emoticon = ":/", score = -3 });
-            emoticons.Add(new emoji { emoticon = ":-/", score = -3 });
-            emoticons.Add(new emoji { emoticon = ";/", score = -3 });
-            emoticons.Add(new emoji { emoticon = ":|", score = -3 });
-            emoticons.Add(new emoji { emoticon = "=_=", score = -3 });
-            emoticons.Add(new emoji { emoticon = "-_-", score = -3 });
-            emoticons.Add(new emoji { emoticon = "?_?", score = -3 });
-            emoticons.Add(new emoji { emoticon = "-\"-", score = -3 });
-
-            using (var db = new AnalizadorBDEntities1())
+            resultBox.Text = "";
+            try
             {
-                foreach (var emoticon in emoticons)
+                DirectoryInfo Dir = new DirectoryInfo(textFolder.Text);
+                FileInfo[] FileList = Dir.GetFiles("*.*", SearchOption.AllDirectories);
+                foreach (FileInfo FI in FileList)
+                {
+                    resultBox.Text = resultBox.Text + FI.FullName + "\n";
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Método utilizado para descomprimir los archivos de un zip file
+        /// </summary>
+        /// <param name="ArchivoZip">Ruta donde se encuentra el archivo ZIP
+        /// <param name="RutaGuardar">Ruta donde se guardaran los archivos extraídos del ZIP
+        /// <returns></returns>
+        protected bool extract(string archivoZip, string rutaGuardar)
+        {
+            try
+            {
+                using (ZipFile zip = ZipFile.Read(archivoZip))
+                {
+                    zip.ExtractAll(rutaGuardar);
+                    zip.Dispose();
+                }
+
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        protected void choose(string fileName, string dir)
+        {
+            string fileExtention = getFileExtention(fileName);
+
+            if (fileExtention == ".txt" || fileExtention == ".html" || fileExtention == ".json" || fileExtention == ".xml")
+            {
+                readTxt(fileName, dir);
+            }
+            else if (fileExtention == ".doc" || fileExtention == ".docx")
+            {
+                readDoc(fileName, dir);
+            }
+            else if (fileExtention == ".zip")
+            {
+                // Almacenar el .zip en la carpeta zips del proyecto
+                string ruta = Server.MapPath("~") + "zips\\" + fileReader.FileName;
+                string rutaDescomprimir = Server.MapPath("~") + "zips\\descomprimidos\\";
+                saveFile(ruta);
+
+                if (extract(ruta, rutaDescomprimir))
+                {
+                    // Averiguar extention file in zip
+                    DirectoryInfo dirInfo = new DirectoryInfo(rutaDescomprimir);
+                    FileInfo[] files = dirInfo.GetFiles();
+
+                    /*foreach (System.IO.FileInfo file in files)
+                    {
+                        choose(file.Name);
+                    }*/
+                    choose(files[0].Name, "zips\\descomprimidos\\");
+                }
+                else
+                {
+                    contentBox.Text = "Fallo al descomprimir";
+                }
+            }
+            else
+            {
+                contentBox.Text = "unkown";
+            }
+        }
+
+        protected string getFileExtention(string file)
+        {
+            string fileExtention = System.IO.Path.GetExtension(file);
+
+            if (fileExtention == ".txt" || fileExtention == ".html" || fileExtention == ".doc" || fileExtention == ".docx"
+                || fileExtention == ".zip" || fileExtention == ".json" || fileExtention == ".xml")
+            {
+                return fileExtention;
+            }
+            else
+            {
+                return "unkown";
+            }
+        }
+
+        protected void readTxt(string fileName, string dir)
+        {
+            string ruta = Server.MapPath("~") + dir + fileName;
+            if (dir != "zips\\descomprimidos\\")
+                saveFile(ruta);
+
+            string content = File.ReadAllText(ruta, Encoding.UTF8);
+            contentBox.Text = content;
+        }
+
+        protected void readDoc(string fileName, string dir)
+        {
+            string ruta = Server.MapPath("~") + dir + fileName;
+            if (dir != "zips\\descomprimidos\\")
+                saveFile(ruta);
+
+            Microsoft.Office.Interop.Word.Application word = new Microsoft.Office.Interop.Word.Application();
+            object miss = System.Reflection.Missing.Value;
+            object path = ruta;
+            object readOnly = true;
+            Microsoft.Office.Interop.Word.Document docs = word.Documents.Open(ref path, ref miss, ref readOnly, ref miss, ref miss, ref miss, ref miss, ref miss, ref miss, ref miss, ref miss, ref miss, ref miss, ref miss, ref miss, ref miss);
+            string totaltext = "";
+            for (int i = 0; i < docs.Paragraphs.Count; i++)
+            {
+                totaltext += " \r\n " + docs.Paragraphs[i + 1].Range.Text.ToString();
+            }
+            contentBox.Text = totaltext;
+            docs.Close();
+            word.Quit();
+        }
+
+        protected void saveFile(string ruta)
+        {
+            fileReader.SaveAs(ruta);
+        }
+
+        protected void buttonUpload_Click(object sender, EventArgs e)
+        {
+            choose(fileReader.FileName, "files\\");
+        }
+
+        protected void buttonCargar_Click(object sender, EventArgs e)
+        {
+            string link = textLink.Text;
+            WebClient client = new WebClient();
+            byte[] byteData = null;
+            byteData = client.DownloadData(link);
+
+            UTF8Encoding UTF8Encod = new UTF8Encoding();
+            contentBox.Text = Regex.Replace(UTF8Encod.GetString(byteData), "<(.|\\n)*?>", string.Empty);
+        }
+
+        protected void searchTweets(object sender, EventArgs e)
+        {
+            string txtTwitterName = textTwitter.Text;
+
+            if (txtTwitterName != "")
+            {
+                var service = new TwitterService("C98uX0MU7n24kXYROPs1YfZGd", "nDEBrbJXszSZKfrOmmDfAm4NNrvDsfqkE5BwvsXsdFVZKJMdQg");
+
+                //AuthenticateWith("Access Token", "AccessTokenSecret");
+                service.AuthenticateWith("711043579699982336-scPSu5YliFK6yov7Jf5aQOLrtklaQFU", "ZiwI7zz8oAX37Ht7jLJ0rjlzaT44CQdsyzjarz1xTRmOC");
+
+                //ScreenName="screeen name not username", Count=Number of Tweets / www.Twitter.com/mcansozeri. 
+                IEnumerable<TwitterStatus> tweets = service.ListTweetsOnUserTimeline(new ListTweetsOnUserTimelineOptions { ScreenName = txtTwitterName, Count = 10, });
+                var tweetsList = tweets.ToList();
+                string strTweets = "Tweets de " + txtTwitterName + ":\n";
+                for (int i = 0; i < tweetsList.Count; i++)
+                {
+                    strTweets += tweetsList[i].Text + "\n";
+                }
+
+                contentBox.Text = strTweets;
+            }
+        }
+
+        protected void identificarIdioma(List<string> strWords)
+        {
+            // contadores de coincidencias
+            int contEsp = 0;
+            int contEng = 0;
+            int contPort = 0;
+            int contAlem = 0;
+
+            //listas con palabras que coinciden
+            List<Coincidencia> coincidenciasEsp = new List<Coincidencia>();
+            List<Coincidencia> coincidenciasEng = new List<Coincidencia>();
+            List<Coincidencia> coincidenciasAlem = new List<Coincidencia>(); ;
+            List<Coincidencia> coincidenciasPort = new List<Coincidencia>(); ;
+
+            using (var db = new AnalizadorBDEntities())
+            {
+                foreach (string strWord in strWords)
+                {
+                    var wordsEsp = from w in db.words where w.idiomID == 1 && w.word1 == strWord select w;
+                    var wordsEng = from w in db.words where w.idiomID == 2 && w.word1 == strWord select w;
+                    var wordsAlem = from w in db.words where w.idiomID == 3 && w.word1 == strWord select w;
+                    var wordsPort = from w in db.words where w.idiomID == 4 && w.word1 == strWord select w;
+
+                    if (wordsEsp.Count() > 0)
+                    {
+                        contEsp++;
+                        if (coincidenciasEsp.Count() < 1)// si la lista no tiene coincidencias registradas
+                        {
+                            Coincidencia coincidencia = new Coincidencia(strWord);
+                            coincidenciasEsp.Add(coincidencia);
+                        }
+                        else
+                        {
+                            coincidenciasEsp = registrarCoincidencia(strWord, coincidenciasEsp);
+                        }
+
+                    }
+                    if (wordsEng.Count() > 0)
+                    {
+                        contEng++;
+                        if (coincidenciasEng.Count() < 1)// si la lista no tiene coincidencias registradas
+                        {
+                            Coincidencia coincidencia = new Coincidencia(strWord);
+                            coincidenciasEng.Add(coincidencia);
+                        }
+                        else
+                        {
+                            coincidenciasEng = registrarCoincidencia(strWord, coincidenciasEng);
+                        }
+                    }
+                    if (wordsAlem.Count() > 0)
+                    {
+                        contAlem++;
+                        if (coincidenciasAlem.Count() < 1)// si la lista no tiene coincidencias registradas
+                        {
+                            Coincidencia coincidencia = new Coincidencia(strWord);
+                            coincidenciasAlem.Add(coincidencia);
+                        }
+                        else
+                        {
+                            coincidenciasAlem = registrarCoincidencia(strWord, coincidenciasAlem);
+                        }
+                    }
+                    if (wordsPort.Count() > 0)
+                    {
+                        contPort++;
+                        if (coincidenciasPort.Count() < 1)// si la lista no tiene coincidencias registradas
+                        {
+                            Coincidencia coincidencia = new Coincidencia(strWord);
+                            coincidenciasPort.Add(coincidencia);
+                        }
+                        else
+                        {
+                            coincidenciasPort = registrarCoincidencia(strWord, coincidenciasPort);
+                        }
+                    }
+                }
+                string strApariciones = contEsp + ", " + contEng + ", " + contAlem + ", " + contPort;
+                int porcentajeEsp = (contEsp * 100) / strWords.Count();
+                int porcentajeEng = (contEng * 100) / strWords.Count();
+                int porcentajeAlem = (contAlem * 100) / strWords.Count();
+                int porcentajePort = (contPort * 100) / strWords.Count();
+
+                string idiomaTexto;
+
+                if (porcentajeEsp > porcentajeEng && porcentajeEsp > porcentajeAlem && porcentajeEsp > porcentajePort)
+                {
+                    idiomaTexto = "El texto se encuentra en Español";
+                }
+                else if (porcentajeEng > porcentajeEsp && porcentajeEng > porcentajeAlem && porcentajeEng > porcentajePort)
+                {
+                    idiomaTexto = "El texto se encuentra en Inglés";
+                }
+                else if (porcentajeAlem > porcentajeEsp && porcentajeAlem > porcentajeEng && porcentajeAlem > porcentajePort)
+                {
+                    idiomaTexto = "El texto se encuentra en Alemán";
+                }
+                else if (porcentajePort > porcentajeEsp && porcentajePort > porcentajeEng && porcentajePort > porcentajeAlem)
+                {
+                    idiomaTexto = "El texto se encuentra en Portugués";
+                }
+                else
+                {
+                    idiomaTexto = "No se ha podido definir el idioma del texto";
+                }
+
+                Console.WriteLine(porcentajeEsp);
+                Console.WriteLine(strApariciones);
+            }
+        }
+
+        /// <summary>
+        /// Método para registrar la incidencia de una palabra, si ya está registrada esa palabra entonces se modifica el
+        /// numero de apariciones de esa palabra
+        /// </summary>
+        /// <param name="palabra">Palabra a buscar</param>
+        /// <param name="coincidencias">Lista donde están registradas la coincidencias</param>
+        /// <returns></returns>
+        protected List<Coincidencia> registrarCoincidencia(string palabra, List<Coincidencia> coincidencias)
+        {
+            foreach (Coincidencia item in coincidencias)
+            {
+                if (item.palabra == palabra)
+                {
+                    item.apariciones++;
+                    return coincidencias;
+                }
+            }
+            Coincidencia coincidencia = new Coincidencia(palabra);
+            coincidencias.Add(coincidencia);
+            return coincidencias;
+
+        }
+
+
+        //////////// ANALISIS DEL SENTIMIENTO
+        protected void insertIntoStopWords()
+        {
+            stopWords.Add(new stopword { word = "un" });
+            stopWords.Add(new stopword { word = "una" });
+            stopWords.Add(new stopword { word = "unas" });
+            stopWords.Add(new stopword { word = "unos" });
+            stopWords.Add(new stopword { word = "uno" });
+            stopWords.Add(new stopword { word = "sobre" });
+            stopWords.Add(new stopword { word = "todo" });
+            stopWords.Add(new stopword { word = "tambien" });
+            stopWords.Add(new stopword { word = "tras" });
+            stopWords.Add(new stopword { word = "otro" });
+            stopWords.Add(new stopword { word = "algun" });
+            stopWords.Add(new stopword { word = "alguno" });
+            stopWords.Add(new stopword { word = "alguna" });
+            stopWords.Add(new stopword { word = "algunos" });
+            stopWords.Add(new stopword { word = "algunas" });
+            stopWords.Add(new stopword { word = "ser" });
+            stopWords.Add(new stopword { word = "es" });
+            stopWords.Add(new stopword { word = "soy" });
+            stopWords.Add(new stopword { word = "eres" });
+            stopWords.Add(new stopword { word = "somos" });
+            stopWords.Add(new stopword { word = "sois" });
+            stopWords.Add(new stopword { word = "estoy" });
+            stopWords.Add(new stopword { word = "esta" });
+            stopWords.Add(new stopword { word = "estamos" });
+            stopWords.Add(new stopword { word = "estais" });
+            stopWords.Add(new stopword { word = "estan" });
+            stopWords.Add(new stopword { word = "como" });
+            stopWords.Add(new stopword { word = "en" });
+            stopWords.Add(new stopword { word = "para" });
+            stopWords.Add(new stopword { word = "atras" });
+            stopWords.Add(new stopword { word = "porque" });
+            stopWords.Add(new stopword { word = "por" });
+            stopWords.Add(new stopword { word = "que" });
+            stopWords.Add(new stopword { word = "estado" });
+            stopWords.Add(new stopword { word = "estaba" });
+            stopWords.Add(new stopword { word = "ante" });
+            stopWords.Add(new stopword { word = "antes" });
+            stopWords.Add(new stopword { word = "siendo" });
+            stopWords.Add(new stopword { word = "ambos" });
+            stopWords.Add(new stopword { word = "pero" });
+            stopWords.Add(new stopword { word = "poder" });
+            stopWords.Add(new stopword { word = "puede" });
+            stopWords.Add(new stopword { word = "puedo" });
+            stopWords.Add(new stopword { word = "podemos" });
+            stopWords.Add(new stopword { word = "podeis" });
+            stopWords.Add(new stopword { word = "pueden" });
+            stopWords.Add(new stopword { word = "fui" });
+            stopWords.Add(new stopword { word = "fue" });
+            stopWords.Add(new stopword { word = "fuimos" });
+            stopWords.Add(new stopword { word = "fueron" });
+            stopWords.Add(new stopword { word = "hacer" });
+            stopWords.Add(new stopword { word = "hago" });
+            stopWords.Add(new stopword { word = "hace" });
+            stopWords.Add(new stopword { word = "hacemos" });
+            stopWords.Add(new stopword { word = "haceis" });
+            stopWords.Add(new stopword { word = "hacen" });
+            stopWords.Add(new stopword { word = "cada" });
+            stopWords.Add(new stopword { word = "fin" });
+            stopWords.Add(new stopword { word = "incluso" });
+            stopWords.Add(new stopword { word = "primero" });
+            stopWords.Add(new stopword { word = "desde" });
+            stopWords.Add(new stopword { word = "conseguir" });
+            stopWords.Add(new stopword { word = "consigo" });
+            stopWords.Add(new stopword { word = "consigue" });
+            stopWords.Add(new stopword { word = "consigues" });
+            stopWords.Add(new stopword { word = "conseguimos" });
+            stopWords.Add(new stopword { word = "consiguen" });
+            stopWords.Add(new stopword { word = "ir" });
+            stopWords.Add(new stopword { word = "voy" });
+            stopWords.Add(new stopword { word = "va" });
+            stopWords.Add(new stopword { word = "vamos" });
+            stopWords.Add(new stopword { word = "vais" });
+            stopWords.Add(new stopword { word = "van" });
+            stopWords.Add(new stopword { word = "ha" });
+            stopWords.Add(new stopword { word = "tener" });
+            stopWords.Add(new stopword { word = "tengo" });
+            stopWords.Add(new stopword { word = "tiene" });
+            stopWords.Add(new stopword { word = "tenemos" });
+            stopWords.Add(new stopword { word = "teneis" });
+            stopWords.Add(new stopword { word = "tienen" });
+            stopWords.Add(new stopword { word = "el" });
+            stopWords.Add(new stopword { word = "la" });
+            stopWords.Add(new stopword { word = "lo" });
+            stopWords.Add(new stopword { word = "las" });
+            stopWords.Add(new stopword { word = "los" });
+            stopWords.Add(new stopword { word = "su" });
+            stopWords.Add(new stopword { word = "aqui" });
+            stopWords.Add(new stopword { word = "mio" });
+            stopWords.Add(new stopword { word = "tuyo" });
+            stopWords.Add(new stopword { word = "ellos" });
+            stopWords.Add(new stopword { word = "ellas" });
+            stopWords.Add(new stopword { word = "nos" });
+            stopWords.Add(new stopword { word = "nosotros" });
+            stopWords.Add(new stopword { word = "vosotros" });
+            stopWords.Add(new stopword { word = "vosotras" });
+            stopWords.Add(new stopword { word = "si" });
+            stopWords.Add(new stopword { word = "dentro" });
+            stopWords.Add(new stopword { word = "solo" });
+            stopWords.Add(new stopword { word = "solamente" });
+            stopWords.Add(new stopword { word = "saber" });
+            stopWords.Add(new stopword { word = "sabes" });
+            stopWords.Add(new stopword { word = "sabe" });
+            stopWords.Add(new stopword { word = "sabemos" });
+            stopWords.Add(new stopword { word = "sabeis" });
+            stopWords.Add(new stopword { word = "saben" });
+            stopWords.Add(new stopword { word = "ultimo" });
+            stopWords.Add(new stopword { word = "largo" });
+            stopWords.Add(new stopword { word = "bastante" });
+            stopWords.Add(new stopword { word = "haces" });
+            stopWords.Add(new stopword { word = "muchos" });
+            stopWords.Add(new stopword { word = "aquellos" });
+            stopWords.Add(new stopword { word = "aquellas" });
+            stopWords.Add(new stopword { word = "sus" });
+            stopWords.Add(new stopword { word = "entonces" });
+            stopWords.Add(new stopword { word = "tiempo" });
+            stopWords.Add(new stopword { word = "dos" });
+            stopWords.Add(new stopword { word = "bajo" });
+            stopWords.Add(new stopword { word = "arriba" });
+            stopWords.Add(new stopword { word = "encima" });
+            stopWords.Add(new stopword { word = "usar" });
+            stopWords.Add(new stopword { word = "uso" });
+            stopWords.Add(new stopword { word = "usas" });
+            stopWords.Add(new stopword { word = "usa" });
+            stopWords.Add(new stopword { word = "usamos" });
+            stopWords.Add(new stopword { word = "usais" });
+            stopWords.Add(new stopword { word = "usan" });
+            stopWords.Add(new stopword { word = "era" });
+            stopWords.Add(new stopword { word = "eras" });
+            stopWords.Add(new stopword { word = "eramos" });
+            stopWords.Add(new stopword { word = "eran" });
+            stopWords.Add(new stopword { word = "modo" });
+            stopWords.Add(new stopword { word = "cual" });
+            stopWords.Add(new stopword { word = "cuando" });
+            stopWords.Add(new stopword { word = "donde" });
+            stopWords.Add(new stopword { word = "mientras" });
+            stopWords.Add(new stopword { word = "quien" });
+            stopWords.Add(new stopword { word = "con" });
+            stopWords.Add(new stopword { word = "entre" });
+            stopWords.Add(new stopword { word = "sin" });
+            stopWords.Add(new stopword { word = "yo" });
+            stopWords.Add(new stopword { word = "aquel" });
+            stopWords.Add(new stopword { word = "de" });
+            stopWords.Add(new stopword { word = "se" });
+            stopWords.Add(new stopword { word = "que" });
+            stopWords.Add(new stopword { word = "a" });
+            stopWords.Add(new stopword { word = "http" });
+            stopWords.Add(new stopword { word = "del" });
+            stopWords.Add(new stopword { word = "eso" });
+            stopWords.Add(new stopword { word = "hay" });
+            stopWords.Add(new stopword { word = "este" });
+            stopWords.Add(new stopword { word = "tu" });
+            stopWords.Add(new stopword { word = "x" });
+            stopWords.Add(new stopword { word = "esa" });
+            stopWords.Add(new stopword { word = "oye" });
+            stopWords.Add(new stopword { word = "han" });
+            stopWords.Add(new stopword { word = "segun" });
+            stopWords.Add(new stopword { word = "cosa" });
+            stopWords.Add(new stopword { word = "te" });
+            stopWords.Add(new stopword { word = "al" });
+        }
+
+        protected void insertIntoEmojis()
+        {
+            // Add emojis to emojis list
+            emojis.Add(new emoji { emoticon = ":-)", score = 3 });
+            emojis.Add(new emoji { emoticon = ":)", score = 3 });
+            emojis.Add(new emoji { emoticon = "=)", score = 3 });
+            emojis.Add(new emoji { emoticon = ":D", score = 3 });
+            emojis.Add(new emoji { emoticon = ":o)", score = 3 });
+            emojis.Add(new emoji { emoticon = ":]", score = 3 });
+            emojis.Add(new emoji { emoticon = ":3", score = 3 });
+            emojis.Add(new emoji { emoticon = ":>", score = 3 });
+            emojis.Add(new emoji { emoticon = "=]", score = 3 });
+            emojis.Add(new emoji { emoticon = ":}", score = 3 });
+            emojis.Add(new emoji { emoticon = ":-D", score = 3 });
+            emojis.Add(new emoji { emoticon = "8-D", score = 3 });
+            emojis.Add(new emoji { emoticon = "xD", score = 3 });
+            emojis.Add(new emoji { emoticon = "X-D", score = 3 });
+            emojis.Add(new emoji { emoticon = "XD", score = 3 });
+            emojis.Add(new emoji { emoticon = "=-D", score = 3 });
+            emojis.Add(new emoji { emoticon = "=D", score = 3 });
+            emojis.Add(new emoji { emoticon = "=-3", score = 3 });
+            emojis.Add(new emoji { emoticon = "=3", score = 3 });
+            emojis.Add(new emoji { emoticon = ":'-)", score = 3 });
+            emojis.Add(new emoji { emoticon = ":')", score = 3 });
+            emojis.Add(new emoji { emoticon = ":*", score = 3 });
+            emojis.Add(new emoji { emoticon = ";*", score = 3 });
+            emojis.Add(new emoji { emoticon = "", score = 3 });
+            emojis.Add(new emoji { emoticon = ";-)", score = 3 });
+            emojis.Add(new emoji { emoticon = ";)", score = 3 });
+            emojis.Add(new emoji { emoticon = ";-]", score = 3 });
+            emojis.Add(new emoji { emoticon = ";]", score = 3 });
+            emojis.Add(new emoji { emoticon = ";D", score = 3 });
+            emojis.Add(new emoji { emoticon = ":-,", score = 3 });
+            emojis.Add(new emoji { emoticon = ":P", score = 3 });
+            emojis.Add(new emoji { emoticon = ";-P", score = 3 });
+            emojis.Add(new emoji { emoticon = "X-P", score = 3 });
+            emojis.Add(new emoji { emoticon = "xp", score = 3 });
+            emojis.Add(new emoji { emoticon = "x-p", score = 3 });
+            emojis.Add(new emoji { emoticon = ":-p", score = 3 });
+            emojis.Add(new emoji { emoticon = ":p", score = 3 });
+            emojis.Add(new emoji { emoticon = "=p", score = 3 });
+            emojis.Add(new emoji { emoticon = "#-)", score = 3 });
+            emojis.Add(new emoji { emoticon = ":v", score = 3 });
+            emojis.Add(new emoji { emoticon = ":'v", score = 3 });
+            emojis.Add(new emoji { emoticon = ";v", score = 3 });
+            emojis.Add(new emoji { emoticon = "<3", score = 3 });
+            emojis.Add(new emoji { emoticon = "^^", score = 3 });
+            emojis.Add(new emoji { emoticon = "^.^", score = 3 });
+            emojis.Add(new emoji { emoticon = "*.*", score = 3 });
+            emojis.Add(new emoji { emoticon = ":-(", score = -3 });
+            emojis.Add(new emoji { emoticon = ":(", score = -3 });
+            emojis.Add(new emoji { emoticon = "=(", score = -3 });
+            emojis.Add(new emoji { emoticon = ";(", score = -3 });
+            emojis.Add(new emoji { emoticon = ":c", score = -3 });
+            emojis.Add(new emoji { emoticon = ">:v", score = -3 });
+            emojis.Add(new emoji { emoticon = ":'c", score = -3 });
+            emojis.Add(new emoji { emoticon = ":-<", score = -3 });
+            emojis.Add(new emoji { emoticon = ":<", score = -3 });
+            emojis.Add(new emoji { emoticon = ":-[", score = -3 });
+            emojis.Add(new emoji { emoticon = ":[", score = -3 });
+            emojis.Add(new emoji { emoticon = ":{", score = -3 });
+            emojis.Add(new emoji { emoticon = ":-|", score = -3 });
+            emojis.Add(new emoji { emoticon = ":'(", score = -3 });
+            emojis.Add(new emoji { emoticon = ":@", score = -3 });
+            emojis.Add(new emoji { emoticon = ">:[", score = -3 });
+            emojis.Add(new emoji { emoticon = "Q.Q", score = -3 });
+            emojis.Add(new emoji { emoticon = ":#", score = -3 });
+            emojis.Add(new emoji { emoticon = ":-#", score = -3 });
+            emojis.Add(new emoji { emoticon = "-.-", score = -3 });
+            emojis.Add(new emoji { emoticon = ".-.", score = -3 });
+            emojis.Add(new emoji { emoticon = "._.", score = -3 });
+            emojis.Add(new emoji { emoticon = "x_x", score = -3 });
+            emojis.Add(new emoji { emoticon = "X_X", score = -3 });
+            emojis.Add(new emoji { emoticon = "-.-'", score = -3 });
+            emojis.Add(new emoji { emoticon = ":/", score = -3 });
+            emojis.Add(new emoji { emoticon = ":-/", score = -3 });
+            emojis.Add(new emoji { emoticon = ";/", score = -3 });
+            emojis.Add(new emoji { emoticon = ":|", score = -3 });
+            emojis.Add(new emoji { emoticon = "=_=", score = -3 });
+            emojis.Add(new emoji { emoticon = "-_-", score = -3 });
+            emojis.Add(new emoji { emoticon = "?_?", score = -3 });
+            emojis.Add(new emoji { emoticon = "-\"-", score = -3 });
+
+            using (var db = new AnalizadorBDEntities())
+            {
+                foreach (var emoticon in emojis)
                 {
                     db.emojis.Add(emoticon);
                     db.SaveChanges();
@@ -135,9 +612,8 @@ namespace AnalisisEstadistico
             }
         }
 
-        protected void insertIntoFeelingWord()
+        protected void insertIntoFeelingWords()
         {
-            //// Add positive words to feeling words list
             feelingWords.Add(new feelingWord { word = "abiertamente", score = 1 });
             feelingWords.Add(new feelingWord { word = "abrazo", score = 3 });
             feelingWords.Add(new feelingWord { word = "absoluta", score = 2 });
@@ -204,6 +680,7 @@ namespace AnalisisEstadistico
             feelingWords.Add(new feelingWord { word = "amado", score = 3 });
             feelingWords.Add(new feelingWord { word = "amigo", score = 2 });
             feelingWords.Add(new feelingWord { word = "amistad", score = 2 });
+            feelingWords.Add(new feelingWord { word = "amo", score = 3 });
             feelingWords.Add(new feelingWord { word = "amor", score = 3 });
             feelingWords.Add(new feelingWord { word = "amistoso", score = 2 });
             feelingWords.Add(new feelingWord { word = "amistosa", score = 2 });
@@ -219,6 +696,7 @@ namespace AnalisisEstadistico
             feelingWords.Add(new feelingWord { word = "atractivo", score = 3 });
             feelingWords.Add(new feelingWord { word = "auténtico", score = 2 });
             feelingWords.Add(new feelingWord { word = "autonomía", score = 2 });
+            feelingWords.Add(new feelingWord { word = "autoridad", score = 1 });
             feelingWords.Add(new feelingWord { word = "avance", score = 2 });
             feelingWords.Add(new feelingWord { word = "avanzada", score = 3 });
             feelingWords.Add(new feelingWord { word = "aventajado", score = 3 });
@@ -242,6 +720,7 @@ namespace AnalisisEstadistico
             feelingWords.Add(new feelingWord { word = "bono", score = 2 });
             feelingWords.Add(new feelingWord { word = "brilla", score = 2 });
             feelingWords.Add(new feelingWord { word = "brillante", score = 3 });
+            feelingWords.Add(new feelingWord { word = "bueno", score = 1 });
             feelingWords.Add(new feelingWord { word = "caballerosidad", score = 3 });
             feelingWords.Add(new feelingWord { word = "calidad", score = 3 });
             feelingWords.Add(new feelingWord { word = "calificado", score = 2 });
@@ -546,6 +1025,7 @@ namespace AnalisisEstadistico
             feelingWords.Add(new feelingWord { word = "maravillas", score = 2 });
             feelingWords.Add(new feelingWord { word = "maravillosa", score = 3 });
             feelingWords.Add(new feelingWord { word = "maravilloso", score = 3 });
+            feelingWords.Add(new feelingWord { word = "más", score = 3 });
             feelingWords.Add(new feelingWord { word = "mejor", score = 2 });
             feelingWords.Add(new feelingWord { word = "mejora", score = 2 });
             feelingWords.Add(new feelingWord { word = "mejorado", score = 2 });
@@ -664,6 +1144,7 @@ namespace AnalisisEstadistico
             feelingWords.Add(new feelingWord { word = "respiro", score = 1 });
             feelingWords.Add(new feelingWord { word = "responsabilidad", score = 1 });
             feelingWords.Add(new feelingWord { word = "revolucionará", score = 1 });
+            feelingWords.Add(new feelingWord { word = "rindas", score = -1 });
             feelingWords.Add(new feelingWord { word = "risa", score = 2 });
             feelingWords.Add(new feelingWord { word = "romántico", score = 3 });
             feelingWords.Add(new feelingWord { word = "riqueza", score = 1 });
@@ -746,8 +1227,19 @@ namespace AnalisisEstadistico
             feelingWords.Add(new feelingWord { word = "triste", score = -3 });
             feelingWords.Add(new feelingWord { word = "enojado", score = -3 });
             feelingWords.Add(new feelingWord { word = "hambre", score = -1 });
+            feelingWords.Add(new feelingWord { word = "perdió", score = -2 });
+            feelingWords.Add(new feelingWord { word = "menos", score = -2 });
+            feelingWords.Add(new feelingWord { word = "ninguna", score = -3 });
+            feelingWords.Add(new feelingWord { word = "nadie", score = -2 });
+            feelingWords.Add(new feelingWord { word = "nada", score = -1 });
+            feelingWords.Add(new feelingWord { word = "ninguno", score = -1 });
+            feelingWords.Add(new feelingWord { word = "ningún", score = -2 });
+            feelingWords.Add(new feelingWord { word = "nunca", score = -2 });
+            feelingWords.Add(new feelingWord { word = "jamás", score = -2 });
+            feelingWords.Add(new feelingWord { word = "tampoco", score = -2 });
+            feelingWords.Add(new feelingWord { word = "ni", score = -1 });
 
-            using (var db = new AnalizadorBDEntities1())
+            using (var db = new AnalizadorBDEntities())
             {
                 foreach (var feelingWord in feelingWords)
                 {
@@ -757,268 +1249,303 @@ namespace AnalisisEstadistico
             }
         }
 
-        protected void insertIntoEnhancers() 
+        protected void insertIntoEnhancers()
         {
-            // Add words to enhancers/reducers list for multiply de score of the words
-            enhancers.Add({ word = "extremadamente", score = 2 });
-            enhancers.Add({ word = "tan", score = 2 });
-            enhancers.Add({ word = "demasiado", score = 2 });
-            enhancers.Add({ word = "muy", score = 2 });
-            enhancers.Add({ word = "bastante", score = 1.5 });
-            enhancers.Add({ word = "aumenta", score = 1.5 });
-            enhancers.Add({ word = "más", score = 1.5 });
-            enhancers.Add({ word = "todo", score = 1.5 });
-            enhancers.Add({ word = "mucho", score = 1.3 });
-            enhancers.Add({ word = "suficientemente", score = 1 });
-            enhancers.Add({ word = "algo", score = 1 });
-            enhancers.Add({ word = "mejor", score = 2 });
-            enhancers.Add({ word = "mejores", score = 3 });
-            enhancers.Add({ word = "mucho", score = 2 });
-            enhancers.Add({ word = "gran", score = 1.5 });
-            enhancers.Add({ word = "menos", score = -1 });
-            enhancers.Add({ word = "ligeramente", score = -1 });
-            enhancers.Add({ word = "poco", score = -1 });
-            enhancers.Add({ word = "disminuye", score = -1 });
-            enhancers.Add({ word = "nunca", score = -1 });
-            enhancers.Add({ word = "tampoco", score = -1 });
-            enhancers.Add({ word = "contra", score = -1 });
-            enhancers.Add({ word = "poco", score = -1 });
-            enhancers.Add({ word = "menos", score = -2 });
-            enhancers.Add({ word = "casi", score = -1 });
-            enhancers.Add({ word = "peor", score = -3 });
-            enhancers.Add({ word = "pores", score = -3 });
-            enhancers.Add({ word = "mal", score = -2 });
-            enhancers.Add({ word = "malo", score = -3 });
+            enhancers.Add(new enhancer { word = "extremadamente", score = 2 });
+            enhancers.Add(new enhancer { word = "tan", score = 2 });
+            enhancers.Add(new enhancer { word = "demasiado", score = 2 });
+            enhancers.Add(new enhancer { word = "muy", score = 2 });
+            enhancers.Add(new enhancer { word = "bastante", score = 2 });
+            enhancers.Add(new enhancer { word = "aumenta", score = 1 });
+            enhancers.Add(new enhancer { word = "más", score = 1 });
+            enhancers.Add(new enhancer { word = "todo", score = 1 });
+            enhancers.Add(new enhancer { word = "mucho", score = 2 });
+            enhancers.Add(new enhancer { word = "suficientemente", score = 1 });
+            enhancers.Add(new enhancer { word = "algo", score = 1 });
+            enhancers.Add(new enhancer { word = "mejor", score = 2 });
+            enhancers.Add(new enhancer { word = "mejores", score = 3 });
+            enhancers.Add(new enhancer { word = "mucho", score = 2 });
+            enhancers.Add(new enhancer { word = "gran", score = 2 });
+            enhancers.Add(new enhancer { word = "menos", score = -1 });
+            enhancers.Add(new enhancer { word = "ligeramente", score = -1 });
+            enhancers.Add(new enhancer { word = "poco", score = -1 });
+            enhancers.Add(new enhancer { word = "disminuye", score = -1 });
+            enhancers.Add(new enhancer { word = "nunca", score = -1 });
+            enhancers.Add(new enhancer { word = "tampoco", score = -1 });
+            enhancers.Add(new enhancer { word = "contra", score = -1 });
+            enhancers.Add(new enhancer { word = "poco", score = -1 });
+            enhancers.Add(new enhancer { word = "menos", score = -2 });
+            enhancers.Add(new enhancer { word = "casi", score = -1 });
+            enhancers.Add(new enhancer { word = "peor", score = -3 });
+            enhancers.Add(new enhancer { word = "pores", score = -3 });
+            enhancers.Add(new enhancer { word = "mal", score = -2 });
+            enhancers.Add(new enhancer { word = "malo", score = -3 });
+
+            using (var db = new AnalizadorBDEntities())
+            {
+                foreach (var enhancer in enhancers)
+                {
+                    db.enhancers.Add(enhancer);
+                    db.SaveChanges();
+                }
+            }
         }
 
-        /// <summary>
-        /// Método utilizado para descomprimir los archivos de un zip file
-        /// </summary>
-        /// <param name="ArchivoZip">Ruta donde se encuentra el archivo ZIP
-        /// <param name="RutaGuardar">Ruta donde se guardaran los archivos extraídos del ZIP
-        /// <returns></returns>
-        protected bool extract(string archivoZip, string rutaGuardar)
+        protected bool existInStopWords(string word)
         {
-            try
+            foreach (stopword sw in stopWords)
             {
-                using (ZipFile zip = ZipFile.Read(archivoZip))
+                if (sw.word.Equals(word))
                 {
-                    zip.ExtractAll(rutaGuardar);
-                    zip.Dispose();
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        protected List<string> removeStopWords()
+        {
+            string[] words = contentBox.Text.ToLower().Replace(",", "").Replace(".", "").Replace("!", "").Replace("¡", "").Replace("¿", "").Replace("?", "").Split(' ');
+            List<string> result = new List<string>();
+
+            foreach (string word in words)
+            {
+                if (!existInStopWords(word))
+                {
+                    result.Add(word);
+                }
+            }
+
+            return result;
+        }
+
+        protected feelingWord existFeelingWord(string word)
+        {
+            foreach (feelingWord fw in feelingWords)
+            {
+                if (fw.word.Equals(word))
+                {
+                    return fw;
+                }
+            }
+
+            return null;
+        }
+
+        protected emoji existEmoji(string emoji)
+        {
+            foreach (emoji e in emojis)
+            {
+                if (e.emoticon.Equals(emoji))
+                {
+                    return e;
+                }
+            }
+
+            return null;
+        }
+
+        protected feelingWord getNewScore(enhancer e, feelingWord fw)
+        {
+            if (e.score > 0) // El potenciador es positivo
+            {
+                if (fw.score > 0) // El feeling word es positivo
+                {
+                    fw.score += e.score;
+                }
+                else // El feeling word es negativo
+                {
+                    fw.score = e.score;
+                }
+            }
+            else // El potenciador es negativo
+            {
+                if (fw.score > 0) // El feeling word es positivo
+                {
+                    fw.score = e.score;
+                }
+                else // El feeling word es negativo
+                {
+                    fw.score = (e.score * -1) + (fw.score * -1);
+                }
+            }
+
+            return fw;
+        }
+
+        protected feelingWord validateWithEnhancers(string wordBefore, feelingWord feelingWord)
+        {
+            foreach (enhancer e in enhancers)
+            {
+                if (e.word.Equals(wordBefore))
+                {
+                    return getNewScore(e, feelingWord);
+                }
+            }
+
+            return feelingWord;
+        }
+
+        protected void sentimentAnalysis(List<string> content)
+        {
+            string pieceBefore = "";
+            feelingWord fw;
+            emoji e;
+
+            foreach (string piece in content)
+            {
+                fw = existFeelingWord(piece);
+                if (fw != null)
+                {
+                    // Only the first time
+                    if (pieceBefore.Equals(""))
+                    {
+                        feelingWordsList.Add(fw);
+                    }
+                    else
+                    {
+                        feelingWordsList.Add(validateWithEnhancers(pieceBefore, fw));
+                    }
                 }
 
-                return true;
-            }
-            catch
-            {
-                return false;
+                e = existEmoji(piece);
+                if (e != null)
+                {
+                    emojisList.Add(e);
+                }
+
+                pieceBefore = piece;
             }
         }
 
-        protected void choose(string fileName, string dir)
+        protected int makeMeasurement()
         {
-            string fileExtention = getFileExtention(fileName);
+            int measurement = 0;
 
-            if (fileExtention == ".txt" || fileExtention == ".html" || fileExtention == ".json" || fileExtention == ".xml")
+            foreach (feelingWord fw in feelingWordsList)
             {
-                readTxt(fileName, dir);
+                measurement += (int)fw.score;
             }
-            else if (fileExtention == ".doc" || fileExtention == ".docx")
-            {
-                readDoc(fileName, dir);
-            }
-            else if (fileExtention == ".zip")
-            {
-                // Almacenar el .zip en la carpeta zips del proyecto
-                string ruta = Server.MapPath("~") + "zips\\" + fileReader.FileName;
-                string rutaDescomprimir = Server.MapPath("~") + "zips\\descomprimidos\\";
-                saveFile(ruta);
 
-                if (extract(ruta, rutaDescomprimir))
+            foreach (emoji e in emojisList)
+            {
+                measurement += (int)e.score;
+            }
+
+            return measurement;
+        }
+
+        protected void showScores()
+        {
+            string result = "---> Palabras y emojis encontrados";
+            
+            foreach (feelingWord fw in feelingWordsList)
+            {
+                result += "\n" + fw.word + " -> " + fw.score;
+            }
+
+            foreach (emoji e in emojisList)
+            {
+                result += "\n" + e.emoticon + " -> " + e.score;
+            }
+
+            resultBox.Text = resultBox.Text + result;
+        }
+
+        protected void giveResult(int result)
+        {
+            string res = "\n\n---> Medicion";
+
+            if (result > 0)
+            {
+                res += "\nEl texto es positivo.";
+            }
+            else if (result < 0)
+            {
+                res += "\nEl texto es negativo.";
+            }
+            else
+            {
+                res += "\nEl texto es neutro.";
+            }
+
+            resultBox.Text = resultBox.Text + res;
+        }
+
+        protected void giveProbabilities()
+        {
+            string[] words = contentBox.Text.ToLower().Replace(",", "").Replace(".", "").Replace("!", "").Replace("¡", "").Replace("¿", "").Replace("?", "").Split(' ');
+            float totalWords = words.Count(),
+                  totalPositives = 0,
+                  totalNegatives = 0,
+                  scorePositive = 0,
+                  scoreNegative = 0;
+            string result = "";
+
+            foreach (feelingWord fw in feelingWordsList)
+            {
+                if (fw.score > 0)
                 {
-                    // Averiguar extention file in zip
-                    DirectoryInfo dirInfo = new DirectoryInfo(rutaDescomprimir);
-                    FileInfo[] files = dirInfo.GetFiles();
-
-                    /*foreach (System.IO.FileInfo file in files)
-                    {
-                        choose(file.Name);
-                    }*/
-                    choose(files[0].Name, "zips\\descomprimidos\\");
+                    totalPositives++;
+                    scorePositive += (float)fw.score;
                 }
                 else
                 {
-                    contentBox.Text = "Fallo al descomprimir";
+                    totalNegatives++;
+                    scoreNegative += (float)fw.score * -1;
                 }
             }
-            else
+
+            foreach (emoji e in emojisList)
             {
-                contentBox.Text = "unkown";
+                if (e.score > 0)
+                {
+                    totalPositives++;
+                    scorePositive += (float)e.score;
+                }
+                else
+                {
+                    totalNegatives++;
+                    scoreNegative += (float)e.score * -1;
+                }
             }
-        }
 
-        protected string getFileExtention(string file)
-        {
-            string fileExtention = System.IO.Path.GetExtension(file);
-
-            if (fileExtention == ".txt" || fileExtention == ".html" || fileExtention == ".doc" || fileExtention == ".docx"
-                || fileExtention == ".zip" || fileExtention == ".json" || fileExtention == ".xml")
-            {
-                return fileExtention;
-            }
-            else
-            {
-                return "unkown";
-            }
-        }
-
-        protected void readTxt(string fileName, string dir)
-        {
-            string ruta = Server.MapPath("~") + dir + fileName;
-            if (dir != "zips\\descomprimidos\\")
-                saveFile(ruta);
-
-            string content = File.ReadAllText(ruta, Encoding.UTF8);
-            contentBox.Text = content;
-        }
-
-        protected void readDoc(string fileName, string dir)
-        {
-            string ruta = Server.MapPath("~") + dir + fileName;
-            if (dir != "zips\\descomprimidos\\")
-                saveFile(ruta);
-
-            Microsoft.Office.Interop.Word.Application word = new Microsoft.Office.Interop.Word.Application();
-            object miss = System.Reflection.Missing.Value;
-            object path = ruta;
-            object readOnly = true;
-            Microsoft.Office.Interop.Word.Document docs = word.Documents.Open(ref path, ref miss, ref readOnly, ref miss, ref miss, ref miss, ref miss, ref miss, ref miss, ref miss, ref miss, ref miss, ref miss, ref miss, ref miss, ref miss);
-            string totaltext = "";
-            for (int i = 0; i < docs.Paragraphs.Count; i++)
-            {
-                totaltext += " \r\n " + docs.Paragraphs[i + 1].Range.Text.ToString();
-            }
-            contentBox.Text = totaltext;
-            docs.Close();
-            word.Quit();
-        }
-
-        protected void saveFile(string ruta)
-        {
-            fileReader.SaveAs(ruta);
-        }
-
-        protected void buttonUpload_Click(object sender, EventArgs e)
-        {
-            choose(fileReader.FileName, "files\\");
-        }
-
-        protected void buttonCargar_Click(object sender, EventArgs e)
-        {
-            string link = textLink.Text;
-            WebClient client = new WebClient();
-            byte[] byteData = null;
-            byteData = client.DownloadData(link);
-
-            UTF8Encoding UTF8Encod = new UTF8Encoding();
-            contentBox.Text = Regex.Replace(UTF8Encod.GetString(byteData), "<(.|\\n)*?>", string.Empty);
+            result += "\n\n---> Estadísticas";
+            result += "\nTotal de palabras: " + totalWords.ToString();
+            result += "\nTotal de palabras y emojis positivos: " + totalPositives + " -> " + (totalPositives / totalWords) * 100 + "%";
+            result += "\nTotal de palabras y emojis negativos: " + totalNegatives + " -> " + (totalNegatives / totalWords) * 100 + "%";
+            result += "\nTotal de palabras desconocidas: " + (totalWords - (totalPositives + totalNegatives)) + " -> " + ((totalWords - (totalPositives + totalNegatives)) / totalWords) * 100 + "%";
+            result += "\nEl texto es positivo en un: " + (totalPositives / (totalPositives + totalNegatives)) * 100 + "%";
+            result += "\nEl texto es negativo en un: " + (totalNegatives / (totalPositives + totalNegatives)) * 100 + "%";
+            resultBox.Text = resultBox.Text + result;
         }
 
         protected void buttonAnalizar_Click(object sender, EventArgs e)
         {
-            sentimentAnalysis();
-        }
+            resultBox.Text = "";
+            insertIntoStopWords();
+            insertIntoFeelingWords();
+            insertIntoEmojis();
+            insertIntoEnhancers();
 
-    
-        protected void searchTweets(object sender, EventArgs e)
-        {
-            string txtTwitterName = textTwitter.Text;
+            List<string> result = removeStopWords();
 
-            if(txtTwitterName != ""){
-                var service = new TwitterService("C98uX0MU7n24kXYROPs1YfZGd", "nDEBrbJXszSZKfrOmmDfAm4NNrvDsfqkE5BwvsXsdFVZKJMdQg");
-
-                //AuthenticateWith("Access Token", "AccessTokenSecret");
-                service.AuthenticateWith("711043579699982336-scPSu5YliFK6yov7Jf5aQOLrtklaQFU", "ZiwI7zz8oAX37Ht7jLJ0rjlzaT44CQdsyzjarz1xTRmOC");
-
-                //ScreenName="screeen name not username", Count=Number of Tweets / www.Twitter.com/mcansozeri. 
-                IEnumerable<TwitterStatus> tweets = service.ListTweetsOnUserTimeline(new ListTweetsOnUserTimelineOptions { ScreenName = txtTwitterName, Count = 10, });
-                var tweetsList = tweets.ToList();
-                string strTweets = "Tweets de "+txtTwitterName+":\n";
-                for (int i = 0; i < tweetsList.Count; i++) {
-                    strTweets += tweetsList[i].Text+"\n";
-                }
-
-                contentBox.Text = strTweets;
-            }
-        }
-
-        protected void sentimentAnalysis() {
-            // List<dynamic> listWords = crawler();
-            // Call a method that returns the score of the words.
-
-            //if (listWordsP.Count() > 0 || listWordsN.Count() > 0)
-            //{
-            //    if (listWordsP.Count() > listWordsN.Count())
-            //    {
-            //        resultBox.Text = "Positivo. ";
-
-            //        foreach (dynamic word in listWordsP)
-            //        {
-            //            resultBox.Text = resultBox.Text + word.word;
-            //        }
-            //    }
-            //    else if (listWordsP.Count() < listWordsN.Count())
-            //    {
-            //        resultBox.Text = "Negativo. ";
-
-            //        foreach (dynamic word in listWordsN)
-            //        {
-            //            resultBox.Text = resultBox.Text + word.word;
-            //        }
-            //    }
-            //    else
-            //    {
-            //        resultBox.Text = "Neutro.";
-            //    }
-            //}
-            //else
-            //{
-            //    resultBox.Text = "No detectado.";
-            //}
-        }
-
-        protected string removeStopWords() {
-            string[] words = contentBox.Text.Replace(",", " ").Replace(".", " ").Split(' ');
-            List<string> result = List<string>();
-
-            foreach (string word in words)
+            // Texto sin stopwords
+            string res = "---> Texto sin stopwords\n";
+            //Console.WriteLine("\n---> Texto sin stopwords");
+            foreach (string word in result)
             {
-                if (!stopWords.Contains(word))
-                {
-                    content += word + " ";
-                }
+                //Console.Write(word + " ");
+                res += word + " ";
             }
+            resultBox.Text = resultBox.Text + res + "\n\n";
 
-            return content;
+            sentimentAnalysis(result);
+            showScores();
+            giveResult(makeMeasurement());
+            giveProbabilities();
         }
-        /// <summary>
-        /// Busca las palabras en el texto que coincidan con las que se buscan.
-        /// </summary>
-        /// <returns>Una lista con las palabras encontradas</returns>
-        //protected List<feelingWord> crawler()
-        //{
-        //    List<feelingWord> listWords = new List<feelingWord>();
-        //    string content = removeStopWords();
 
-        //    foreach (dynamic word in dictionary)
-        //    {
-        //        if (content.Contains(word.word.ToString()))
-        //        {
-        //            listWords.Add(word);
-        //        }
-        //    }
-
-        //    return listWords;
-        //}
     }
 }
