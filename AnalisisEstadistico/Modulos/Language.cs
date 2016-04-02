@@ -7,7 +7,7 @@ namespace AnalisisEstadistico.Modulos
 {
     public class Language
     {
-        public string text = "No exact letter frequency distribution underlies a given language, since all writers write slightly differently. However, most languages have a characteristic distribution which is strongly apparent in longer texts. Even language change as extreme as from old English to modern English (regarded as mutually unintelligible) show strong trends in related letter frequencies: over a small sample of Biblical passages, from most frequent to least frequent, enaid sorhm tgþlwu (æ)cfy ðbpxz of old English compares to eotha sinrd luymw fgcbp kvjqxz of modern English, with the most extreme differences concerning letterforms not shared.[1]; Linotype machines (which seem to have been primarily or exclusively marketed for English-language typesetting[citation needed]) assumed the letter order, from most to least common, to be etaoin shrdlu cmfwyp vbgkjq xz based on the experience and custom of manual compositors. Likewise, Modern International Morse code (generally believed to have been developed by Alfred Vail based on English-language letter frequencies of the 1830s) encodes the most frequent letters with the shortest symbols; ";
+        public string text;
         public Dictionary<char, double> dictionarySpanish = new Dictionary<char, double>();
         public Dictionary<char, double> dictionaryEnglish = new Dictionary<char, double>();
         public Dictionary<char, double> dictionaryGerman = new Dictionary<char, double>();
