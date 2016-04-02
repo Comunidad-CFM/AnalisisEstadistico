@@ -11,19 +11,19 @@ namespace AnalisisEstadistico.Modulos
         public Dictionary<char, double> dictionarySpanish;
         public Dictionary<char, double> dictionaryEnglish;
         public Dictionary<char, double> dictionaryGerman;
-        public Dictionary<char, double> dictionaryPortuguese;
+        public Dictionary<char, double> dictionaryDutch;
         public Dictionary<char, double> percents;
         public double spanishDeviation,
                       englishDeviation,
                       germanDeviation,
-                      portugueseDeviation;
+                      dutchDeviation;
 
         public Language()
         {
             this.dictionarySpanish = new Dictionary<char, double>();
             this.dictionaryEnglish = new Dictionary<char, double>();
             this.dictionaryGerman = new Dictionary<char, double>();
-            this.dictionaryPortuguese = new Dictionary<char, double>();
+            this.dictionaryDutch = new Dictionary<char, double>();
 
             this.initializeDictionaries();
         }
@@ -159,48 +159,48 @@ namespace AnalisisEstadistico.Modulos
             this.dictionaryGerman.Add('ú', 0);
             this.dictionaryGerman.Add('ü', 0.995);
 
-            this.dictionaryPortuguese.Add('a', 14.634);
-            this.dictionaryPortuguese.Add('b', 1.043);
-            this.dictionaryPortuguese.Add('c', 3.882);
-            this.dictionaryPortuguese.Add('d', 4.992);
-            this.dictionaryPortuguese.Add('e', 12.57);
-            this.dictionaryPortuguese.Add('f', 1.023);
-            this.dictionaryPortuguese.Add('g', 1.303);
-            this.dictionaryPortuguese.Add('h', 0.781);
-            this.dictionaryPortuguese.Add('i', 6.186);
-            this.dictionaryPortuguese.Add('j', 0.397);
-            this.dictionaryPortuguese.Add('k', 0.015);
-            this.dictionaryPortuguese.Add('l', 2.779);
-            this.dictionaryPortuguese.Add('m', 4.738);
-            this.dictionaryPortuguese.Add('n', 4.446);
-            this.dictionaryPortuguese.Add('o', 9.735);
-            this.dictionaryPortuguese.Add('p', 2.523);
-            this.dictionaryPortuguese.Add('q', 1.204);
-            this.dictionaryPortuguese.Add('r', 6.53);
-            this.dictionaryPortuguese.Add('s', 6.805);
-            this.dictionaryPortuguese.Add('t', 4.336);
-            this.dictionaryPortuguese.Add('u', 3.639);
-            this.dictionaryPortuguese.Add('v', 1.575);
-            this.dictionaryPortuguese.Add('w', 0.037);
-            this.dictionaryPortuguese.Add('x', 0.253);
-            this.dictionaryPortuguese.Add('y', 0.006);
-            this.dictionaryPortuguese.Add('z', 0.47);
-            this.dictionaryPortuguese.Add('à', 0.072);
-            this.dictionaryPortuguese.Add('â', 0.562);
-            this.dictionaryPortuguese.Add('á', 0.118);
-            this.dictionaryPortuguese.Add('ä', 0);
-            this.dictionaryPortuguese.Add('ã', 0.733);
-            this.dictionaryPortuguese.Add('ç', 0.53);
-            this.dictionaryPortuguese.Add('é', 0.337);
-            this.dictionaryPortuguese.Add('ê', 0.45);
-            this.dictionaryPortuguese.Add('í', 0.00132);
-            this.dictionaryPortuguese.Add('ñ', 0);
-            this.dictionaryPortuguese.Add('ö', 0);
-            this.dictionaryPortuguese.Add('ô', 0.635);
-            this.dictionaryPortuguese.Add('ó', 0.296);
-            this.dictionaryPortuguese.Add('ß', 0);
-            this.dictionaryPortuguese.Add('ú', 0.207);
-            this.dictionaryPortuguese.Add('ü', 0.026);
+            this.dictionaryDutch.Add('a', 7.486);
+            this.dictionaryDutch.Add('b', 1.584);
+            this.dictionaryDutch.Add('c', 1.242);
+            this.dictionaryDutch.Add('d', 5.933);
+            this.dictionaryDutch.Add('e', 18.91);
+            this.dictionaryDutch.Add('f', 0.805);
+            this.dictionaryDutch.Add('g', 3.403);
+            this.dictionaryDutch.Add('h', 2.380);
+            this.dictionaryDutch.Add('i', 6.499);
+            this.dictionaryDutch.Add('j', 1.46);
+            this.dictionaryDutch.Add('k', 2.248);
+            this.dictionaryDutch.Add('l', 3.568);
+            this.dictionaryDutch.Add('m', 2.213);
+            this.dictionaryDutch.Add('n', 10.032);
+            this.dictionaryDutch.Add('o', 6.063);
+            this.dictionaryDutch.Add('p', 1.57);
+            this.dictionaryDutch.Add('q', 0.009);
+            this.dictionaryDutch.Add('r', 6.411);
+            this.dictionaryDutch.Add('s', 3.73);
+            this.dictionaryDutch.Add('t', 6.79);
+            this.dictionaryDutch.Add('u', 1.99);
+            this.dictionaryDutch.Add('v', 2.85);
+            this.dictionaryDutch.Add('w', 1.52);
+            this.dictionaryDutch.Add('x', 0.036);
+            this.dictionaryDutch.Add('y', 0.035);
+            this.dictionaryDutch.Add('z', 1.39);
+            this.dictionaryDutch.Add('à', 0);
+            this.dictionaryDutch.Add('â', 0);
+            this.dictionaryDutch.Add('á', 0);
+            this.dictionaryDutch.Add('ä', 0);
+            this.dictionaryDutch.Add('ã', 0);
+            this.dictionaryDutch.Add('ç', 0);
+            this.dictionaryDutch.Add('é', 0);
+            this.dictionaryDutch.Add('ê', 0);
+            this.dictionaryDutch.Add('í', 0);
+            this.dictionaryDutch.Add('ñ', 0);
+            this.dictionaryDutch.Add('ö', 0);
+            this.dictionaryDutch.Add('ô', 0);
+            this.dictionaryDutch.Add('ó', 0);
+            this.dictionaryDutch.Add('ß', 0);
+            this.dictionaryDutch.Add('ú', 0);
+            this.dictionaryDutch.Add('ü', 0);
         }
 
         public string cleanText()
@@ -266,36 +266,36 @@ namespace AnalisisEstadistico.Modulos
             double spanishDeviation = 0,
                    englishDeviation = 0,
                    germanDeviation = 0,
-                   portugueseDeviation = 0;
+                   dutchDeviation = 0;
 
             foreach (KeyValuePair<char, double> item in percents)
             {
                 spanishDeviation += Math.Pow((dictionarySpanish[item.Key] - item.Value), 2);
                 englishDeviation += Math.Pow((dictionaryEnglish[item.Key] - item.Value), 2);
                 germanDeviation += Math.Pow((dictionaryGerman[item.Key] - item.Value), 2);
-                portugueseDeviation += Math.Pow((dictionaryPortuguese[item.Key] - item.Value), 2);
+                dutchDeviation += Math.Pow((dictionaryDutch[item.Key] - item.Value), 2);
             }
 
             spanishDeviation /= totalLetters;
             englishDeviation /= totalLetters;
             germanDeviation /= totalLetters;
-            portugueseDeviation /= totalLetters;
+            dutchDeviation /= totalLetters;
 
-            if (spanishDeviation < englishDeviation && spanishDeviation < germanDeviation && spanishDeviation < portugueseDeviation)
+            if (spanishDeviation < englishDeviation && spanishDeviation < germanDeviation && spanishDeviation < dutchDeviation)
             {
                 return "Spanish";
             }
-            else if (englishDeviation < spanishDeviation && englishDeviation < germanDeviation && englishDeviation < portugueseDeviation)
+            else if (englishDeviation < spanishDeviation && englishDeviation < germanDeviation && englishDeviation < dutchDeviation)
             { 
                 return "English";
             }
-            else if (germanDeviation < spanishDeviation && germanDeviation < englishDeviation && germanDeviation < portugueseDeviation)
+            else if (germanDeviation < spanishDeviation && germanDeviation < englishDeviation && germanDeviation < dutchDeviation)
             {
                 return "German";
             }
-            else if (portugueseDeviation < spanishDeviation && portugueseDeviation < englishDeviation && portugueseDeviation < germanDeviation)
+            else if (dutchDeviation < spanishDeviation && dutchDeviation < englishDeviation && dutchDeviation < germanDeviation)
             {
-                return "Portuguese";
+                return "Dutch";
             }
             else 
             {
@@ -309,7 +309,7 @@ namespace AnalisisEstadistico.Modulos
             this.spanishDeviation = 0;
             this.englishDeviation = 0;
             this.germanDeviation = 0;
-            this.portugueseDeviation = 0;
+            this.dutchDeviation = 0;
 
             string cleanedText = cleanText(); // Obtener las letras que realmente importan para el analisis.
             int totalLetters = text.Count(); //Total de letras del texto original.
