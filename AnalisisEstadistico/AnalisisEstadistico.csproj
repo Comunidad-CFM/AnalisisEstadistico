@@ -136,7 +136,11 @@
     <Compile Include="Data\word.cs">
       <DependentUpon>AnalizadorModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model\Coincidencia.cs" />
+    <Compile Include="Model\Emoji.cs" />
+    <Compile Include="Model\Enhancer.cs" />
+    <Compile Include="Model\FeelingWord.cs" />
+    <Compile Include="Modulos\Language.cs" />
+    <Compile Include="Modulos\Sentiment.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="index.aspx.cs">
       <DependentUpon>index.aspx</DependentUpon>
