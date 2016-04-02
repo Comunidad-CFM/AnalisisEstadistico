@@ -19,6 +19,7 @@
               <ul class="dropdown-menu">
                 <asp:Button class="btn btn-analizar" runat="server" OnClick="buttonAnalizar_Click" Text="Analizar"/>
                 <asp:Button class="btn btn-analizar" runat="server" OnClick="buttonAnalizar_Click" Text="Análisis del sentimiento"/>
+                <asp:Button class="btn btn-analizar" runat="server" OnClick="analisisDelLenguaje" Text="Análisis de lenguaje"/>
               </ul>
             </div>
         </div>
