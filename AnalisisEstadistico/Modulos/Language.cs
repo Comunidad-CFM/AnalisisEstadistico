@@ -7,6 +7,7 @@ namespace AnalisisEstadistico.Modulos
 {
     public class Language
     {
+
         public string text;
         public Dictionary<char, double> dictionarySpanish;
         public Dictionary<char, double> dictionaryEnglish;
