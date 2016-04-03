@@ -84,9 +84,37 @@
                 </div>
             </div>
         </div>
-    </form>
 
     <script type="text/javascript" src="./node_modules/jquery/dist/jquery.min.js"></script>
     <script type="text/javascript" src="./node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
-</body>
+        <asp:Chart ID="textChart" runat="server" Width="629px">
+            <series>
+                <asp:Series Name="Letras" ChartType="Column" Legend="Default">
+                </asp:Series>
+            </series>
+            <chartareas>
+                <asp:ChartArea Name="ChartArea1">
+                </asp:ChartArea >
+            </chartareas>
+            <Titles>
+                        <asp:Title Text="Porcentaje de letras en texto" />
+                    </Titles>
+        </asp:Chart>
+        
+        <asp:Chart ID="langChart" runat="server" Width="629px">
+            <series>
+                <asp:Series Name="Letras" ChartType="Column" Legend="Default">
+                </asp:Series>
+            </series>
+            <chartareas>
+                <asp:ChartArea Name="ChartArea2">
+                </asp:ChartArea >
+            </chartareas>
+            <Titles>
+                        <asp:Title Text="Porcentaje de letras en el idioma encontrado" />
+                    </Titles>
+        </asp:Chart>   
+    </form>
+
+    </body>
 </html>

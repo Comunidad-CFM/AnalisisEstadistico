@@ -28,6 +28,8 @@ namespace AnalisisEstadistico
         {
             this.sentiment = new Sentiment();
             this.language = new Language();
+            //this.textChart.Series["Letras"].Points.AddXY("A", 29);
+            //this.textChart.Series["Letras"].Points.AddXY("B", 60); 
         }
 
         protected void readFolder(object sender, EventArgs e)
@@ -212,11 +214,65 @@ namespace AnalisisEstadistico
             sentiment.sentimentAnalysis();
         }
 
-        protected void analisisDelLenguaje(object sender, EventArgs e) 
+        protected void analisisDelLenguaje(object sender, EventArgs e)
         {
             language.text = contentBox.Text;
             resultBox.Text = language.languageAnalisys();
+            //changes
+            generateCharts();
         }
+
+        //changes
+        protected void generateCharts()
+        {
+            string[] letters = new string[language.percents.Count];
+            double[] lettersValues = new double[language.percents.Count];
+            Dictionary<char, double> selectedDictionary;
+            string[] languageLetters = new string[language.percents.Count]; ;
+            double[] languageLettersValues = new double[language.percents.Count];
+
+            if (resultBox.Text == "Spanish")
+            {
+                selectedDictionary = language.dictionarySpanish;
+            }
+            else if (resultBox.Text == "English")
+            {
+                selectedDictionary = language.dictionaryEnglish;
+            }
+            else if (resultBox.Text == "German")
+            {
+                selectedDictionary = language.dictionaryGerman;
+            }
+            else
+            {
+                selectedDictionary = language.dictionaryDutch;
+            }
+
+            //languageLetters = new string[selectedDictionary.Count];
+            //languageLettersValues = new double[selectedDictionary.Count];
+
+
+            int i = 0;
+            foreach (KeyValuePair<char, double> letter in language.percents.OrderBy(Letter => Letter.Key))
+            {
+                letters[i] = letter.Key.ToString();
+                lettersValues[i] = letter.Value;
+                
+                languageLetters[i] = letter.Key.ToString();
+                languageLettersValues[i] = selectedDictionary[letter.Key];
+
+                i++;
+            }
+
+            textChart.ChartAreas["ChartArea1"].AxisX.Interval = 1;
+            textChart.ChartAreas["ChartArea1"].Area3DStyle.Enable3D = true;
+            textChart.Series["Letras"].Points.DataBindXY(letters, lettersValues);
+
+            langChart.ChartAreas["ChartArea2"].AxisX.Interval = 1;
+            langChart.ChartAreas["ChartArea2"].Area3DStyle.Enable3D = true;
+            langChart.Series["Letras"].Points.DataBindXY(languageLetters, languageLettersValues);
+                    
+        }        
 
     }
 }
