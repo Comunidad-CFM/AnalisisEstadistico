@@ -87,7 +87,9 @@
 
     <script type="text/javascript" src="./node_modules/jquery/dist/jquery.min.js"></script>
     <script type="text/javascript" src="./node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
-        <asp:Chart ID="textChart" runat="server" Width="629px">
+           
+    </form>
+    <asp:Chart ID="textChart" runat="server" Width="629px">
             <series>
                 <asp:Series Name="Letras" ChartType="Column" Legend="Default">
                 </asp:Series>
@@ -113,8 +115,6 @@
             <Titles>
                         <asp:Title Text="Porcentaje de letras en el idioma encontrado" />
                     </Titles>
-        </asp:Chart>   
-    </form>
-
+        </asp:Chart>
     </body>
 </html>
