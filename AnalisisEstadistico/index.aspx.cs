@@ -23,29 +23,23 @@ namespace AnalisisEstadistico
     {
         public Sentiment sentiment;
         public Language language;
+        public Twitter twitter;
 
         protected void Page_Load(object sender, EventArgs e)
         {
             this.sentiment = new Sentiment();
             this.language = new Language();
+            this.twitter = new Twitter();
         }
 
-        protected void readFolder(object sender, EventArgs e)
+        protected void cleanTextArea(object sender, EventArgs e) 
         {
+            contentBox.Text = "";
             resultBox.Text = "";
-            try
-            {
-                DirectoryInfo Dir = new DirectoryInfo(textFolder.Text);
-                FileInfo[] FileList = Dir.GetFiles("*.*", SearchOption.AllDirectories);
-                foreach (FileInfo FI in FileList)
-                {
-                    resultBox.Text = resultBox.Text + FI.FullName + "\n";
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
+            textChart.Visible = false;
+            langChart.Visible = false;
+            sentimentPercentChart.Visible = true;
+            sentimentScoresChart.Visible = true;
         }
 
         /// <summary>
@@ -72,151 +66,216 @@ namespace AnalisisEstadistico
             }
         }
 
-        protected void choose(string fileName, string dir)
+        protected void saveFile(string ruta)
         {
-            string fileExtention = getFileExtention(fileName);
-
-            if (fileExtention == ".txt" || fileExtention == ".html" || fileExtention == ".json" || fileExtention == ".xml")
-            {
-                readTxt(fileName, dir);
-            }
-            else if (fileExtention == ".doc" || fileExtention == ".docx")
-            {
-                readDoc(fileName, dir);
-            }
-            else if (fileExtention == ".zip")
-            {
-                // Almacenar el .zip en la carpeta zips del proyecto
-                string ruta = Server.MapPath("~") + "zips\\" + fileReader.FileName;
-                string rutaDescomprimir = Server.MapPath("~") + "zips\\descomprimidos\\";
-                saveFile(ruta);
-
-                if (extract(ruta, rutaDescomprimir))
-                {
-                    // Averiguar extention file in zip
-                    DirectoryInfo dirInfo = new DirectoryInfo(rutaDescomprimir);
-                    FileInfo[] files = dirInfo.GetFiles();
-
-                    /*foreach (System.IO.FileInfo file in files)
-                    {
-                        choose(file.Name);
-                    }*/
-                    choose(files[0].Name, "zips\\descomprimidos\\");
-                }
-                else
-                {
-                    contentBox.Text = "Fallo al descomprimir";
-                }
-            }
-            else
-            {
-                contentBox.Text = "unkown";
-            }
+            fileReader.SaveAs(ruta);
         }
 
-        protected string getFileExtention(string file)
+        protected string readHtmlJsonXmlTxt(string ruta)
         {
-            string fileExtention = System.IO.Path.GetExtension(file);
+            string content = "";
+            content = File.ReadAllText(ruta, Encoding.UTF8);
 
-            if (fileExtention == ".txt" || fileExtention == ".html" || fileExtention == ".doc" || fileExtention == ".docx"
-                || fileExtention == ".zip" || fileExtention == ".json" || fileExtention == ".xml")
-            {
-                return fileExtention;
-            }
-            else
-            {
-                return "unkown";
-            }
+            content = Regex.Replace(content, "<.*?>", string.Empty);
+            return content.ToLower().Replace(".", "").Replace("!", "").Replace("¡", "").Replace("¿", "").Replace("?", "").Replace("&", "");
         }
 
-        protected void readTxt(string fileName, string dir)
+        protected void click_readHtmlJsonXmlTxt(object sender, EventArgs e) 
         {
-            string ruta = Server.MapPath("~") + dir + fileName;
-            if (dir != "zips\\descomprimidos\\")
-                saveFile(ruta);
+            string ruta = Server.MapPath("~") + "files\\" + fileReader.FileName;
+            saveFile(ruta);
 
-            string content = File.ReadAllText(ruta, Encoding.UTF8);
-            contentBox.Text = content;
+            contentBox.Text = readHtmlJsonXmlTxt(ruta);
         }
 
-        protected void readDoc(string fileName, string dir)
+        protected string readDoc(string ruta)
         {
-            string ruta = Server.MapPath("~") + dir + fileName;
-            if (dir != "zips\\descomprimidos\\")
-                saveFile(ruta);
+            string content = "";
 
             Microsoft.Office.Interop.Word.Application word = new Microsoft.Office.Interop.Word.Application();
             object miss = System.Reflection.Missing.Value;
             object path = ruta;
             object readOnly = true;
             Microsoft.Office.Interop.Word.Document docs = word.Documents.Open(ref path, ref miss, ref readOnly, ref miss, ref miss, ref miss, ref miss, ref miss, ref miss, ref miss, ref miss, ref miss, ref miss, ref miss, ref miss, ref miss);
-            string totaltext = "";
             for (int i = 0; i < docs.Paragraphs.Count; i++)
             {
-                totaltext += " \r\n " + docs.Paragraphs[i + 1].Range.Text.ToString();
+                content += " \r\n " + docs.Paragraphs[i + 1].Range.Text.ToString();
             }
-            contentBox.Text = totaltext;
             docs.Close();
             word.Quit();
+
+            content = Regex.Replace(content, "<.*?>", string.Empty);
+            return content.ToLower().Replace(",", "").Replace(".", "").Replace("!", "").Replace("¡", "").Replace("¿", "").Replace("?", "").Replace("&", "");
+        }
+        protected void click_readDoc(object sender, EventArgs e)
+        {
+            string ruta = Server.MapPath("~") + "files\\" + fileReader.FileName;
+            saveFile(ruta);
+            contentBox.Text = readDoc(ruta);
         }
 
-        protected void saveFile(string ruta)
+        protected void click_readLink(object sender, EventArgs e)
         {
-            fileReader.SaveAs(ruta);
-        }
-
-        protected void buttonUpload_Click(object sender, EventArgs e)
-        {
-            choose(fileReader.FileName, "files\\");
-        }
-
-        protected void buttonCargar_Click(object sender, EventArgs e)
-        {
-            string link = textLink.Text;
+            string link = textLinkFolder.Text,
+                   content;
             WebClient client = new WebClient();
             byte[] byteData = null;
             byteData = client.DownloadData(link);
 
             UTF8Encoding UTF8Encod = new UTF8Encoding();
-            contentBox.Text = Regex.Replace(UTF8Encod.GetString(byteData), "<(.|\\n)*?>", string.Empty);
+
+            content = Regex.Replace(UTF8Encod.GetString(byteData), "<(.|\\n)*?>", string.Empty);
+            content = Regex.Replace(content, "<.*?>", string.Empty);
+            contentBox.Text = content.ToLower().Replace(",", "").Replace(".", "").Replace("!", "").Replace("¡", "").Replace("¿", "").Replace("?", "").Replace("&", "");
         }
 
-        protected void searchTweets(object sender, EventArgs e)
+        protected void readAllInFolder(string ruta)
         {
-            string txtTwitterName = textTwitter.Text;
-
-            if (txtTwitterName != "")
+            try
             {
-                var service = new TwitterService("C98uX0MU7n24kXYROPs1YfZGd", "nDEBrbJXszSZKfrOmmDfAm4NNrvDsfqkE5BwvsXsdFVZKJMdQg");
-
-                //AuthenticateWith("Access Token", "AccessTokenSecret");
-                service.AuthenticateWith("711043579699982336-scPSu5YliFK6yov7Jf5aQOLrtklaQFU", "ZiwI7zz8oAX37Ht7jLJ0rjlzaT44CQdsyzjarz1xTRmOC");
-
-                //ScreenName="screeen name not username", Count=Number of Tweets / www.Twitter.com/mcansozeri. 
-                IEnumerable<TwitterStatus> tweets = service.ListTweetsOnUserTimeline(new ListTweetsOnUserTimelineOptions { ScreenName = txtTwitterName, Count = 10, });
-                var tweetsList = tweets.ToList();
-                string strTweets = "Tweets de " + txtTwitterName + ":\n";
-                for (int i = 0; i < tweetsList.Count; i++)
+                DirectoryInfo Dir = new DirectoryInfo(ruta);
+                FileInfo[] FileList = Dir.GetFiles("*.*", SearchOption.AllDirectories);
+                foreach (FileInfo file in FileList)
                 {
-                    strTweets += tweetsList[i].Text + "\n";
-                }
+                    //resultBox.Text = resultBox.Text + file.FullName + "\n";
 
-                contentBox.Text = strTweets;
+                    if (file.Extension == ".txt" || file.Extension == ".html" || file.Extension == ".json" || file.Extension == ".xml")
+                    {
+                        contentBox.Text = contentBox.Text + readHtmlJsonXmlTxt(file.FullName) + "\n\n";
+                    }
+                    else if (file.Extension == ".doc" || file.Extension == ".docx")
+                    {
+                        contentBox.Text = contentBox.Text + readDoc(file.FullName);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
             }
         }
 
-        protected void buttonAnalizar_Click(object sender, EventArgs e)
+        protected void click_readFolder(object sender, EventArgs e)
         {
-            resultBox.Text = ""; // Se vacia el textarea de resultados.
-            sentiment.text = contentBox.Text; // Se le asigna el texto a analizar.
-            sentiment.sentimentAnalysis();
+            readAllInFolder(textLinkFolder.Text);
         }
 
-        protected void analisisDelLenguaje(object sender, EventArgs e) 
+        protected void click_unpackageZIP(object sender, EventArgs e)
         {
-            language.text = contentBox.Text;
-            resultBox.Text = language.languageAnalisys();
+            // Almacenar el .zip en la carpeta zips del proyecto
+            string ruta = Server.MapPath("~") + "zips\\" + fileReader.FileName;
+            string rutaDescomprimir = Server.MapPath("~") + "zips\\descomprimidos\\";
+            saveFile(ruta);
+
+            if (extract(ruta, rutaDescomprimir))
+            {
+                readAllInFolder(rutaDescomprimir);
+            }
+            else
+            {
+                contentBox.Text = "Fallo al descomprimir";
+            }
         }
 
+        protected void click_searchTweets(object sender, EventArgs e)
+        {
+            string userTweets = textTwitter.Text;
+
+            if (userTweets != "")
+            {
+                contentBox.Text = this.twitter.searchTweets(userTweets);
+            }
+        }
+
+        protected void sentimentAnalysis(object sender, EventArgs e)
+        {
+            if (!contentBox.Text.Equals(""))
+            {
+                resultBox.Text = ""; // Se vacia el textarea de resultados.
+                this.sentiment.text = contentBox.Text; // Se le asigna el texto a analizar.
+                resultBox.Text = this.sentiment.sentimentAnalysis();
+                resultBox.Text = resultBox.Text + this.sentiment.showScores();
+                resultBox.Text = resultBox.Text + this.sentiment.giveProbabilities();
+                generateSentimentCharts();
+            }
+        }
+
+        protected void languageAnalysis(object sender, EventArgs e) 
+        {
+            if (!contentBox.Text.Equals(""))
+            {
+                language.text = contentBox.Text;
+                resultBox.Text = language.languageAnalisys();
+                generateLanguageCharts();
+            }
+        }
+
+        protected void tweetsAnalysis(object sender, EventArgs e) 
+        {
+            resultBox.Text = this.twitter.tweetsAnalysis();
+        }
+
+        protected void generateLanguageCharts()
+        {
+            textChart.Visible = true;
+            langChart.Visible = true;
+
+            string[] letters = new string[language.percents.Count];
+            double[] lettersValues = new double[language.percents.Count];
+            Dictionary<char, double> selectedDictionary;
+            string[] languageLetters = new string[language.percents.Count]; ;
+            double[] languageLettersValues = new double[language.percents.Count];
+
+            if (resultBox.Text == "Spanish")
+            {
+                selectedDictionary = language.dictionarySpanish;
+            }
+            else if (resultBox.Text == "English")
+            {
+                selectedDictionary = language.dictionaryEnglish;
+            }
+            else if (resultBox.Text == "German")
+            {
+                selectedDictionary = language.dictionaryGerman;
+            }
+            else
+            {
+                selectedDictionary = language.dictionaryDutch;
+            }
+
+            int i = 0;
+            foreach (KeyValuePair<char, double> letter in language.percents.OrderBy(Letter => Letter.Key))
+            {
+                letters[i] = letter.Key.ToString();
+                lettersValues[i] = letter.Value;
+
+                languageLetters[i] = letter.Key.ToString();
+                languageLettersValues[i] = selectedDictionary[letter.Key];
+
+                i++;
+            }
+
+            textChart.ChartAreas["ChartArea1"].AxisX.Interval = 1;
+            textChart.ChartAreas["ChartArea1"].Area3DStyle.Enable3D = true;
+            textChart.Series["Letras"].Points.DataBindXY(letters, lettersValues);
+
+            langChart.ChartAreas["ChartArea2"].AxisX.Interval = 1;
+            langChart.ChartAreas["ChartArea2"].Area3DStyle.Enable3D = true;
+            langChart.Series["Letras"].Points.DataBindXY(languageLetters, languageLettersValues);
+        }
+
+        protected void generateSentimentCharts()
+        {
+            sentimentPercentChart.Visible = true;
+            sentimentScoresChart.Visible = true;
+
+            sentimentPercentChart.ChartAreas["ChartArea1"].AxisX.Interval = 1;
+            sentimentPercentChart.ChartAreas["ChartArea1"].Area3DStyle.Enable3D = true;
+            sentimentPercentChart.Series["resultados"].Points.DataBindXY(this.sentiment.categorias, this.sentiment.porcentajes);
+
+            sentimentScoresChart.ChartAreas["ChartArea1"].AxisX.Interval = 1;
+            sentimentScoresChart.ChartAreas["ChartArea1"].Area3DStyle.Enable3D = true;
+            sentimentScoresChart.Series["Series1"].Points.DataBindXY(this.sentiment.decantamiento, this.sentiment.scores);
+        }
     }
 }

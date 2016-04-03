@@ -7,7 +7,6 @@ namespace AnalisisEstadistico.Modulos
 {
     public class Language
     {
-
         public string text;
         public Dictionary<char, double> dictionarySpanish;
         public Dictionary<char, double> dictionaryEnglish;
@@ -223,9 +222,10 @@ namespace AnalisisEstadistico.Modulos
 
         public bool searchLetter(char letter, Dictionary<char, double> occurs)
         {
-            foreach (KeyValuePair<char, double> item in occurs) 
+            foreach (KeyValuePair<char, double> item in occurs)
             {
-                if (item.Key == letter) {
+                if (item.Key == letter)
+                {
                     return true;
                 }
             }
@@ -287,7 +287,7 @@ namespace AnalisisEstadistico.Modulos
                 return "Spanish";
             }
             else if (englishDeviation < spanishDeviation && englishDeviation < germanDeviation && englishDeviation < dutchDeviation)
-            { 
+            {
                 return "English";
             }
             else if (germanDeviation < spanishDeviation && germanDeviation < englishDeviation && germanDeviation < dutchDeviation)
@@ -298,13 +298,13 @@ namespace AnalisisEstadistico.Modulos
             {
                 return "Dutch";
             }
-            else 
+            else
             {
                 return "Unknown";
             }
         }
 
-        public string languageAnalisys() 
+        public string languageAnalisys()
         {
             this.percents = new Dictionary<char, double>();
             this.spanishDeviation = 0;

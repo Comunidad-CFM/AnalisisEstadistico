@@ -1,5 +1,0 @@
-Username: root
-Password: Ctec2014super!admin
-
-Hostname: 172.24.20.90
-Port: 2022

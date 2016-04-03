@@ -15,6 +15,10 @@ namespace AnalisisEstadistico.Modulos
         public List<Enhancer> enhancers = new List<Enhancer>();
         public List<FeelingWord> feelingWordsList = new List<FeelingWord>();
         public List<Emoji> emojisList = new List<Emoji>();
+        public string[] categorias;
+        public string[] decantamiento;
+        public float[] porcentajes;
+        public float[] scores;
 
         public Sentiment() 
         {
@@ -24,6 +28,13 @@ namespace AnalisisEstadistico.Modulos
             this.enhancers = new List<Enhancer>();
             this.feelingWordsList = new List<FeelingWord>();
             this.emojisList = new List<Emoji>();
+            this.categorias = new string[3] { "Positivo", "Negativo", "Desconocido" };
+            this.decantamiento = new string[2] { "Positivo", "Negativo" };
+            
+            this.insertIntoStopWords();
+            this.insertIntoEmojis();
+            this.insertIntoFeelingWords();
+            this.insertIntoEnhancers();
         }
 
         protected void insertIntoStopWords()
@@ -931,6 +942,7 @@ namespace AnalisisEstadistico.Modulos
             enhancers.Add(new Enhancer("pores", -3));
             enhancers.Add(new Enhancer("mal", -2));
             enhancers.Add(new Enhancer("malo", -3));
+            enhancers.Add(new Enhancer("no", -2));
         }
 
         protected bool existInStopWords(string word)
@@ -1029,7 +1041,113 @@ namespace AnalisisEstadistico.Modulos
             return feelingWord;
         }
 
-        public void sentimentAnalysis()
+        public string showScores()
+        {
+            string result = "---> Palabras y emojis encontrados";
+
+            foreach (FeelingWord fw in feelingWordsList)
+            {
+                result += "\n" + fw.word + " -> " + fw.score;
+            }
+
+            foreach (Emoji e in emojisList)
+            {
+                result += "\n" + e.emoji + " -> " + e.score;
+            }
+
+            return result;
+        }
+
+        protected int makeMeasurement()
+        {
+            int measurement = 0;
+
+            foreach (FeelingWord fw in feelingWordsList)
+            {
+                measurement += (int)fw.score;
+            }
+
+            foreach (Emoji e in emojisList)
+            {
+                measurement += (int)e.score;
+            }
+
+            return measurement;
+        }
+
+        protected string giveResult(int result)
+        {
+            string res = "---> Medicion";
+
+            if (result > 0)
+            {
+                res += "\nEl texto es positivo.";
+            }
+            else if (result < 0)
+            {
+                res += "\nEl texto es negativo.";
+            }
+            else
+            {
+                res += "\nEl texto es neutro.";
+            }
+
+            //resultBox.Text = resultBox.Text + res;
+            return res + "\n\n";
+        }
+
+        public string giveProbabilities()
+        {
+            string[] words = this.text.ToLower().Replace(",", "").Replace(".", "").Replace("!", "").Replace("¡", "").Replace("¿", "").Replace("?", "").Split(' ');
+            float totalWords = words.Count(),
+                  totalPositives = 0,
+                  totalNegatives = 0,
+                  scorePositive = 0,
+                  scoreNegative = 0;
+            string result = "";
+
+            foreach (FeelingWord fw in this.feelingWordsList)
+            {
+                if (fw.score > 0)
+                {
+                    totalPositives++;
+                    scorePositive += (float)fw.score;
+                }
+                else
+                {
+                    totalNegatives++;
+                    scoreNegative -= (float)fw.score;
+                }
+            }
+
+            foreach (Emoji e in this.emojisList)
+            {
+                if (e.score > 0)
+                {
+                    totalPositives++;
+                    scorePositive += (float)e.score;
+                }
+                else
+                {
+                    totalNegatives++;
+                    scoreNegative -= (float)e.score;
+                }
+            }
+
+            result += "\n\n---> Estadísticas";
+            result += "\nTotal de palabras: " + totalWords.ToString();
+            result += "\nTotal de palabras y emojis positivos: " + totalPositives + " -> " + (totalPositives / totalWords) * 100 + "%";
+            result += "\nTotal de palabras y emojis negativos: " + totalNegatives + " -> " + (totalNegatives / totalWords) * 100 + "%";
+            result += "\nTotal de palabras desconocidas: " + (totalWords - (totalPositives + totalNegatives)) + " -> " + ((totalWords - (totalPositives + totalNegatives)) / totalWords) * 100 + "%";
+            result += "\nEl texto es positivo en un: " + (totalPositives / (totalPositives + totalNegatives)) * 100 + "%";
+            result += "\nEl texto es negativo en un: " + (totalNegatives / (totalPositives + totalNegatives)) * 100 + "%";
+
+            this.porcentajes = new float[3] { (totalPositives / (totalPositives + totalNegatives)) * 100, (totalNegatives / (totalPositives + totalNegatives)) * 100, (totalWords - (totalPositives + totalNegatives)) };
+            this.scores = new float[2] { scorePositive, scoreNegative };
+            return result;
+        }
+
+        public string sentimentAnalysis()
         {
             string pieceBefore = "";
             List<string> content = removeStopWords();
@@ -1061,111 +1179,9 @@ namespace AnalisisEstadistico.Modulos
                 pieceBefore = piece;
             }
 
-            showScores();
-            giveResult(makeMeasurement());
-            giveProbabilities();
-        }
-
-        protected int makeMeasurement()
-        {
-            int measurement = 0;
-
-            foreach (FeelingWord fw in feelingWordsList)
-            {
-                measurement += (int)fw.score;
-            }
-
-            foreach (Emoji e in emojisList)
-            {
-                measurement += (int)e.score;
-            }
-
-            return measurement;
-        }
-
-        protected void showScores()
-        {
-            string result = "---> Palabras y emojis encontrados";
-
-            foreach (FeelingWord fw in feelingWordsList)
-            {
-                result += "\n" + fw.word + " -> " + fw.score;
-            }
-
-            foreach (Emoji e in emojisList)
-            {
-                result += "\n" + e.emoji + " -> " + e.score;
-            }
-
-            //resultBox.Text = resultBox.Text + result;
-        }
-
-        protected void giveResult(int result)
-        {
-            string res = "\n\n---> Medicion";
-
-            if (result > 0)
-            {
-                res += "\nEl texto es positivo.";
-            }
-            else if (result < 0)
-            {
-                res += "\nEl texto es negativo.";
-            }
-            else
-            {
-                res += "\nEl texto es neutro.";
-            }
-
-            //resultBox.Text = resultBox.Text + res;
-        }
-
-        protected void giveProbabilities()
-        {
-            string[] words = this.text.ToLower().Replace(",", "").Replace(".", "").Replace("!", "").Replace("¡", "").Replace("¿", "").Replace("?", "").Split(' ');
-            float totalWords = words.Count(),
-                  totalPositives = 0,
-                  totalNegatives = 0,
-                  scorePositive = 0,
-                  scoreNegative = 0;
-            string result = "";
-
-            foreach (FeelingWord fw in this.feelingWordsList)
-            {
-                if (fw.score > 0)
-                {
-                    totalPositives++;
-                    scorePositive += (float)fw.score;
-                }
-                else
-                {
-                    totalNegatives++;
-                    scoreNegative += (float)fw.score * -1;
-                }
-            }
-
-            foreach (Emoji e in this.emojisList)
-            {
-                if (e.score > 0)
-                {
-                    totalPositives++;
-                    scorePositive += (float)e.score;
-                }
-                else
-                {
-                    totalNegatives++;
-                    scoreNegative += (float)e.score * -1;
-                }
-            }
-
-            result += "\n\n---> Estadísticas";
-            result += "\nTotal de palabras: " + totalWords.ToString();
-            result += "\nTotal de palabras y emojis positivos: " + totalPositives + " -> " + (totalPositives / totalWords) * 100 + "%";
-            result += "\nTotal de palabras y emojis negativos: " + totalNegatives + " -> " + (totalNegatives / totalWords) * 100 + "%";
-            result += "\nTotal de palabras desconocidas: " + (totalWords - (totalPositives + totalNegatives)) + " -> " + ((totalWords - (totalPositives + totalNegatives)) / totalWords) * 100 + "%";
-            result += "\nEl texto es positivo en un: " + (totalPositives / (totalPositives + totalNegatives)) * 100 + "%";
-            result += "\nEl texto es negativo en un: " + (totalNegatives / (totalPositives + totalNegatives)) * 100 + "%";
-            //resultBox.Text = resultBox.Text + result;
+            //showScores();
+            return giveResult(makeMeasurement());
+            //giveProbabilities();
         }
     }
 }

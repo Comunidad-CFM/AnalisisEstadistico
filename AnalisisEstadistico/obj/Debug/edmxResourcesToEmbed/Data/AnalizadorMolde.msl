@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="AnalizadorBDModelStoreContainer" CdmEntityContainer="AnalizadorBDEntities">
+    <EntitySetMapping Name="emojis">
+      <EntityTypeMapping TypeName="AnalizadorBDModel.emoji">
+        <MappingFragment StoreEntitySet="emoji">
+          <ScalarProperty Name="emojiID" ColumnName="emojiID" />
+          <ScalarProperty Name="emoticon" ColumnName="emoticon" />
+          <ScalarProperty Name="score" ColumnName="score" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="feelingWords">
+      <EntityTypeMapping TypeName="AnalizadorBDModel.feelingWord">
+        <MappingFragment StoreEntitySet="feelingWord">
+          <ScalarProperty Name="feelwordID" ColumnName="feelwordID" />
+          <ScalarProperty Name="word" ColumnName="word" />
+          <ScalarProperty Name="score" ColumnName="score" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="idioms">
+      <EntityTypeMapping TypeName="AnalizadorBDModel.idiom">
+        <MappingFragment StoreEntitySet="idiom">
+          <ScalarProperty Name="idiomID" ColumnName="idiomID" />
+          <ScalarProperty Name="idiom1" ColumnName="idiom" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="stopwords">
+      <EntityTypeMapping TypeName="AnalizadorBDModel.stopword">
+        <MappingFragment StoreEntitySet="stopword">
+          <ScalarProperty Name="stopwordID" ColumnName="stopwordID" />
+          <ScalarProperty Name="word" ColumnName="word" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="words">
+      <EntityTypeMapping TypeName="AnalizadorBDModel.word">
+        <MappingFragment StoreEntitySet="word">
+          <ScalarProperty Name="wordID" ColumnName="wordID" />
+          <ScalarProperty Name="word1" ColumnName="word" />
+          <ScalarProperty Name="category" ColumnName="category" />
+          <ScalarProperty Name="idiomID" ColumnName="idiomID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

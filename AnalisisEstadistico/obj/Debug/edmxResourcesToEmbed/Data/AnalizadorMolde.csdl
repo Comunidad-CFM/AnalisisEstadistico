@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="AnalizadorBDModel" Alias="Self" p1:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:p1="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityContainer Name="AnalizadorBDEntities" p1:LazyLoadingEnabled="true">
+    <EntitySet Name="emojis" EntityType="AnalizadorBDModel.emoji" />
+    <EntitySet Name="feelingWords" EntityType="AnalizadorBDModel.feelingWord" />
+    <EntitySet Name="idioms" EntityType="AnalizadorBDModel.idiom" />
+    <EntitySet Name="stopwords" EntityType="AnalizadorBDModel.stopword" />
+    <EntitySet Name="words" EntityType="AnalizadorBDModel.word" />
+    <AssociationSet Name="fk_PerOrders" Association="AnalizadorBDModel.fk_PerOrders">
+      <End Role="idiom" EntitySet="idioms" />
+      <End Role="word" EntitySet="words" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="emoji">
+    <Key>
+      <PropertyRef Name="emojiID" />
+    </Key>
+    <Property Name="emojiID" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+    <Property Name="emoticon" Type="String" Nullable="false" MaxLength="4" Unicode="false" FixedLength="false" />
+    <Property Name="score" Type="Int32" />
+  </EntityType>
+  <EntityType Name="feelingWord">
+    <Key>
+      <PropertyRef Name="feelwordID" />
+    </Key>
+    <Property Name="feelwordID" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+    <Property Name="word" Type="String" Nullable="false" MaxLength="4" Unicode="false" FixedLength="false" />
+    <Property Name="score" Type="Int32" />
+  </EntityType>
+  <EntityType Name="idiom">
+    <Key>
+      <PropertyRef Name="idiomID" />
+    </Key>
+    <Property Name="idiomID" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+    <Property Name="idiom1" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+    <NavigationProperty Name="words" Relationship="AnalizadorBDModel.fk_PerOrders" FromRole="idiom" ToRole="word" />
+  </EntityType>
+  <EntityType Name="stopword">
+    <Key>
+      <PropertyRef Name="stopwordID" />
+    </Key>
+    <Property Name="stopwordID" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+    <Property Name="word" Type="String" Nullable="false" MaxLength="80" Unicode="false" FixedLength="false" />
+  </EntityType>
+  <EntityType Name="word">
+    <Key>
+      <PropertyRef Name="wordID" />
+    </Key>
+    <Property Name="wordID" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+    <Property Name="word1" Type="String" Nullable="false" MaxLength="80" Unicode="false" FixedLength="false" />
+    <Property Name="category" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+    <Property Name="idiomID" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="idiom" Relationship="AnalizadorBDModel.fk_PerOrders" FromRole="word" ToRole="idiom" />
+  </EntityType>
+  <Association Name="fk_PerOrders">
+    <End Role="idiom" Type="AnalizadorBDModel.idiom" Multiplicity="1" />
+    <End Role="word" Type="AnalizadorBDModel.word" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="idiom">
+        <PropertyRef Name="idiomID" />
+      </Principal>
+      <Dependent Role="word">
+        <PropertyRef Name="idiomID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>

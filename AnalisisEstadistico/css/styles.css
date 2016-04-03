@@ -79,15 +79,16 @@
 .col-md-3 label {
     font-size: 18px;   
 }
-.btn-analizar {
+.btn-nav {
     text-align: center;
     background: transparent;
     color:black;
     width: 100%;
     margin: 0px;
+    color: black;
 }
-.btn-analizar:hover {
-    text-transform: uppercase;
+.btn-nav:hover {
+    color: #2196F3;
 }
 
 .rotate{
@@ -102,4 +103,8 @@
     -moz-transform:rotate(30deg);
     -webkit-transform:rotate(30deg);
     transform:rotate(30deg);
+}
+
+.hidden {
+    visibility: hidden;
 }
