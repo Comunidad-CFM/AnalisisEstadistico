@@ -37,6 +37,7 @@
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" style="color: black;">Descomprimir <b class="caret"></b></a>
                         <ul class="dropdown-menu">
                             <asp:Button class="btn btn-nav" runat="server" OnClick="click_unpackageZIP" Text="ZIP" />
+                            <asp:Button class="btn btn-nav" runat="server" OnClick="click_unpackageBZ2" Text="BZ2" />
                         </ul>
                     </li>
                     <li class="dropdown">
@@ -152,10 +153,37 @@
                    <asp:Title Text="Puntaje de las palabras" />
                 </Titles>
             </asp:Chart>
+            <asp:Chart ID="tweetChart" runat="server" Width="555px" Visible="False">
+                <Series>
+                    <asp:Series Name="tweets">
+                    </asp:Series>
+                </Series>
+                <ChartAreas>
+                    <asp:ChartArea Name="ChartArea1">
+                    </asp:ChartArea>
+                </ChartAreas>
+                <Titles>
+                   <asp:Title Text="Porcentaje del lenguaje de los tweets" />
+                </Titles>
+            </asp:Chart>
+            <asp:Chart ID="tweetCChart" runat="server" Width="555px" Visible="False">
+                <Series>
+                    <asp:Series Name="tweets">
+                    </asp:Series>
+                </Series>
+                <ChartAreas>
+                    <asp:ChartArea Name="ChartArea1">
+                    </asp:ChartArea>
+                </ChartAreas>
+                <Titles>
+                   <asp:Title Text="Cantidad de tweets por lenguaje" />
+                </Titles>
+            </asp:Chart>
         </div>
-    </form>
 
         <script type="text/javascript" src="./node_modules/jquery/dist/jquery.min.js"></script>
         <script type="text/javascript" src="./node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
-    </body>
+        
+    </form>
+</body>
 </html>

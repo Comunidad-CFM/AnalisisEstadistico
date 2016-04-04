@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.IO;
+using System.IO.Compression;
 using System.Text;
 using System.Net;
 using Ionic.Zip;
@@ -16,6 +17,7 @@ using Newtonsoft.Json.Linq;
 using AnalisisEstadistico.Data;
 using AnalisisEstadistico.Model;
 using AnalisisEstadistico.Modulos;
+using ICSharpCode.SharpZipLib.BZip2;
 
 namespace AnalisisEstadistico
 {
@@ -26,10 +28,20 @@ namespace AnalisisEstadistico
         public Twitter twitter;
 
         protected void Page_Load(object sender, EventArgs e)
+        { }
+
+        protected void cleanFolder(string ruta)
         {
-            this.sentiment = new Sentiment();
-            this.language = new Language();
-            this.twitter = new Twitter();
+            System.IO.DirectoryInfo di = new DirectoryInfo(ruta);
+
+            foreach (FileInfo file in di.GetFiles())
+            {
+                file.Delete(); 
+            }
+            foreach (DirectoryInfo dir in di.GetDirectories())
+            {
+                dir.Delete(true); 
+            }
         }
 
         protected void cleanTextArea(object sender, EventArgs e) 
@@ -38,8 +50,10 @@ namespace AnalisisEstadistico
             resultBox.Text = "";
             textChart.Visible = false;
             langChart.Visible = false;
-            sentimentPercentChart.Visible = true;
-            sentimentScoresChart.Visible = true;
+            sentimentPercentChart.Visible = false;
+            sentimentScoresChart.Visible = false;
+            tweetChart.Visible = false;
+            tweetCChart.Visible = false;
         }
 
         /// <summary>
@@ -69,6 +83,55 @@ namespace AnalisisEstadistico
         protected void saveFile(string ruta)
         {
             fileReader.SaveAs(ruta);
+        }
+
+        protected void extractBZ2(string ruta, int jsonID)
+        {
+            FileInfo fileToBeZipped = new FileInfo(ruta);
+
+            using (FileStream fileToDecompressAsStream = fileToBeZipped.OpenRead())
+            {
+                string decompressedFileName = Server.MapPath("~") + "twitterJSON\\" + jsonID + ".json";
+                using (FileStream decompressedStream = File.Create(decompressedFileName))
+                {
+                    try
+                    {
+                        BZip2.Decompress(fileToDecompressAsStream, decompressedStream, true);
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine(ex.Message);
+                    }
+                }
+            }
+        }
+
+        protected void click_unpackageBZ2(object sender, EventArgs e)
+        {
+            string ruta = textLinkFolder.Text;
+
+            if (!ruta.Equals(""))
+            {
+                cleanFolder(Server.MapPath("~") + "twitterJSON\\");
+                try
+                {
+                    DirectoryInfo Dir = new DirectoryInfo(ruta);
+                    FileInfo[] FileList = Dir.GetFiles("*.*", SearchOption.AllDirectories);
+                    int i = 1;
+                    foreach (FileInfo file in FileList)
+                    {
+                        //resultBox.Text = resultBox.Text + file.FullName + "\n";
+                        if (file.Extension == ".bz2")
+                        {
+                            extractBZ2(file.FullName, i++);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+            }
         }
 
         protected string readHtmlJsonXmlTxt(string ruta)
@@ -164,12 +227,14 @@ namespace AnalisisEstadistico
         {
             // Almacenar el .zip en la carpeta zips del proyecto
             string ruta = Server.MapPath("~") + "zips\\" + fileReader.FileName;
-            string rutaDescomprimir = Server.MapPath("~") + "zips\\descomprimidos\\";
+            string destino = Server.MapPath("~") + "zipsContent\\";
+            cleanFolder(Server.MapPath("~") + "zips\\");
+            cleanFolder(destino);
             saveFile(ruta);
 
-            if (extract(ruta, rutaDescomprimir))
+            if (extract(ruta, destino))
             {
-                readAllInFolder(rutaDescomprimir);
+                readAllInFolder(destino);
             }
             else
             {
@@ -191,6 +256,7 @@ namespace AnalisisEstadistico
         {
             if (!contentBox.Text.Equals(""))
             {
+                this.sentiment = new Sentiment();
                 resultBox.Text = ""; // Se vacia el textarea de resultados.
                 this.sentiment.text = contentBox.Text; // Se le asigna el texto a analizar.
                 resultBox.Text = this.sentiment.sentimentAnalysis();
@@ -202,17 +268,42 @@ namespace AnalisisEstadistico
 
         protected void languageAnalysis(object sender, EventArgs e) 
         {
-            if (!contentBox.Text.Equals(""))
+            string content = contentBox.Text;
+
+            if (!content.Equals(""))
             {
-                language.text = contentBox.Text;
-                resultBox.Text = language.languageAnalisys();
+                this.language = new Language();
+                this.language.text = content;
+                resultBox.Text = this.language.languageAnalisys();
                 generateLanguageCharts();
             }
         }
 
         protected void tweetsAnalysis(object sender, EventArgs e) 
         {
-            resultBox.Text = this.twitter.tweetsAnalysis();
+            if (!textLinkFolder.Text.Equals(""))
+            {
+                this.twitter = new Twitter(Server.MapPath("~") + "twitterJSON\\");
+                this.twitter.tweetsAnalysis();
+                this.twitter.generalAnalysis();
+                generateTwitterCharts();
+            }
+        }
+
+        protected void generateTwitterCharts()
+        {
+            tweetChart.Visible = true;
+            tweetCChart.Visible = true;
+
+            string[] langs = { "Español", "Ingles", "Alemán", "Holandés", "Desconocido" };            
+
+            tweetChart.ChartAreas["ChartArea1"].AxisX.Interval = 1;
+            tweetChart.ChartAreas["ChartArea1"].Area3DStyle.Enable3D = true;
+            tweetChart.Series["tweets"].Points.DataBindXY(langs, this.twitter.langPercents);
+
+            tweetCChart.ChartAreas["ChartArea1"].AxisX.Interval = 1;
+            tweetCChart.ChartAreas["ChartArea1"].Area3DStyle.Enable3D = true;
+            tweetCChart.Series["tweets"].Points.DataBindXY(langs, this.twitter.langCount);
         }
 
         protected void generateLanguageCharts()
