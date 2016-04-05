@@ -8,6 +8,7 @@
 <head runat="server">
     <meta charset="utf-8" />
     <title>Análisis estadístico</title>
+    <link rel="shortcut icon" href="./ico/icono.ico">
     <link rel="stylesheet" type="text/css" href="./node_modules/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" type="text/css" href="./css/ubuntu.css" />
     <link rel="stylesheet" type="text/css" href="./css/styles.css" />

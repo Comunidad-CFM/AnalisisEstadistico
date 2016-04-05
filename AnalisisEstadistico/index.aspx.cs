@@ -49,6 +49,9 @@ namespace AnalisisEstadistico
         {
             contentBox.Text = "";
             resultBox.Text = "";
+            textLinkFolder.Text = "";
+            textFacebook.Text = "";
+            textTwitter.Text = "";
             textChart.Visible = false;
             langChart.Visible = false;
             sentimentPercentChart.Visible = false;
@@ -253,7 +256,7 @@ namespace AnalisisEstadistico
                 resultBox.Text = this.sentiment.sentimentAnalysis();
                 resultBox.Text = resultBox.Text + this.sentiment.showScores();
                 resultBox.Text = resultBox.Text + this.sentiment.giveProbabilities();
-                generateSentimentCharts();
+                generateSentimentCharts(this.sentiment.porcentajes, this.sentiment.scores);
             }
         }
 
@@ -272,12 +275,14 @@ namespace AnalisisEstadistico
 
         protected void tweetsAnalysis(object sender, EventArgs e) 
         {
-            if (!textLinkFolder.Text.Equals(""))
+            if (!textLinkFolder.Text.Equals("")) // Tweets masivos
             {
                 this.twitter = new Twitter(Server.MapPath("~") + "twitterJSON\\");
                 this.twitter.tweetsAnalysis();
                 this.twitter.generalAnalysis();
                 generateCharts(this.twitter.langPercents, this.twitter.langCount);
+                resultBox.Text = "Total de tweets: " + this.twitter.tweetList.Count() + "\n";
+                resultBox.Text = resultBox.Text + "Cantidad de usuarios diferentes: " + this.twitter.differentUsers.Count().ToString();
             }
             else if (!textTwitter.Text.Equals(""))
             {
@@ -291,7 +296,7 @@ namespace AnalisisEstadistico
 
         protected void postsAnalysis(object sender, EventArgs e)
         {
-            // CAAPhsmMoJk8BACqvimNpXnxpUW8yd3OIZB8EfWRX1VAgA3QrLGdOMJtjyFob8sLa2pPBh6kc7LCxuQxNVmfROzlBqAEKkhyAOEVawRzTzkFt0T7Q0KDzJXficlINldWdHz6EbIdOZBGo2Rho5B2B1CXy6z4NWvZBrFBghyXTGR9TFDjHi1yuB3skFgb2UsxyJQQdrZCLxAZDZD
+            // CAAPhsmMoJk8BAOJXl4e8Mhi9mkH6cddoZA3p1CshScNsDKmh9CVOaF4k9znLd625UhYmHhvKVsJIwkRsSO9kim9uXneJDzookMx2COacUtitAAm4GU1BjPRlmOhdULtXt2nPg6f7Uc7Smu7oyI69e9cZBry6B8ZAuaa5sSrUZAtZANhi2fMqtnfZBGU4gIdZBA7GXWeQZC40hAZDZD
             string token = textFacebook.Text;
             if (!token.Equals(""))
             {
@@ -369,18 +374,21 @@ namespace AnalisisEstadistico
             langChart.Series["Letras"].Points.DataBindXY(languageLetters, languageLettersValues);
         }
 
-        protected void generateSentimentCharts()
+        protected void generateSentimentCharts(float[] porcentajes, float[] scores)
         {
+            string[] categorias = { "Positivo", "Negativo", "Desconocido" };
+            string[] decantamiento = { "Positivo", "Negativo" };
+
             sentimentPercentChart.Visible = true;
             sentimentScoresChart.Visible = true;
 
             sentimentPercentChart.ChartAreas["ChartArea1"].AxisX.Interval = 1;
             sentimentPercentChart.ChartAreas["ChartArea1"].Area3DStyle.Enable3D = true;
-            sentimentPercentChart.Series["resultados"].Points.DataBindXY(this.sentiment.categorias, this.sentiment.porcentajes);
+            sentimentPercentChart.Series["resultados"].Points.DataBindXY(categorias, porcentajes);
 
             sentimentScoresChart.ChartAreas["ChartArea1"].AxisX.Interval = 1;
             sentimentScoresChart.ChartAreas["ChartArea1"].Area3DStyle.Enable3D = true;
-            sentimentScoresChart.Series["Series1"].Points.DataBindXY(this.sentiment.decantamiento, this.sentiment.scores);
+            sentimentScoresChart.Series["Series1"].Points.DataBindXY(decantamiento, scores);
         }
     }
 }

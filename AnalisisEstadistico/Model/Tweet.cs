@@ -11,6 +11,7 @@ namespace AnalisisEstadistico.Modulos
         public string lang;
         public string msg;
         public string category;
+        public string sentiment;
 
         public Tweet()
         { }

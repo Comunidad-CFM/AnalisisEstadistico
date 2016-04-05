@@ -14,18 +14,21 @@ namespace AnalisisEstadistico.Modulos
     {
         public string tweets;
         public Language language;
+        public Sentiment sentiment;
         public List<Tweet> tweetList;
         public string path;
         public double[] langPercents;
         public double[] langCount;
         public List<string> contentJson;
         public List<string> eachTweetUser;
+        public List<string> differentUsers;
 
         public Twitter(string path)
         {
             this.tweetList = new List<Tweet>();
             this.contentJson = new List<string>();
             this.path = path;
+            this.differentUsers = new List<string>();
             this.getJson();
         }
 
@@ -33,19 +36,24 @@ namespace AnalisisEstadistico.Modulos
         {
             this.eachTweetUser = new List<string>();
             this.tweetList = new List<Tweet>();
+            this.differentUsers = new List<string>();
         }
     
-        // Tweets user
+        /// <summary>
+        /// Función para obtener los tweets de un usuario en una lista
+        /// </summary>
+        /// <param name="content">Corresponde a una cadena que indica el nombre de usuario y la cantidad máxima de twees que desea obtener</param>
+        /// <returns></returns>
         public string searchTweets(string content) 
         {
-            string[] info = content.Split(' ');
+            string[] info = content.Split(' ');// separa el nombre de la cantidad de tweets
             string contentTweets = "";
             var service = new TwitterService("C98uX0MU7n24kXYROPs1YfZGd", "nDEBrbJXszSZKfrOmmDfAm4NNrvDsfqkE5BwvsXsdFVZKJMdQg");
 
             //AuthenticateWith("Access Token", "AccessTokenSecret");
             service.AuthenticateWith("711043579699982336-scPSu5YliFK6yov7Jf5aQOLrtklaQFU", "ZiwI7zz8oAX37Ht7jLJ0rjlzaT44CQdsyzjarz1xTRmOC");
 
-            //ScreenName="screeen name not username", Count=Number of Tweets / www.Twitter.com/mcansozeri. 
+            //ScreenName="nombre del usuario", Count=numero de Tweets
             IEnumerable<TwitterStatus> tweets = service.ListTweetsOnUserTimeline(new ListTweetsOnUserTimelineOptions { ScreenName = info[0], Count = Int32.Parse(info[1]), });
             var tweetsList = tweets.ToList();
             
@@ -59,6 +67,9 @@ namespace AnalisisEstadistico.Modulos
             return contentTweets;
         }
 
+        /// <summary>
+        /// Analiza los tweets de un usuario específico.
+        /// </summary>
         public void tweetsAnalysisForUser()
         {
             Tweet tweet;
@@ -70,6 +81,12 @@ namespace AnalisisEstadistico.Modulos
                 this.language.text = eachTweet;
                 tweet.lang = this.language.languageAnalisys();
                 tweet.msg = eachTweet;
+
+                if(tweet.lang.Equals("Spanish"))
+                {
+                    this.sentiment = new Sentiment(eachTweet);
+                    tweet.sentiment = this.sentiment.sentimentAnalysis();
+                }
 
                 this.tweetList.Add(tweet);
             }
@@ -106,6 +123,19 @@ namespace AnalisisEstadistico.Modulos
             }
         }
 
+        public bool existUser(string user) 
+        {
+            foreach (string eachUser in this.differentUsers)
+            {
+                if (eachUser.Equals(user))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         /// <summary>
         /// Función para determinar la cantidad y porcentaje de referencias en un  determinado idioma
         /// </summary>
@@ -127,7 +157,7 @@ namespace AnalisisEstadistico.Modulos
 
             int totalTweets = this.tweetList.Count;
 
-            foreach (Tweet tweet in tweetList)
+            foreach (Tweet tweet in this.tweetList)
             {
                 if (tweet.lang == "Spanish" || tweet.lang == "es")
                 {
@@ -148,6 +178,11 @@ namespace AnalisisEstadistico.Modulos
                 else
                 {
                     contUnknown++;
+                }
+
+                if (!existUser(tweet.user))
+                {
+                    this.differentUsers.Add(tweet.user);
                 }
             }
 
@@ -186,6 +221,12 @@ namespace AnalisisEstadistico.Modulos
                         if (tweet.lang.Equals("Unknown"))
                         {
                             tweet.lang = token.SelectToken("user").SelectToken("lang").ToString();
+                        }
+
+                        if (tweet.lang.Equals("Spanish"))
+                        {
+                            this.sentiment = new Sentiment(tweet.msg);
+                            tweet.sentiment = this.sentiment.sentimentAnalysis();
                         }
 
                         this.tweetList.Add(tweet);

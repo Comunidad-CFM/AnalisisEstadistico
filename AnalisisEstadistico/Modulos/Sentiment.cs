@@ -15,8 +15,6 @@ namespace AnalisisEstadistico.Modulos
         public List<Enhancer> enhancers = new List<Enhancer>();
         public List<FeelingWord> feelingWordsList = new List<FeelingWord>();
         public List<Emoji> emojisList = new List<Emoji>();
-        public string[] categorias;
-        public string[] decantamiento;
         public float[] porcentajes;
         public float[] scores;
 
@@ -29,8 +27,6 @@ namespace AnalisisEstadistico.Modulos
             this.enhancers = new List<Enhancer>();
             this.feelingWordsList = new List<FeelingWord>();
             this.emojisList = new List<Emoji>();
-            this.categorias = new string[3] { "Positivo", "Negativo", "Desconocido" };
-            this.decantamiento = new string[2] { "Positivo", "Negativo" };
             
             this.insertIntoStopWords();
             this.insertIntoEmojis();
@@ -1044,7 +1040,7 @@ namespace AnalisisEstadistico.Modulos
 
         public string showScores()
         {
-            string result = "---> Palabras y emojis encontrados";
+            string result = "\n\n---> Palabras y emojis encontrados";
 
             foreach (FeelingWord fw in feelingWordsList)
             {
@@ -1078,23 +1074,23 @@ namespace AnalisisEstadistico.Modulos
 
         protected string giveResult(int result)
         {
-            string res = "---> Medicion";
+            string res;
 
             if (result > 0)
             {
-                res += "\nEl texto es positivo.";
+                res = "Positivo";
             }
             else if (result < 0)
             {
-                res += "\nEl texto es negativo.";
+                res = "Negativo";
             }
             else
             {
-                res += "\nEl texto es neutro.";
+                res = "Neutro";
             }
 
             //resultBox.Text = resultBox.Text + res;
-            return res + "\n\n";
+            return res;
         }
 
         public string giveProbabilities()
