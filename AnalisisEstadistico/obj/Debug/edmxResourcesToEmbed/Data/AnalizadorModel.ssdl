@@ -1,73 +1,73 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Schema Namespace="AnalizadorBDModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
   <EntityContainer Name="AnalizadorBDModelStoreContainer">
-    <EntitySet Name="emoji" EntityType="AnalizadorBDModel.Store.emoji" store:Type="Tables" Schema="dbo" />
-    <EntitySet Name="enhancers" EntityType="AnalizadorBDModel.Store.enhancers" store:Type="Tables" Schema="dbo" />
-    <EntitySet Name="feelingWord" EntityType="AnalizadorBDModel.Store.feelingWord" store:Type="Tables" Schema="dbo" />
-    <EntitySet Name="idiom" EntityType="AnalizadorBDModel.Store.idiom" store:Type="Tables" Schema="dbo" />
-    <EntitySet Name="stopword" EntityType="AnalizadorBDModel.Store.stopword" store:Type="Tables" Schema="dbo" />
-    <EntitySet Name="word" EntityType="AnalizadorBDModel.Store.word" store:Type="Tables" Schema="dbo" />
-    <AssociationSet Name="fk_PerOrders" Association="AnalizadorBDModel.Store.fk_PerOrders">
-      <End Role="idiom" EntitySet="idiom" />
-      <End Role="word" EntitySet="word" />
+    <EntitySet Name="categoria" EntityType="AnalizadorBDModel.Store.categoria" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="idioma" EntityType="AnalizadorBDModel.Store.idioma" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="palabra" EntityType="AnalizadorBDModel.Store.palabra" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="sysdiagrams" EntityType="AnalizadorBDModel.Store.sysdiagrams" store:Type="Tables" Schema="dbo" />
+    <AssociationSet Name="FK_palabra_categoria" Association="AnalizadorBDModel.Store.FK_palabra_categoria">
+      <End Role="categoria" EntitySet="categoria" />
+      <End Role="palabra" EntitySet="palabra" />
+    </AssociationSet>
+    <AssociationSet Name="FK_palabra_idioma" Association="AnalizadorBDModel.Store.FK_palabra_idioma">
+      <End Role="idioma" EntitySet="idioma" />
+      <End Role="palabra" EntitySet="palabra" />
     </AssociationSet>
   </EntityContainer>
-  <EntityType Name="emoji">
+  <EntityType Name="categoria">
     <Key>
-      <PropertyRef Name="emojiID" />
+      <PropertyRef Name="id" />
     </Key>
-    <Property Name="emojiID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
-    <Property Name="emoticon" Type="varchar" Nullable="false" MaxLength="4" />
-    <Property Name="score" Type="int" />
+    <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="nombreCategoria" Type="varchar" Nullable="false" MaxLength="50" />
   </EntityType>
-  <EntityType Name="enhancers">
+  <EntityType Name="idioma">
     <Key>
-      <PropertyRef Name="enhancersID" />
+      <PropertyRef Name="id" />
     </Key>
-    <Property Name="enhancersID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
-    <Property Name="word" Type="varchar" Nullable="false" MaxLength="80" />
-    <Property Name="score" Type="int" />
+    <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="nombreIdioma" Type="varchar" Nullable="false" MaxLength="50" />
   </EntityType>
-  <EntityType Name="feelingWord">
+  <EntityType Name="palabra">
     <Key>
-      <PropertyRef Name="feelwordID" />
+      <PropertyRef Name="id" />
     </Key>
-    <Property Name="feelwordID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
-    <Property Name="word" Type="varchar" Nullable="false" MaxLength="80" />
-    <Property Name="score" Type="int" />
+    <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="valorPalabra" Type="varchar" Nullable="false" MaxLength="80" />
+    <Property Name="idIdioma" Type="int" Nullable="false" />
+    <Property Name="idCategoria" Type="int" Nullable="false" />
   </EntityType>
-  <EntityType Name="idiom">
+  <EntityType Name="sysdiagrams">
     <Key>
-      <PropertyRef Name="idiomID" />
+      <PropertyRef Name="diagram_id" />
     </Key>
-    <Property Name="idiomID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
-    <Property Name="idiom" Type="varchar" Nullable="false" MaxLength="50" />
+    <Property Name="name" Type="nvarchar" Nullable="false" MaxLength="128" />
+    <Property Name="principal_id" Type="int" Nullable="false" />
+    <Property Name="diagram_id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="version" Type="int" />
+    <Property Name="definition" Type="varbinary(max)" />
   </EntityType>
-  <EntityType Name="stopword">
-    <Key>
-      <PropertyRef Name="stopwordID" />
-    </Key>
-    <Property Name="stopwordID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
-    <Property Name="word" Type="varchar" Nullable="false" MaxLength="80" />
-  </EntityType>
-  <EntityType Name="word">
-    <Key>
-      <PropertyRef Name="wordID" />
-    </Key>
-    <Property Name="wordID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
-    <Property Name="word" Type="varchar" Nullable="false" MaxLength="80" />
-    <Property Name="category" Type="varchar" MaxLength="50" />
-    <Property Name="idiomID" Type="int" Nullable="false" />
-  </EntityType>
-  <Association Name="fk_PerOrders">
-    <End Role="idiom" Type="AnalizadorBDModel.Store.idiom" Multiplicity="1" />
-    <End Role="word" Type="AnalizadorBDModel.Store.word" Multiplicity="*" />
+  <Association Name="FK_palabra_categoria">
+    <End Role="categoria" Type="AnalizadorBDModel.Store.categoria" Multiplicity="1" />
+    <End Role="palabra" Type="AnalizadorBDModel.Store.palabra" Multiplicity="*" />
     <ReferentialConstraint>
-      <Principal Role="idiom">
-        <PropertyRef Name="idiomID" />
+      <Principal Role="categoria">
+        <PropertyRef Name="id" />
       </Principal>
-      <Dependent Role="word">
-        <PropertyRef Name="idiomID" />
+      <Dependent Role="palabra">
+        <PropertyRef Name="idCategoria" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_palabra_idioma">
+    <End Role="idioma" Type="AnalizadorBDModel.Store.idioma" Multiplicity="1" />
+    <End Role="palabra" Type="AnalizadorBDModel.Store.palabra" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="idioma">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="palabra">
+        <PropertyRef Name="idIdioma" />
       </Dependent>
     </ReferentialConstraint>
   </Association>

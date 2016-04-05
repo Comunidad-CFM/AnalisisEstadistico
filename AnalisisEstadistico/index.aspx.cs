@@ -26,6 +26,7 @@ namespace AnalisisEstadistico
         public Sentiment sentiment;
         public Language language;
         public Twitter twitter;
+        public FB facebook;
 
         protected void Page_Load(object sender, EventArgs e)
         { }
@@ -286,11 +287,26 @@ namespace AnalisisEstadistico
                 this.twitter = new Twitter(Server.MapPath("~") + "twitterJSON\\");
                 this.twitter.tweetsAnalysis();
                 this.twitter.generalAnalysis();
-                generateTwitterCharts();
+                generateCharts(this.twitter.langPercents, this.twitter.langCount);
             }
         }
 
-        protected void generateTwitterCharts()
+        protected void postsAnalysis(object sender, EventArgs e)
+        {
+            // CAAPhsmMoJk8BALvcIhPvyF9FCCTjp6XDCIMgJiKGRC9ES6MSyQmIZCGNIMcp2zX7bB5ZCTCCYiMvW9SNabf3bXDD4ACi67MFHclnHZAQDV4DZA4Kex058OrHkRnLZAmAHtGaXZAedgxDcDQw7S1ic4LMPApE0Tkq6aIGgMgzim42UM5JnTDFk8TMqGnJF2Fculx40yZCfegqAZDZD
+            string token = textFacebook.Text;
+            if (!token.Equals(""))
+            {
+                this.facebook = new FB(token);
+                this.facebook.getPosts();
+                contentBox.Text = this.facebook.allMessages;
+                this.facebook.postsAnalysis();
+                this.facebook.generalAnalysis();
+                generateCharts(this.facebook.langPercents, this.facebook.langCount);
+            }
+        }
+
+        protected void generateCharts(double[] percents, double[] langCount)
         {
             tweetChart.Visible = true;
             tweetCChart.Visible = true;
@@ -299,11 +315,11 @@ namespace AnalisisEstadistico
 
             tweetChart.ChartAreas["ChartArea1"].AxisX.Interval = 1;
             tweetChart.ChartAreas["ChartArea1"].Area3DStyle.Enable3D = true;
-            tweetChart.Series["tweets"].Points.DataBindXY(langs, this.twitter.langPercents);
+            tweetChart.Series["tweets"].Points.DataBindXY(langs, percents);
 
             tweetCChart.ChartAreas["ChartArea1"].AxisX.Interval = 1;
             tweetCChart.ChartAreas["ChartArea1"].Area3DStyle.Enable3D = true;
-            tweetCChart.Series["tweets"].Points.DataBindXY(langs, this.twitter.langCount);
+            tweetCChart.Series["tweets"].Points.DataBindXY(langs, langCount);
         }
 
         protected void generateLanguageCharts()

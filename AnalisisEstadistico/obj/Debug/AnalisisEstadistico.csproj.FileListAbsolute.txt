@@ -81,3 +81,5 @@ C:\Users\Fauricio\Documents\Visual Studio 2012\Projects\AnalisisEstadistico\Anal
 C:\Users\Fauricio\Documents\Visual Studio 2012\Projects\AnalisisEstadistico\AnalisisEstadistico\obj\Debug\AnalisisEstadistico.pdb
 C:\Users\Fauricio\Documents\Visual Studio 2012\Projects\AnalisisEstadistico\AnalisisEstadistico\bin\ICSharpCode.SharpZipLib.dll
 C:\Users\Fauricio\Documents\Visual Studio 2012\Projects\AnalisisEstadistico\AnalisisEstadistico\bin\SevenZipSharp.dll
+C:\Users\Fauricio\Documents\Visual Studio 2012\Projects\AnalisisEstadistico\AnalisisEstadistico\bin\Facebook.dll
+C:\Users\Fauricio\Documents\Visual Studio 2012\Projects\AnalisisEstadistico\AnalisisEstadistico\bin\Facebook.xml

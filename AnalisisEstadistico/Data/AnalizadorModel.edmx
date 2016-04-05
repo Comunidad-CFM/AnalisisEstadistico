@@ -6,73 +6,73 @@
     <edmx:StorageModels>
       <Schema Namespace="AnalizadorBDModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityContainer Name="AnalizadorBDModelStoreContainer">
-          <EntitySet Name="emoji" EntityType="AnalizadorBDModel.Store.emoji" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="enhancers" EntityType="AnalizadorBDModel.Store.enhancers" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="feelingWord" EntityType="AnalizadorBDModel.Store.feelingWord" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="idiom" EntityType="AnalizadorBDModel.Store.idiom" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="stopword" EntityType="AnalizadorBDModel.Store.stopword" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="word" EntityType="AnalizadorBDModel.Store.word" store:Type="Tables" Schema="dbo" />
-          <AssociationSet Name="fk_PerOrders" Association="AnalizadorBDModel.Store.fk_PerOrders">
-            <End Role="idiom" EntitySet="idiom" />
-            <End Role="word" EntitySet="word" />
+          <EntitySet Name="categoria" EntityType="AnalizadorBDModel.Store.categoria" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="idioma" EntityType="AnalizadorBDModel.Store.idioma" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="palabra" EntityType="AnalizadorBDModel.Store.palabra" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="sysdiagrams" EntityType="AnalizadorBDModel.Store.sysdiagrams" store:Type="Tables" Schema="dbo" />
+          <AssociationSet Name="FK_palabra_categoria" Association="AnalizadorBDModel.Store.FK_palabra_categoria">
+            <End Role="categoria" EntitySet="categoria" />
+            <End Role="palabra" EntitySet="palabra" />
+          </AssociationSet>
+          <AssociationSet Name="FK_palabra_idioma" Association="AnalizadorBDModel.Store.FK_palabra_idioma">
+            <End Role="idioma" EntitySet="idioma" />
+            <End Role="palabra" EntitySet="palabra" />
           </AssociationSet>
         </EntityContainer>
-        <EntityType Name="emoji">
+        <EntityType Name="categoria">
           <Key>
-            <PropertyRef Name="emojiID" />
+            <PropertyRef Name="id" />
           </Key>
-          <Property Name="emojiID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
-          <Property Name="emoticon" Type="varchar" Nullable="false" MaxLength="4" />
-          <Property Name="score" Type="int" />
+          <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="nombreCategoria" Type="varchar" Nullable="false" MaxLength="50" />
         </EntityType>
-        <EntityType Name="enhancers">
+        <EntityType Name="idioma">
           <Key>
-            <PropertyRef Name="enhancersID" />
+            <PropertyRef Name="id" />
           </Key>
-          <Property Name="enhancersID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
-          <Property Name="word" Type="varchar" Nullable="false" MaxLength="80" />
-          <Property Name="score" Type="int" />
+          <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="nombreIdioma" Type="varchar" Nullable="false" MaxLength="50" />
         </EntityType>
-        <EntityType Name="feelingWord">
+        <EntityType Name="palabra">
           <Key>
-            <PropertyRef Name="feelwordID" />
+            <PropertyRef Name="id" />
           </Key>
-          <Property Name="feelwordID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
-          <Property Name="word" Type="varchar" Nullable="false" MaxLength="80" />
-          <Property Name="score" Type="int" />
+          <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="valorPalabra" Type="varchar" Nullable="false" MaxLength="80" />
+          <Property Name="idIdioma" Type="int" Nullable="false" />
+          <Property Name="idCategoria" Type="int" Nullable="false" />
         </EntityType>
-        <EntityType Name="idiom">
+        <EntityType Name="sysdiagrams">
           <Key>
-            <PropertyRef Name="idiomID" />
+            <PropertyRef Name="diagram_id" />
           </Key>
-          <Property Name="idiomID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
-          <Property Name="idiom" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="name" Type="nvarchar" Nullable="false" MaxLength="128" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
         </EntityType>
-        <EntityType Name="stopword">
-          <Key>
-            <PropertyRef Name="stopwordID" />
-          </Key>
-          <Property Name="stopwordID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
-          <Property Name="word" Type="varchar" Nullable="false" MaxLength="80" />
-        </EntityType>
-        <EntityType Name="word">
-          <Key>
-            <PropertyRef Name="wordID" />
-          </Key>
-          <Property Name="wordID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
-          <Property Name="word" Type="varchar" Nullable="false" MaxLength="80" />
-          <Property Name="category" Type="varchar" MaxLength="50" />
-          <Property Name="idiomID" Type="int" Nullable="false" />
-        </EntityType>
-        <Association Name="fk_PerOrders">
-          <End Role="idiom" Type="AnalizadorBDModel.Store.idiom" Multiplicity="1" />
-          <End Role="word" Type="AnalizadorBDModel.Store.word" Multiplicity="*" />
+        <Association Name="FK_palabra_categoria">
+          <End Role="categoria" Type="AnalizadorBDModel.Store.categoria" Multiplicity="1" />
+          <End Role="palabra" Type="AnalizadorBDModel.Store.palabra" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="idiom">
-              <PropertyRef Name="idiomID" />
+            <Principal Role="categoria">
+              <PropertyRef Name="id" />
             </Principal>
-            <Dependent Role="word">
-              <PropertyRef Name="idiomID" />
+            <Dependent Role="palabra">
+              <PropertyRef Name="idCategoria" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_palabra_idioma">
+          <End Role="idioma" Type="AnalizadorBDModel.Store.idioma" Multiplicity="1" />
+          <End Role="palabra" Type="AnalizadorBDModel.Store.palabra" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="idioma">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="palabra">
+              <PropertyRef Name="idIdioma" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -82,75 +82,77 @@
     <edmx:ConceptualModels>
       <Schema Namespace="AnalizadorBDModel" Alias="Self" p1:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:p1="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityContainer Name="AnalizadorBDEntities" p1:LazyLoadingEnabled="true">
-          <EntitySet Name="emojis" EntityType="AnalizadorBDModel.emoji" />
-          <EntitySet Name="enhancers" EntityType="AnalizadorBDModel.enhancer" />
-          <EntitySet Name="feelingWords" EntityType="AnalizadorBDModel.feelingWord" />
-          <EntitySet Name="idioms" EntityType="AnalizadorBDModel.idiom" />
-          <EntitySet Name="stopwords" EntityType="AnalizadorBDModel.stopword" />
-          <EntitySet Name="words" EntityType="AnalizadorBDModel.word" />
-          <AssociationSet Name="fk_PerOrders" Association="AnalizadorBDModel.fk_PerOrders">
-            <End Role="idiom" EntitySet="idioms" />
-            <End Role="word" EntitySet="words" />
+          <EntitySet Name="categorias" EntityType="AnalizadorBDModel.categoria" />
+          <EntitySet Name="idiomas" EntityType="AnalizadorBDModel.idioma" />
+          <EntitySet Name="palabras" EntityType="AnalizadorBDModel.palabra" />
+          <EntitySet Name="sysdiagrams" EntityType="AnalizadorBDModel.sysdiagram" />
+          <AssociationSet Name="FK_palabra_categoria" Association="AnalizadorBDModel.FK_palabra_categoria">
+            <End Role="categoria" EntitySet="categorias" />
+            <End Role="palabra" EntitySet="palabras" />
+          </AssociationSet>
+          <AssociationSet Name="FK_palabra_idioma" Association="AnalizadorBDModel.FK_palabra_idioma">
+            <End Role="idioma" EntitySet="idiomas" />
+            <End Role="palabra" EntitySet="palabras" />
           </AssociationSet>
         </EntityContainer>
-        <EntityType Name="emoji">
+        <EntityType Name="categoria">
           <Key>
-            <PropertyRef Name="emojiID" />
+            <PropertyRef Name="id" />
           </Key>
-          <Property Name="emojiID" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
-          <Property Name="emoticon" Type="String" Nullable="false" MaxLength="4" Unicode="false" FixedLength="false" />
-          <Property Name="score" Type="Int32" />
+          <Property Name="id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="nombreCategoria" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+          <NavigationProperty Name="palabras" Relationship="AnalizadorBDModel.FK_palabra_categoria" FromRole="categoria" ToRole="palabra" />
         </EntityType>
-        <EntityType Name="enhancer">
+        <EntityType Name="idioma">
           <Key>
-            <PropertyRef Name="enhancersID" />
+            <PropertyRef Name="id" />
           </Key>
-          <Property Name="enhancersID" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
-          <Property Name="word" Type="String" Nullable="false" MaxLength="80" Unicode="false" FixedLength="false" />
-          <Property Name="score" Type="Int32" />
+          <Property Name="id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="nombreIdioma" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+          <NavigationProperty Name="palabras" Relationship="AnalizadorBDModel.FK_palabra_idioma" FromRole="idioma" ToRole="palabra" />
         </EntityType>
-        <EntityType Name="feelingWord">
+        <EntityType Name="palabra">
           <Key>
-            <PropertyRef Name="feelwordID" />
+            <PropertyRef Name="id" />
           </Key>
-          <Property Name="feelwordID" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
-          <Property Name="word" Type="String" Nullable="false" MaxLength="80" Unicode="false" FixedLength="false" />
-          <Property Name="score" Type="Int32" />
+          <Property Name="id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="valorPalabra" Type="String" Nullable="false" MaxLength="80" Unicode="false" FixedLength="false" />
+          <Property Name="idIdioma" Type="Int32" Nullable="false" />
+          <Property Name="idCategoria" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="categoria" Relationship="AnalizadorBDModel.FK_palabra_categoria" FromRole="palabra" ToRole="categoria" />
+          <NavigationProperty Name="idioma" Relationship="AnalizadorBDModel.FK_palabra_idioma" FromRole="palabra" ToRole="idioma" />
         </EntityType>
-        <EntityType Name="idiom">
+        <EntityType Name="sysdiagram">
           <Key>
-            <PropertyRef Name="idiomID" />
+            <PropertyRef Name="diagram_id" />
           </Key>
-          <Property Name="idiomID" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
-          <Property Name="idiom1" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
-          <NavigationProperty Name="words" Relationship="AnalizadorBDModel.fk_PerOrders" FromRole="idiom" ToRole="word" />
+          <Property Name="name" Type="String" Nullable="false" MaxLength="128" Unicode="true" FixedLength="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
         </EntityType>
-        <EntityType Name="stopword">
-          <Key>
-            <PropertyRef Name="stopwordID" />
-          </Key>
-          <Property Name="stopwordID" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
-          <Property Name="word" Type="String" Nullable="false" MaxLength="80" Unicode="false" FixedLength="false" />
-        </EntityType>
-        <EntityType Name="word">
-          <Key>
-            <PropertyRef Name="wordID" />
-          </Key>
-          <Property Name="wordID" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
-          <Property Name="word1" Type="String" Nullable="false" MaxLength="80" Unicode="false" FixedLength="false" />
-          <Property Name="category" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
-          <Property Name="idiomID" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="idiom" Relationship="AnalizadorBDModel.fk_PerOrders" FromRole="word" ToRole="idiom" />
-        </EntityType>
-        <Association Name="fk_PerOrders">
-          <End Role="idiom" Type="AnalizadorBDModel.idiom" Multiplicity="1" />
-          <End Role="word" Type="AnalizadorBDModel.word" Multiplicity="*" />
+        <Association Name="FK_palabra_categoria">
+          <End Role="categoria" Type="AnalizadorBDModel.categoria" Multiplicity="1" />
+          <End Role="palabra" Type="AnalizadorBDModel.palabra" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="idiom">
-              <PropertyRef Name="idiomID" />
+            <Principal Role="categoria">
+              <PropertyRef Name="id" />
             </Principal>
-            <Dependent Role="word">
-              <PropertyRef Name="idiomID" />
+            <Dependent Role="palabra">
+              <PropertyRef Name="idCategoria" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_palabra_idioma">
+          <End Role="idioma" Type="AnalizadorBDModel.idioma" Multiplicity="1" />
+          <End Role="palabra" Type="AnalizadorBDModel.palabra" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="idioma">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="palabra">
+              <PropertyRef Name="idIdioma" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -160,56 +162,40 @@
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="AnalizadorBDModelStoreContainer" CdmEntityContainer="AnalizadorBDEntities">
-          <EntitySetMapping Name="emojis">
-            <EntityTypeMapping TypeName="AnalizadorBDModel.emoji">
-              <MappingFragment StoreEntitySet="emoji">
-                <ScalarProperty Name="emojiID" ColumnName="emojiID" />
-                <ScalarProperty Name="emoticon" ColumnName="emoticon" />
-                <ScalarProperty Name="score" ColumnName="score" />
+          <EntitySetMapping Name="categorias">
+            <EntityTypeMapping TypeName="AnalizadorBDModel.categoria">
+              <MappingFragment StoreEntitySet="categoria">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="nombreCategoria" ColumnName="nombreCategoria" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="enhancers">
-            <EntityTypeMapping TypeName="AnalizadorBDModel.enhancer">
-              <MappingFragment StoreEntitySet="enhancers">
-                <ScalarProperty Name="enhancersID" ColumnName="enhancersID" />
-                <ScalarProperty Name="word" ColumnName="word" />
-                <ScalarProperty Name="score" ColumnName="score" />
+          <EntitySetMapping Name="idiomas">
+            <EntityTypeMapping TypeName="AnalizadorBDModel.idioma">
+              <MappingFragment StoreEntitySet="idioma">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="nombreIdioma" ColumnName="nombreIdioma" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="feelingWords">
-            <EntityTypeMapping TypeName="AnalizadorBDModel.feelingWord">
-              <MappingFragment StoreEntitySet="feelingWord">
-                <ScalarProperty Name="feelwordID" ColumnName="feelwordID" />
-                <ScalarProperty Name="word" ColumnName="word" />
-                <ScalarProperty Name="score" ColumnName="score" />
+          <EntitySetMapping Name="palabras">
+            <EntityTypeMapping TypeName="AnalizadorBDModel.palabra">
+              <MappingFragment StoreEntitySet="palabra">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="valorPalabra" ColumnName="valorPalabra" />
+                <ScalarProperty Name="idIdioma" ColumnName="idIdioma" />
+                <ScalarProperty Name="idCategoria" ColumnName="idCategoria" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="idioms">
-            <EntityTypeMapping TypeName="AnalizadorBDModel.idiom">
-              <MappingFragment StoreEntitySet="idiom">
-                <ScalarProperty Name="idiomID" ColumnName="idiomID" />
-                <ScalarProperty Name="idiom1" ColumnName="idiom" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="stopwords">
-            <EntityTypeMapping TypeName="AnalizadorBDModel.stopword">
-              <MappingFragment StoreEntitySet="stopword">
-                <ScalarProperty Name="stopwordID" ColumnName="stopwordID" />
-                <ScalarProperty Name="word" ColumnName="word" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="words">
-            <EntityTypeMapping TypeName="AnalizadorBDModel.word">
-              <MappingFragment StoreEntitySet="word">
-                <ScalarProperty Name="wordID" ColumnName="wordID" />
-                <ScalarProperty Name="word1" ColumnName="word" />
-                <ScalarProperty Name="category" ColumnName="category" />
-                <ScalarProperty Name="idiomID" ColumnName="idiomID" />
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="AnalizadorBDModel.sysdiagram">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

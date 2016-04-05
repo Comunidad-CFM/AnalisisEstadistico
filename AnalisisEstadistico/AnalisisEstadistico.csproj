@@ -48,6 +48,9 @@
     <Reference Include="EntityFramework.SqlServer">
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="Facebook">
+      <HintPath>..\packages\Facebook.7.0.6\lib\net45\Facebook.dll</HintPath>
+    </Reference>
     <Reference Include="Hammock.ClientProfile, Version=1.0.0.0, Culture=neutral, PublicKeyToken=c148cfba29ed1a4d, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\TweetSharp.2.3.1\lib\4.0\Hammock.ClientProfile.dll</HintPath>
@@ -59,9 +62,9 @@
       <HintPath>..\..\..\..\..\Downloads\Ionic.Zip.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+    <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\TweetSharp.2.3.1\lib\4.0\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\packages\Newtonsoft.Json.8.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="OfficeApi">
       <HintPath>..\packages\NetOffice.Core.Net45.1.7.3.0\lib\net45\OfficeApi.dll</HintPath>
@@ -126,30 +129,28 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>AnalizadorModel.edmx</DependentUpon>
     </Compile>
-    <Compile Include="Data\emoji.cs">
+    <Compile Include="Data\categoria.cs">
       <DependentUpon>AnalizadorModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Data\enhancer.cs">
+    <Compile Include="Data\idioma.cs">
       <DependentUpon>AnalizadorModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Data\feelingWord.cs">
+    <Compile Include="Data\palabra.cs">
       <DependentUpon>AnalizadorModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Data\idiom.cs">
+    <Compile Include="Data\sysdiagram.cs">
       <DependentUpon>AnalizadorModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Data\stopword.cs">
-      <DependentUpon>AnalizadorModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Data\word.cs">
-      <DependentUpon>AnalizadorModel.tt</DependentUpon>
-    </Compile>
+    <Compile Include="Model\Categoria.cs" />
     <Compile Include="Model\Emoji.cs" />
     <Compile Include="Model\Enhancer.cs" />
     <Compile Include="Model\FeelingWord.cs" />
+    <Compile Include="Model\Post.cs" />
+    <Compile Include="Modulos\FB.cs" />
     <Compile Include="Modulos\Language.cs" />
+    <Compile Include="Modulos\NaiveBayes.cs" />
     <Compile Include="Modulos\Sentiment.cs" />
-    <Compile Include="Modulos\Tweet.cs" />
+    <Compile Include="Model\Tweet.cs" />
     <Compile Include="Modulos\Twitter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="index.aspx.cs">

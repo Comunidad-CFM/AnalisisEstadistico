@@ -54,6 +54,7 @@
                             <asp:Button class="btn btn-nav" runat="server" OnClick="sentimentAnalysis" Text="Análisis del sentimiento" />
                             <asp:Button class="btn btn-nav" runat="server" OnClick="languageAnalysis" Text="Análisis de lenguaje" />
                             <asp:Button class="btn btn-nav" runat="server" OnClick="tweetsAnalysis" Text="Analizar tweets" />
+                            <asp:Button class="btn btn-nav" runat="server" OnClick="postsAnalysis" Text="Analizar posts" />
                             <asp:Button class="btn btn-nav" runat="server" OnClick="cleanTextArea" Text="Limpiar" />
                         </ul>
                     </li>
@@ -82,6 +83,12 @@
                     <label><span class="label label-default">Twitter</span></label>
                     <div>
                         <asp:TextBox class="form-control" ID="textTwitter" runat="server" placeholder="Username tweets"></asp:TextBox>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <label><span class="label label-default">Facebook</span></label>
+                    <div>
+                        <asp:TextBox class="form-control" ID="textFacebook" runat="server" placeholder="Token"></asp:TextBox>
                     </div>
                 </div>
             </div>
@@ -163,7 +170,7 @@
                     </asp:ChartArea>
                 </ChartAreas>
                 <Titles>
-                   <asp:Title Text="Porcentaje del lenguaje de los tweets" />
+                   <asp:Title Text="Porcentaje del lenguaje en las publicaciones" />
                 </Titles>
             </asp:Chart>
             <asp:Chart ID="tweetCChart" runat="server" Width="555px" Visible="False">
@@ -176,7 +183,7 @@
                     </asp:ChartArea>
                 </ChartAreas>
                 <Titles>
-                   <asp:Title Text="Cantidad de tweets por lenguaje" />
+                   <asp:Title Text="Cantidad de publicaciones por lenguaje" />
                 </Titles>
             </asp:Chart>
         </div>

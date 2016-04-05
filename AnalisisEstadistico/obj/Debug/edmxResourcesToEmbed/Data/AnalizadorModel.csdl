@@ -1,75 +1,77 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Schema Namespace="AnalizadorBDModel" Alias="Self" p1:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:p1="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
   <EntityContainer Name="AnalizadorBDEntities" p1:LazyLoadingEnabled="true">
-    <EntitySet Name="emojis" EntityType="AnalizadorBDModel.emoji" />
-    <EntitySet Name="enhancers" EntityType="AnalizadorBDModel.enhancer" />
-    <EntitySet Name="feelingWords" EntityType="AnalizadorBDModel.feelingWord" />
-    <EntitySet Name="idioms" EntityType="AnalizadorBDModel.idiom" />
-    <EntitySet Name="stopwords" EntityType="AnalizadorBDModel.stopword" />
-    <EntitySet Name="words" EntityType="AnalizadorBDModel.word" />
-    <AssociationSet Name="fk_PerOrders" Association="AnalizadorBDModel.fk_PerOrders">
-      <End Role="idiom" EntitySet="idioms" />
-      <End Role="word" EntitySet="words" />
+    <EntitySet Name="categorias" EntityType="AnalizadorBDModel.categoria" />
+    <EntitySet Name="idiomas" EntityType="AnalizadorBDModel.idioma" />
+    <EntitySet Name="palabras" EntityType="AnalizadorBDModel.palabra" />
+    <EntitySet Name="sysdiagrams" EntityType="AnalizadorBDModel.sysdiagram" />
+    <AssociationSet Name="FK_palabra_categoria" Association="AnalizadorBDModel.FK_palabra_categoria">
+      <End Role="categoria" EntitySet="categorias" />
+      <End Role="palabra" EntitySet="palabras" />
+    </AssociationSet>
+    <AssociationSet Name="FK_palabra_idioma" Association="AnalizadorBDModel.FK_palabra_idioma">
+      <End Role="idioma" EntitySet="idiomas" />
+      <End Role="palabra" EntitySet="palabras" />
     </AssociationSet>
   </EntityContainer>
-  <EntityType Name="emoji">
+  <EntityType Name="categoria">
     <Key>
-      <PropertyRef Name="emojiID" />
+      <PropertyRef Name="id" />
     </Key>
-    <Property Name="emojiID" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
-    <Property Name="emoticon" Type="String" Nullable="false" MaxLength="4" Unicode="false" FixedLength="false" />
-    <Property Name="score" Type="Int32" />
+    <Property Name="id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+    <Property Name="nombreCategoria" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+    <NavigationProperty Name="palabras" Relationship="AnalizadorBDModel.FK_palabra_categoria" FromRole="categoria" ToRole="palabra" />
   </EntityType>
-  <EntityType Name="enhancer">
+  <EntityType Name="idioma">
     <Key>
-      <PropertyRef Name="enhancersID" />
+      <PropertyRef Name="id" />
     </Key>
-    <Property Name="enhancersID" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
-    <Property Name="word" Type="String" Nullable="false" MaxLength="80" Unicode="false" FixedLength="false" />
-    <Property Name="score" Type="Int32" />
+    <Property Name="id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+    <Property Name="nombreIdioma" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+    <NavigationProperty Name="palabras" Relationship="AnalizadorBDModel.FK_palabra_idioma" FromRole="idioma" ToRole="palabra" />
   </EntityType>
-  <EntityType Name="feelingWord">
+  <EntityType Name="palabra">
     <Key>
-      <PropertyRef Name="feelwordID" />
+      <PropertyRef Name="id" />
     </Key>
-    <Property Name="feelwordID" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
-    <Property Name="word" Type="String" Nullable="false" MaxLength="80" Unicode="false" FixedLength="false" />
-    <Property Name="score" Type="Int32" />
+    <Property Name="id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+    <Property Name="valorPalabra" Type="String" Nullable="false" MaxLength="80" Unicode="false" FixedLength="false" />
+    <Property Name="idIdioma" Type="Int32" Nullable="false" />
+    <Property Name="idCategoria" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="categoria" Relationship="AnalizadorBDModel.FK_palabra_categoria" FromRole="palabra" ToRole="categoria" />
+    <NavigationProperty Name="idioma" Relationship="AnalizadorBDModel.FK_palabra_idioma" FromRole="palabra" ToRole="idioma" />
   </EntityType>
-  <EntityType Name="idiom">
+  <EntityType Name="sysdiagram">
     <Key>
-      <PropertyRef Name="idiomID" />
+      <PropertyRef Name="diagram_id" />
     </Key>
-    <Property Name="idiomID" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
-    <Property Name="idiom1" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
-    <NavigationProperty Name="words" Relationship="AnalizadorBDModel.fk_PerOrders" FromRole="idiom" ToRole="word" />
+    <Property Name="name" Type="String" Nullable="false" MaxLength="128" Unicode="true" FixedLength="false" />
+    <Property Name="principal_id" Type="Int32" Nullable="false" />
+    <Property Name="diagram_id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+    <Property Name="version" Type="Int32" />
+    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
   </EntityType>
-  <EntityType Name="stopword">
-    <Key>
-      <PropertyRef Name="stopwordID" />
-    </Key>
-    <Property Name="stopwordID" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
-    <Property Name="word" Type="String" Nullable="false" MaxLength="80" Unicode="false" FixedLength="false" />
-  </EntityType>
-  <EntityType Name="word">
-    <Key>
-      <PropertyRef Name="wordID" />
-    </Key>
-    <Property Name="wordID" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
-    <Property Name="word1" Type="String" Nullable="false" MaxLength="80" Unicode="false" FixedLength="false" />
-    <Property Name="category" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
-    <Property Name="idiomID" Type="Int32" Nullable="false" />
-    <NavigationProperty Name="idiom" Relationship="AnalizadorBDModel.fk_PerOrders" FromRole="word" ToRole="idiom" />
-  </EntityType>
-  <Association Name="fk_PerOrders">
-    <End Role="idiom" Type="AnalizadorBDModel.idiom" Multiplicity="1" />
-    <End Role="word" Type="AnalizadorBDModel.word" Multiplicity="*" />
+  <Association Name="FK_palabra_categoria">
+    <End Role="categoria" Type="AnalizadorBDModel.categoria" Multiplicity="1" />
+    <End Role="palabra" Type="AnalizadorBDModel.palabra" Multiplicity="*" />
     <ReferentialConstraint>
-      <Principal Role="idiom">
-        <PropertyRef Name="idiomID" />
+      <Principal Role="categoria">
+        <PropertyRef Name="id" />
       </Principal>
-      <Dependent Role="word">
-        <PropertyRef Name="idiomID" />
+      <Dependent Role="palabra">
+        <PropertyRef Name="idCategoria" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_palabra_idioma">
+    <End Role="idioma" Type="AnalizadorBDModel.idioma" Multiplicity="1" />
+    <End Role="palabra" Type="AnalizadorBDModel.palabra" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="idioma">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="palabra">
+        <PropertyRef Name="idIdioma" />
       </Dependent>
     </ReferentialConstraint>
   </Association>

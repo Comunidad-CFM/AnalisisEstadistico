@@ -25,11 +25,9 @@ namespace AnalisisEstadistico.Data
             throw new UnintentionalCodeFirstException();
         }
     
-        public DbSet<emoji> emojis { get; set; }
-        public DbSet<enhancer> enhancers { get; set; }
-        public DbSet<feelingWord> feelingWords { get; set; }
-        public DbSet<idiom> idioms { get; set; }
-        public DbSet<stopword> stopwords { get; set; }
-        public DbSet<word> words { get; set; }
+        public DbSet<categoria> categorias { get; set; }
+        public DbSet<idioma> idiomas { get; set; }
+        public DbSet<palabra> palabras { get; set; }
+        public DbSet<sysdiagram> sysdiagrams { get; set; }
     }
 }
