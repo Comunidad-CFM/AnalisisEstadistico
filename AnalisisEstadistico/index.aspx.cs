@@ -243,23 +243,13 @@ namespace AnalisisEstadistico
             }
         }
 
-        protected void click_searchTweets(object sender, EventArgs e)
-        {
-            string userTweets = textTwitter.Text;
-
-            if (userTweets != "")
-            {
-                contentBox.Text = this.twitter.searchTweets(userTweets);
-            }
-        }
-
         protected void sentimentAnalysis(object sender, EventArgs e)
         {
-            if (!contentBox.Text.Equals(""))
+            string text = contentBox.Text;
+
+            if (!text.Equals(""))
             {
-                this.sentiment = new Sentiment();
-                resultBox.Text = ""; // Se vacia el textarea de resultados.
-                this.sentiment.text = contentBox.Text; // Se le asigna el texto a analizar.
+                this.sentiment = new Sentiment(text);
                 resultBox.Text = this.sentiment.sentimentAnalysis();
                 resultBox.Text = resultBox.Text + this.sentiment.showScores();
                 resultBox.Text = resultBox.Text + this.sentiment.giveProbabilities();
@@ -289,11 +279,19 @@ namespace AnalisisEstadistico
                 this.twitter.generalAnalysis();
                 generateCharts(this.twitter.langPercents, this.twitter.langCount);
             }
+            else if (!textTwitter.Text.Equals(""))
+            {
+                this.twitter = new Twitter();
+                contentBox.Text = this.twitter.searchTweets(textTwitter.Text);
+                this.twitter.tweetsAnalysisForUser();
+                this.twitter.generalAnalysis();
+                generateCharts(this.twitter.langPercents, this.twitter.langCount);
+            }
         }
 
         protected void postsAnalysis(object sender, EventArgs e)
         {
-            // CAAPhsmMoJk8BALvcIhPvyF9FCCTjp6XDCIMgJiKGRC9ES6MSyQmIZCGNIMcp2zX7bB5ZCTCCYiMvW9SNabf3bXDD4ACi67MFHclnHZAQDV4DZA4Kex058OrHkRnLZAmAHtGaXZAedgxDcDQw7S1ic4LMPApE0Tkq6aIGgMgzim42UM5JnTDFk8TMqGnJF2Fculx40yZCfegqAZDZD
+            // CAAPhsmMoJk8BACqvimNpXnxpUW8yd3OIZB8EfWRX1VAgA3QrLGdOMJtjyFob8sLa2pPBh6kc7LCxuQxNVmfROzlBqAEKkhyAOEVawRzTzkFt0T7Q0KDzJXficlINldWdHz6EbIdOZBGo2Rho5B2B1CXy6z4NWvZBrFBghyXTGR9TFDjHi1yuB3skFgb2UsxyJQQdrZCLxAZDZD
             string token = textFacebook.Text;
             if (!token.Equals(""))
             {

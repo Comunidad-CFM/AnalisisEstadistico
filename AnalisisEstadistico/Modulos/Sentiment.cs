@@ -20,8 +20,9 @@ namespace AnalisisEstadistico.Modulos
         public float[] porcentajes;
         public float[] scores;
 
-        public Sentiment() 
+        public Sentiment(string text) 
         {
+            this.text = text;
             this.feelingWords = new List<FeelingWord>();
             this.emojis = new List<Emoji>();
             this.stopWords = new List<string>();

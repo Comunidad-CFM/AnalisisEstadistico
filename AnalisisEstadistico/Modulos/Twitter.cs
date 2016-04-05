@@ -19,16 +19,23 @@ namespace AnalisisEstadistico.Modulos
         public double[] langPercents;
         public double[] langCount;
         public List<string> contentJson;
+        public List<string> eachTweetUser;
 
         public Twitter(string path)
         {
-            this.language = new Language();
             this.tweetList = new List<Tweet>();
             this.contentJson = new List<string>();
             this.path = path;
             this.getJson();
         }
 
+        public Twitter()
+        {
+            this.eachTweetUser = new List<string>();
+            this.tweetList = new List<Tweet>();
+        }
+    
+        // Tweets user
         public string searchTweets(string content) 
         {
             string[] info = content.Split(' ');
@@ -45,12 +52,30 @@ namespace AnalisisEstadistico.Modulos
             for (int i = 0; i < tweetsList.Count; i++)
             {
                 contentTweets += tweetsList[i].Text + "\n\n";
+                this.eachTweetUser.Add(tweetsList[i].Text);
             }
 
             this.tweets = contentTweets;
             return contentTweets;
         }
 
+        public void tweetsAnalysisForUser()
+        {
+            Tweet tweet;
+
+            foreach (string eachTweet in this.eachTweetUser)
+            {
+                tweet = new Tweet();
+                this.language = new Language();
+                this.language.text = eachTweet;
+                tweet.lang = this.language.languageAnalisys();
+                tweet.msg = eachTweet;
+
+                this.tweetList.Add(tweet);
+            }
+        }
+
+        // Tweets masivos
         protected string readJson(string ruta)
         {
             string content = "";
@@ -134,7 +159,6 @@ namespace AnalisisEstadistico.Modulos
 
             this.langPercents = new double[] { percentSpanish, percentEnglish, percentGerman, percentDutch, percentUnknown };
             this.langCount = new double[] { contSpanish, contEnglish, contGerman, contDutch, contUnknown };
-
         }
 
         public void tweetsAnalysis()
@@ -153,6 +177,7 @@ namespace AnalisisEstadistico.Modulos
                     {
                         tweet = new Tweet();
                         token = JObject.Parse(subJson);
+                        this.language = new Language();
                         this.language.text = token.SelectToken("text").ToString();
                         tweet.lang = this.language.languageAnalisys();
                         tweet.user = token.SelectToken("user").SelectToken("name").ToString();

@@ -45,7 +45,6 @@
                         <ul class="dropdown-menu">
                             <asp:Button class="btn btn-nav" runat="server" OnClick="click_readHtmlJsonXmlTxt" Text="HTML/JSON/XML/TXT" />
                             <asp:Button class="btn btn-nav" runat="server" OnClick="click_readDoc" Text="DOC" />
-                            <asp:Button class="btn btn-nav" runat="server" OnClick="click_searchTweets" Text="Twitter" />
                         </ul>
                     </li>
                     <li class="dropdown">
