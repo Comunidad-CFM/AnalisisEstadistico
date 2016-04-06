@@ -100,19 +100,19 @@ namespace AnalisisEstadistico.Modulos
 
             foreach (Post post in postList)
             {
-                if (post.lang == "Spanish")
+                if (post.lang == "Español")
                 {
                     contSpanish++;
                 }
-                else if (post.lang == "English")
+                else if (post.lang == "Inglés")
                 {
                     contEnglish++;
                 }
-                else if (post.lang == "German")
+                else if (post.lang == "Alemán")
                 {
                     contGerman++;
                 }
-                else if (post.lang == "Dutch")
+                else if (post.lang == "Holandés")
                 {
                     contDutch++;
                 }

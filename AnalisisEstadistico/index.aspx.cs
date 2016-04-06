@@ -506,12 +506,30 @@ namespace AnalisisEstadistico
 
         protected void categoryAnalysis(object sender, EventArgs e)
         {
-            string text = contentBox.Text;
-            NaiveBayes clasificador = new NaiveBayes();
-            List<string> listaPalabras = clasificador.dividirTexto(text);
-            List<Categoria> resultados = new List<Categoria>();
-            resultados = clasificador.clasificar(listaPalabras);
-            imprimirResultadosCategoryAnalysis(resultados);
+            string content = contentBox.Text,
+                   idioma;
+
+            if (!content.Equals(""))
+            {
+                int i = 0;
+                double[] percents = new double[6];
+                this.language = new Language();
+                this.language.text = content;
+                idioma = this.language.languageAnalisys();
+
+                NaiveBayes clasificador = new NaiveBayes(idioma);
+                List<string> listaPalabras = clasificador.dividirTexto(content);
+                List<Categoria> resultados = new List<Categoria>();
+                resultados = clasificador.clasificar(listaPalabras);
+                imprimirResultadosCategoryAnalysis(resultados);
+
+                foreach(Categoria cat in resultados)
+                {
+                    percents[i] = cat.Porcentaje;
+                    i++;
+                }
+                generateCatCharts(percents);
+            }
         }
 
         public void imprimirResultadosCategoryAnalysis(List<Categoria> resultados)
@@ -534,7 +552,7 @@ namespace AnalisisEstadistico
                 if (categoria.PalabrasEnCategoria.Count != 0)
                     resultado += getPalabrasEncontradas(categoria.PalabrasEnCategoria);
                 else
-                    resultado += "   - 0\n";
+                    resultado += "   - 0\n\n";
 
             }
             resultBox.Text = "";
@@ -548,6 +566,7 @@ namespace AnalisisEstadistico
             {
                 palabrasEncontradas += ("   - " + palabra + "\n");
             }
+            palabrasEncontradas += "\n";
             return palabrasEncontradas;
         }
 

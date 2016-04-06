@@ -21,8 +21,33 @@ namespace AnalisisEstadistico.Modulos
         List<palabra> palabras;
 
         int porcentajeDeSimilitud = 0;
-        public NaiveBayes()
+        public NaiveBayes(string lang)
         {
+            if(lang.Equals("Español"))
+            {
+                this.idioma = 2;
+                nombreIdioma = lang;
+            }
+            else if(lang.Equals("Inglés"))
+            {
+                this.idioma = 1;
+                nombreIdioma = lang;
+            }
+            else if(lang.Equals("Alemán"))
+            {
+                this.idioma = 3;
+                nombreIdioma = lang;
+            }
+            else if(lang.Equals("Holandés"))
+            {
+                this.idioma = 4;
+                nombreIdioma = lang;
+            }
+            else
+            {
+                this.idioma = 0;
+            }
+
             idiomas = new List<idioma>();
             categorias = new List<categoria>();
             palabras = new List<palabra>();

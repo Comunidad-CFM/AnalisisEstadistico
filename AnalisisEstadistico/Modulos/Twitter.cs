@@ -203,19 +203,19 @@ namespace AnalisisEstadistico.Modulos
                     catGas += 1;
                 }
 
-                if (tweet.lang == "Spanish" || tweet.lang == "es")
+                if (tweet.lang == "Español" || tweet.lang == "es")
                 {
                     contSpanish++;
                 }
-                else if (tweet.lang == "English" || tweet.lang == "en")
+                else if (tweet.lang == "Inglés" || tweet.lang == "en")
                 {
                     contEnglish++;
                 }
-                else if (tweet.lang == "German" || tweet.lang == "de")
+                else if (tweet.lang == "Alemán" || tweet.lang == "de")
                 {
                     contGerman++;
                 }
-                else if (tweet.lang == "Dutch" || tweet.lang == "nl")
+                else if (tweet.lang == "Holandés" || tweet.lang == "nl")
                 {
                     contDutch++;
                 }
@@ -285,7 +285,6 @@ namespace AnalisisEstadistico.Modulos
                     try
                     {
                         tweet = new Tweet();
-                        this.clasificador = new NaiveBayes();
                         token = JObject.Parse(subJson);
                         this.language = new Language();
                         this.language.text = token.SelectToken("text").ToString();
@@ -294,11 +293,12 @@ namespace AnalisisEstadistico.Modulos
                         tweet.msg = token.SelectToken("text").ToString();
 
                         // Si el lenguaje del texto es desconocido, se usa el lenguaje del usuario.
-                        if (tweet.lang.Equals("Unknown"))
+                        if (tweet.lang.Equals("Desconocido"))
                         {
                             tweet.lang = token.SelectToken("user").SelectToken("lang").ToString();
                         }
 
+                        this.clasificador = new NaiveBayes(tweet.lang);
                         List<string> listaPalabras = clasificador.dividirTexto(tweet.msg);
                         List<Categoria> resultados = clasificador.clasificar(listaPalabras);
                         tweet.category = getCategory(resultados);

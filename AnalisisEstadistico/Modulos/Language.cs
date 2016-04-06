@@ -319,23 +319,23 @@ namespace AnalisisEstadistico.Modulos
 
             if (spanishDeviation < englishDeviation && spanishDeviation < germanDeviation && spanishDeviation < dutchDeviation)
             {
-                return "Spanish";
+                return "Español";
             }
             else if (englishDeviation < spanishDeviation && englishDeviation < germanDeviation && englishDeviation < dutchDeviation)
             {
-                return "English";
+                return "Inglés";
             }
             else if (germanDeviation < spanishDeviation && germanDeviation < englishDeviation && germanDeviation < dutchDeviation)
             {
-                return "German";
+                return "Alemán";
             }
             else if (dutchDeviation < spanishDeviation && dutchDeviation < englishDeviation && dutchDeviation < germanDeviation)
             {
-                return "Dutch";
+                return "Holandés";
             }
             else
             {
-                return "Unknown";
+                return "Descnocido";
             }
         }
 
