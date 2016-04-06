@@ -52,6 +52,7 @@
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" style="color: black;"><span class="glyphicon glyphicon-cog rotate"></span></a>
                         <ul class="dropdown-menu">
                             <asp:Button class="btn btn-nav" runat="server" OnClick="sentimentAnalysis" Text="Análisis del sentimiento" />
+                            <asp:Button class="btn btn-nav" runat="server" OnClick="categoryAnalysis" Text="Análisis de categoría" />
                             <asp:Button class="btn btn-nav" runat="server" OnClick="languageAnalysis" Text="Análisis de lenguaje" />
                             <asp:Button class="btn btn-nav" runat="server" OnClick="tweetsAnalysis" Text="Analizar tweets" />
                             <asp:Button class="btn btn-nav" runat="server" OnClick="postsAnalysis" Text="Analizar posts" />
@@ -184,6 +185,19 @@
                 </ChartAreas>
                 <Titles>
                    <asp:Title Text="Cantidad de publicaciones por lenguaje" />
+                </Titles>
+            </asp:Chart>
+            <asp:Chart ID="catChart" runat="server" Visible="False" Width="555px">
+                <Series>
+                    <asp:Series Name="Series1">
+                    </asp:Series>
+                </Series>
+                <ChartAreas>
+                    <asp:ChartArea Name="ChartArea1">
+                    </asp:ChartArea>
+                </ChartAreas>
+                <Titles>
+                   <asp:Title Text="Porcentaje de publicaciones por categoria" />
                 </Titles>
             </asp:Chart>
         </div>

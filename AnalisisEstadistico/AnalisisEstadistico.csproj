@@ -146,6 +146,7 @@
     <Compile Include="Model\Enhancer.cs" />
     <Compile Include="Model\FeelingWord.cs" />
     <Compile Include="Model\Post.cs" />
+    <Compile Include="Modulos\SimilarityExtension.cs" />
     <Compile Include="Modulos\FB.cs" />
     <Compile Include="Modulos\Language.cs" />
     <Compile Include="Modulos\NaiveBayes.cs" />

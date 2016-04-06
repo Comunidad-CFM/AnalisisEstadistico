@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using AnalisisEstadistico.Model;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -17,6 +18,7 @@ namespace AnalisisEstadistico.Modulos
     {
         public string tweets;// texto con los tweets almacenados todos en un string
         public Language language;// instancia para realizar el análisis
+        public NaiveBayes clasificador;
         public List<Tweet> tweetList; // lista de tweets para el análisis
         public string path; // url para leer archivos con tweets masivos
         public double[] langPercents;// porcentaje de lenguajes encontrados en los msjs masivos
@@ -24,6 +26,7 @@ namespace AnalisisEstadistico.Modulos
         public List<string> contentJson;// lista de string, que contiene cada tweet representado como un json
         public List<string> eachTweetUser;// cada tweet leído para una  persona
         public List<string> differentUsers;// lista con los diferentes usuarios(sin repetir)
+        public double[] catPercents;
 
         public Twitter(string path)// cuando son tweets masivos
         {
@@ -153,24 +156,53 @@ namespace AnalisisEstadistico.Modulos
         /// </summary>
         public void generalAnalysis()
         {
-            // cantidad de mensajes en un determinado idioma
-            double contSpanish = 0,
-                   contEnglish = 0,
-                   contGerman = 0,
-                   contDutch = 0,
-                   contUnknown = 0;
-
             // porcentaje de mensajes en un idioma determinado
             double percentSpanish,
                    percentEnglish,
                    percentGerman,
                    percentDutch,
-                   percentUnknown;
+                   percentUnknown,
+                   catArt = 0,
+                   catTec = 0,
+                   catDep = 0,
+                   catMed = 0, 
+                   catEco = 0, 
+                   catGas = 0,
+                   contSpanish = 0,
+                   contEnglish = 0,
+                   contGerman = 0,
+                   contDutch = 0,
+                   contUnknown = 0;
 
             int totalTweets = this.tweetList.Count;
 
             foreach (Tweet tweet in this.tweetList)
             {
+                if (tweet.category == "Arte y Cultura")
+                {
+                    catArt += 1;
+                }
+                else if (tweet.category == "Ciencia y Tecnologia")
+                {
+                    catTec += 1;
+                }
+                else if (tweet.category == "Deportes")
+                {
+                    catDep += 1;
+                }
+                else if (tweet.category == "Medio Ambiente")
+                {
+                    catMed += 1;
+                }
+                else if (tweet.category == "Economia y Negocios")
+                {
+                    catEco += 1;
+                }
+                else if (tweet.category == "Gastronomía")
+                {
+                    catGas += 1;
+                }
+
                 if (tweet.lang == "Spanish" || tweet.lang == "es")
                 {
                     contSpanish++;
@@ -211,6 +243,24 @@ namespace AnalisisEstadistico.Modulos
             // Se almacenan los resultados para mostrarlos en los graficos.
             this.langPercents = new double[] { percentSpanish, percentEnglish, percentGerman, percentDutch, percentUnknown };
             this.langCount = new double[] { contSpanish, contEnglish, contGerman, contDutch, contUnknown };
+            this.catPercents = new double[] { (catArt * 100) / totalTweets, (catTec * 100) / totalTweets, (catDep * 100) / totalTweets, (catMed * 100) / totalTweets, (catEco * 100) / totalTweets, (catGas * 100) / totalTweets };
+        }
+
+        public string getCategory(List<Categoria> resultados)
+        {
+            double porcentaje = 0.0d, porcentajeTemp;
+            string nombreCat = "";
+
+            foreach (Categoria cat in resultados)
+            {
+                porcentajeTemp = cat.Porcentaje;
+                if (porcentajeTemp > porcentaje)
+                {
+                    porcentaje = porcentajeTemp;
+                    nombreCat = cat.NombreCategoria;
+                }
+            }
+            return nombreCat;
         }
 
         /// <summary>
@@ -235,6 +285,7 @@ namespace AnalisisEstadistico.Modulos
                     try
                     {
                         tweet = new Tweet();
+                        this.clasificador = new NaiveBayes();
                         token = JObject.Parse(subJson);
                         this.language = new Language();
                         this.language.text = token.SelectToken("text").ToString();
@@ -247,6 +298,10 @@ namespace AnalisisEstadistico.Modulos
                         {
                             tweet.lang = token.SelectToken("user").SelectToken("lang").ToString();
                         }
+
+                        List<string> listaPalabras = clasificador.dividirTexto(tweet.msg);
+                        List<Categoria> resultados = clasificador.clasificar(listaPalabras);
+                        tweet.category = getCategory(resultados);
 
                         // Se agrega el tweet a una lista para luego analizarlo.
                         this.tweetList.Add(tweet);

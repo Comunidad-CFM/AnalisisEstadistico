@@ -67,6 +67,7 @@ namespace AnalisisEstadistico
             sentimentScoresChart.Visible = false;
             tweetChart.Visible = false;
             tweetCChart.Visible = false;
+            catChart.Visible = false;
         }
 
         /// <summary>
@@ -362,6 +363,7 @@ namespace AnalisisEstadistico
                 this.twitter.tweetsAnalysis();
                 this.twitter.generalAnalysis();
                 generateCharts(this.twitter.langPercents, this.twitter.langCount);
+                generateCatCharts(this.twitter.catPercents);
                 resultBox.Text = "Total de tweets: " + this.twitter.tweetList.Count() + "\n";
                 resultBox.Text = resultBox.Text + "Cantidad de usuarios diferentes: " + this.twitter.differentUsers.Count().ToString();
             }
@@ -415,6 +417,17 @@ namespace AnalisisEstadistico
             tweetCChart.ChartAreas["ChartArea1"].AxisX.Interval = 1;
             tweetCChart.ChartAreas["ChartArea1"].Area3DStyle.Enable3D = true;
             tweetCChart.Series["tweets"].Points.DataBindXY(langs, langCount);
+        }
+
+        protected void generateCatCharts(double[] percents)
+        {
+            catChart.Visible = true;
+
+            string[] cats = { "Arte y Cultura", "Ciencia y Tecnologia", "Deportes", "Medio Ambiente", "Economia y Negocios", "Gastronomía" };
+
+            catChart.ChartAreas["ChartArea1"].AxisX.Interval = 1;
+            catChart.ChartAreas["ChartArea1"].Area3DStyle.Enable3D = true;
+            catChart.Series["Series1"].Points.DataBindXY(cats, percents);
         }
 
         /// <summary>
@@ -489,6 +502,65 @@ namespace AnalisisEstadistico
             sentimentScoresChart.ChartAreas["ChartArea1"].AxisX.Interval = 1;
             sentimentScoresChart.ChartAreas["ChartArea1"].Area3DStyle.Enable3D = true;
             sentimentScoresChart.Series["Series1"].Points.DataBindXY(decantamiento, scores);
+        }
+
+        protected void categoryAnalysis(object sender, EventArgs e)
+        {
+            string text = contentBox.Text;
+            NaiveBayes clasificador = new NaiveBayes();
+            List<string> listaPalabras = clasificador.dividirTexto(text);
+            List<Categoria> resultados = new List<Categoria>();
+            resultados = clasificador.clasificar(listaPalabras);
+            imprimirResultadosCategoryAnalysis(resultados);
+        }
+
+        public void imprimirResultadosCategoryAnalysis(List<Categoria> resultados)
+        {
+            string resultado = "";
+            string idiomaTemp = "";
+            string idiomaTemp2 = "";
+
+            foreach (Categoria categoria in resultados)
+            {
+
+                //idiomaTemp2 = categoria.Idioma;
+                //if (idiomaTemp2 != idiomaTemp)
+                resultado += ("- Idioma: " + categoria.Idioma + "\n");
+                //idiomaTemp = idiomaTemp2;
+
+                resultado += ("- Categoria: " + categoria.NombreCategoria + "      Porcentaje: " + categoria.Porcentaje + "%" + "\n");
+                resultado += "Palabras relacionadas:\n";
+
+                if (categoria.PalabrasEnCategoria.Count != 0)
+                    resultado += getPalabrasEncontradas(categoria.PalabrasEnCategoria);
+                else
+                    resultado += "   - 0\n";
+
+            }
+            resultBox.Text = "";
+            resultBox.Text = resultado;
+        }
+
+        public string getPalabrasEncontradas(List<string> listaPalabras)
+        {
+            string palabrasEncontradas = "";
+            foreach (string palabra in listaPalabras)
+            {
+                palabrasEncontradas += ("   - " + palabra + "\n");
+            }
+            return palabrasEncontradas;
+        }
+
+        public string getEspacio(int len)
+        {
+            return "      ";
+            int stop = 20 - len;
+            string espacio = "    ";
+            for (var i = 0; i < stop; i++)
+            {
+                espacio += " ";
+            }
+            return espacio;
         }
     }
 }

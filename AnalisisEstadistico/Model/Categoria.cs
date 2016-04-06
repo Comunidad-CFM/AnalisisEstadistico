@@ -7,11 +7,14 @@ namespace AnalisisEstadistico.Model
 {
     public class Categoria
     {
-        public Categoria() {
+        public Categoria()
+        {
             nombreCategoria = "";
             porcentaje = 0.0;
             palabrasEnCategoria = new List<string>();
             palabrasAgregarCategoria = new List<string>();
+            idioma = "";
+
         }
 
         private string nombreCategoria;
@@ -44,7 +47,12 @@ namespace AnalisisEstadistico.Model
             set { palabrasAgregarCategoria = value; }
         }
 
+        private string idioma;
 
-        
+        public string Idioma
+        {
+            get { return idioma; }
+            set { idioma = value; }
+        }
     }
 }
