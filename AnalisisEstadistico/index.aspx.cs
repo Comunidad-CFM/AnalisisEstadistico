@@ -31,6 +31,10 @@ namespace AnalisisEstadistico
         protected void Page_Load(object sender, EventArgs e)
         { }
 
+        /// <summary>
+        /// Limpia las carpetas utilizadas para almacenar los archivos a analizar.
+        /// </summary>
+        /// <param name="ruta">Ruta a limpiar.</param>
         protected void cleanFolder(string ruta)
         {
             System.IO.DirectoryInfo di = new DirectoryInfo(ruta);
@@ -45,6 +49,11 @@ namespace AnalisisEstadistico
             }
         }
 
+        /// <summary>
+        /// Limpia los textarea y oculta los graficos.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void cleanTextArea(object sender, EventArgs e) 
         {
             contentBox.Text = "";
@@ -61,11 +70,11 @@ namespace AnalisisEstadistico
         }
 
         /// <summary>
-        /// Método utilizado para descomprimir los archivos de un zip file
+        /// Método utilizado para descomprimir los archivos de un zip file.
         /// </summary>
-        /// <param name="ArchivoZip">Ruta donde se encuentra el archivo ZIP
-        /// <param name="RutaGuardar">Ruta donde se guardaran los archivos extraídos del ZIP
-        /// <returns></returns>
+        /// <param name="ArchivoZip">Ruta donde se encuentra el archivo ZIP.</param>
+        /// <param name="RutaGuardar">Ruta donde se guardaran los archivos extraídos del ZIP.</param>
+        /// <returns>Booleano si pudo descomprimir o no.</returns>
         protected bool extract(string archivoZip, string rutaGuardar)
         {
             try
@@ -84,17 +93,27 @@ namespace AnalisisEstadistico
             }
         }
 
+        /// <summary>
+        /// Guarda un archivo.
+        /// </summary>
+        /// <param name="ruta">Ruta en la que se va a guardar el archivo.</param>
         protected void saveFile(string ruta)
         {
             fileReader.SaveAs(ruta);
         }
 
+        /// <summary>
+        /// Extrae el contenido de un archivo bz2 y lo almacena en un carpeta.
+        /// </summary>
+        /// <param name="ruta">Ruta donde se encuentra el archivo bz2.</param>
+        /// <param name="jsonID">ID para el nombre del json resultante conel contenido de descomprimir.</param>
         protected void extractBZ2(string ruta, int jsonID)
         {
             FileInfo fileToBeZipped = new FileInfo(ruta);
 
             using (FileStream fileToDecompressAsStream = fileToBeZipped.OpenRead())
             {
+                // Ruta destino.
                 string decompressedFileName = Server.MapPath("~") + "twitterJSON\\" + jsonID + ".json";
                 using (FileStream decompressedStream = File.Create(decompressedFileName))
                 {
@@ -110,6 +129,11 @@ namespace AnalisisEstadistico
             }
         }
 
+        /// <summary>
+        /// Obtiene la ruta donde se encuentra el archivo a descomprimir, obtiene cada uno de los archivos de dicha ruta y a cada uno de ellos los manda a descomprimir.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void click_unpackageBZ2(object sender, EventArgs e)
         {
             string ruta = textLinkFolder.Text;
@@ -138,6 +162,11 @@ namespace AnalisisEstadistico
             }
         }
 
+        /// <summary>
+        /// Lee el contenido de archivos (html, json, xml, txt).
+        /// </summary>
+        /// <param name="ruta">Ruta donde se encuentra el archivo.</param>
+        /// <returns>El contenido leido.</returns>
         protected string readHtmlJsonXmlTxt(string ruta)
         {
             string content = "";
@@ -147,14 +176,23 @@ namespace AnalisisEstadistico
             return content.ToLower().Replace(".", "").Replace("!", "").Replace("¡", "").Replace("¿", "").Replace("?", "").Replace("&", "");
         }
 
+        /// <summary>
+        /// Captura el archivo cargado, lo manda a guardar y luego a leer.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void click_readHtmlJsonXmlTxt(object sender, EventArgs e) 
         {
             string ruta = Server.MapPath("~") + "files\\" + fileReader.FileName;
             saveFile(ruta);
-
             contentBox.Text = readHtmlJsonXmlTxt(ruta);
         }
 
+        /// <summary>
+        /// Lee el contenido de un archivo (doc, docx).
+        /// </summary>
+        /// <param name="ruta">Ruta donde se encuentra el archivo.</param>
+        /// <returns>El contenido leido.</returns>
         protected string readDoc(string ruta)
         {
             string content = "";
@@ -174,6 +212,12 @@ namespace AnalisisEstadistico
             content = Regex.Replace(content, "<.*?>", string.Empty);
             return content.ToLower().Replace(",", "").Replace(".", "").Replace("!", "").Replace("¡", "").Replace("¿", "").Replace("?", "").Replace("&", "");
         }
+
+        /// <summary>
+        /// Captura el archivo cargado, lo manda a guardar y luego a leer.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void click_readDoc(object sender, EventArgs e)
         {
             string ruta = Server.MapPath("~") + "files\\" + fileReader.FileName;
@@ -181,6 +225,11 @@ namespace AnalisisEstadistico
             contentBox.Text = readDoc(ruta);
         }
 
+        /// <summary>
+        /// Captura el link a leer y lo lee.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void click_readLink(object sender, EventArgs e)
         {
             string link = textLinkFolder.Text,
@@ -196,6 +245,10 @@ namespace AnalisisEstadistico
             contentBox.Text = content.ToLower().Replace(",", "").Replace(".", "").Replace("!", "").Replace("¡", "").Replace("¿", "").Replace("?", "").Replace("&", "");
         }
 
+        /// <summary>
+        /// Lee todos los archivos en una carpeta.
+        /// </summary>
+        /// <param name="ruta">Ruta a leer.</param>
         protected void readAllInFolder(string ruta)
         {
             try
@@ -222,11 +275,21 @@ namespace AnalisisEstadistico
             }
         }
 
+        /// <summary>
+        /// Captura la ruta de la carpeta a leer y la manda a ser leida.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void click_readFolder(object sender, EventArgs e)
         {
             readAllInFolder(textLinkFolder.Text);
         }
 
+        /// <summary>
+        /// Captura el archivo zip cargado, limpia la carpeta destino, lo manda a descomprimir y luego lee los archivos que descomprimió.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void click_unpackageZIP(object sender, EventArgs e)
         {
             // Almacenar el .zip en la carpeta zips del proyecto
@@ -236,8 +299,10 @@ namespace AnalisisEstadistico
             cleanFolder(destino);
             saveFile(ruta);
 
+            // Si la descompresion fue exitosa.
             if (extract(ruta, destino))
             {
+                // Lee todos los archivos descomprimidos.
                 readAllInFolder(destino);
             }
             else
@@ -246,6 +311,11 @@ namespace AnalisisEstadistico
             }
         }
 
+        /// <summary>
+        /// Captura el texto a analizar y lo manda para que se le realice el analisis del sentimiento.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void sentimentAnalysis(object sender, EventArgs e)
         {
             string text = contentBox.Text;
@@ -260,6 +330,11 @@ namespace AnalisisEstadistico
             }
         }
 
+        /// <summary>
+        /// Captura el texto a analizar y lo manda para que se le realice el analisis de lenguaje.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void languageAnalysis(object sender, EventArgs e) 
         {
             string content = contentBox.Text;
@@ -273,9 +348,15 @@ namespace AnalisisEstadistico
             }
         }
 
+        /// <summary>
+        /// Captura el texto/ruta a analizar y lo manda para que se analicen los tweets.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void tweetsAnalysis(object sender, EventArgs e) 
         {
-            if (!textLinkFolder.Text.Equals("")) // Tweets masivos
+            // Tweets masivos
+            if (!textLinkFolder.Text.Equals("")) 
             {
                 this.twitter = new Twitter(Server.MapPath("~") + "twitterJSON\\");
                 this.twitter.tweetsAnalysis();
@@ -284,7 +365,8 @@ namespace AnalisisEstadistico
                 resultBox.Text = "Total de tweets: " + this.twitter.tweetList.Count() + "\n";
                 resultBox.Text = resultBox.Text + "Cantidad de usuarios diferentes: " + this.twitter.differentUsers.Count().ToString();
             }
-            else if (!textTwitter.Text.Equals(""))
+            // Tweets de un usuario.
+            else if (!textTwitter.Text.Equals("")) 
             {
                 this.twitter = new Twitter();
                 contentBox.Text = this.twitter.searchTweets(textTwitter.Text);
@@ -294,6 +376,11 @@ namespace AnalisisEstadistico
             }
         }
 
+        /// <summary>
+        /// Captura el token y manda a analizar los post.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void postsAnalysis(object sender, EventArgs e)
         {
             // CAAPhsmMoJk8BAOJXl4e8Mhi9mkH6cddoZA3p1CshScNsDKmh9CVOaF4k9znLd625UhYmHhvKVsJIwkRsSO9kim9uXneJDzookMx2COacUtitAAm4GU1BjPRlmOhdULtXt2nPg6f7Uc7Smu7oyI69e9cZBry6B8ZAuaa5sSrUZAtZANhi2fMqtnfZBGU4gIdZBA7GXWeQZC40hAZDZD
@@ -309,6 +396,11 @@ namespace AnalisisEstadistico
             }
         }
 
+        /// <summary>
+        /// Genera los graficos del analisis de los tweets.
+        /// </summary>
+        /// <param name="percents"></param>
+        /// <param name="langCount"></param>
         protected void generateCharts(double[] percents, double[] langCount)
         {
             tweetChart.Visible = true;
@@ -325,6 +417,9 @@ namespace AnalisisEstadistico
             tweetCChart.Series["tweets"].Points.DataBindXY(langs, langCount);
         }
 
+        /// <summary>
+        /// Genera los graficos del analisis del sentimiento..
+        /// </summary>
         protected void generateLanguageCharts()
         {
             textChart.Visible = true;
@@ -374,6 +469,11 @@ namespace AnalisisEstadistico
             langChart.Series["Letras"].Points.DataBindXY(languageLetters, languageLettersValues);
         }
 
+        /// <summary>
+        /// Genera los graficos del analisis de sentimiento.
+        /// </summary>
+        /// <param name="porcentajes"></param>
+        /// <param name="scores"></param>
         protected void generateSentimentCharts(float[] porcentajes, float[] scores)
         {
             string[] categorias = { "Positivo", "Negativo", "Desconocido" };

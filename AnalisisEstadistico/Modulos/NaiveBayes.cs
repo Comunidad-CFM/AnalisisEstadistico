@@ -7,13 +7,16 @@ using AnalisisEstadistico.Model;
 
 namespace AnalisisEstadistico.Clasificador
 {
+    /// <summary>
+    /// Clase para realizar el análisis de categorias
+    /// </summary>
     public class NaiveBayes
     {
-        public int idioma = 2;
+        public int idioma = 2;// para saber en que idioma buscar
 
-        List<idioma> idiomas;
-        List<categoria> categorias;
-        List<palabra> palabras;
+        List<idioma> idiomas; // lista de idiomas capturados de la bd
+        List<categoria> categorias; // lista de categorias capturadas de la bd
+        List<palabra> palabras; // lista de palabras almacenadas en la bd
 
         public NaiveBayes(){
 
@@ -44,6 +47,11 @@ namespace AnalisisEstadistico.Clasificador
             }
         }
 
+        /// <summary>
+        /// Metodo para separar el texto en un arreglo de caracteres
+        /// </summary>
+        /// <param name="texto">string a separar</param>
+        /// <returns></returns>
         public List<string> dividirTexto(string texto)
         {
             char[] delimiterChars = { ' ', ',', '.', ':', '\t' };

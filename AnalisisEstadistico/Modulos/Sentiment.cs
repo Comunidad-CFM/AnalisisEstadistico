@@ -6,17 +6,20 @@ using AnalisisEstadistico.Model;
 
 namespace AnalisisEstadistico.Modulos
 {
+    /// <summary>
+    /// Clase para realizar el análisis de sentimiento
+    /// </summary>
     public class Sentiment
     {
-        public string text;
-        public List<FeelingWord> feelingWords;
-        public List<Emoji> emojis = new List<Emoji>();
-        public List<string> stopWords = new List<string>();
-        public List<Enhancer> enhancers = new List<Enhancer>();
-        public List<FeelingWord> feelingWordsList = new List<FeelingWord>();
-        public List<Emoji> emojisList = new List<Emoji>();
-        public float[] porcentajes;
-        public float[] scores;
+        public string text;// string que contiene el texto
+        public List<FeelingWord> feelingWords; // lista de palabras importantes para el análisis
+        public List<Emoji> emojis = new List<Emoji>(); // lista de emoticones
+        public List<string> stopWords = new List<string>(); // palabras que no se deben tomar en cuenta en el análisis
+        public List<Enhancer> enhancers = new List<Enhancer>(); // palabras que sirven de potenciadores, impresindibles para darle sentido al análisis
+        public List<FeelingWord> feelingWordsList = new List<FeelingWord>();// feeling words encontradas
+        public List<Emoji> emojisList = new List<Emoji>();// lista de emoticones encontrados
+        public float[] porcentajes;// porcentaje de incidencias, para los gráficos
+        public float[] scores;// puntaje obtenido del análisis
 
         public Sentiment(string text) 
         {
@@ -34,6 +37,9 @@ namespace AnalisisEstadistico.Modulos
             this.insertIntoEnhancers();
         }
 
+        /// <summary>
+        /// Inserta los stopwords en la lista.
+        /// </summary>
         protected void insertIntoStopWords()
         {
             stopWords.Add("un");
@@ -197,6 +203,9 @@ namespace AnalisisEstadistico.Modulos
             stopWords.Add("al");
         }
 
+        /// <summary>
+        /// Inserta los emojis en la lista de emojis.
+        /// </summary>
         protected void insertIntoEmojis()
         {
             emojis.Add(new Emoji(":-)", 3));
@@ -280,6 +289,9 @@ namespace AnalisisEstadistico.Modulos
             emojis.Add(new Emoji("-\"-", -3));
         }
 
+        /// <summary>
+        /// Inserta los feeling words en la lista de feeling words.
+        /// </summary>
         protected void insertIntoFeelingWords()
         {
             feelingWords.Add(new FeelingWord("abiertamente", 1));
@@ -908,6 +920,9 @@ namespace AnalisisEstadistico.Modulos
             feelingWords.Add(new FeelingWord("ni", -1));
         }
 
+        /// <summary>
+        /// Inserta los enhancers en la lista de enhancers.
+        /// </summary>
         protected void insertIntoEnhancers()
         {
             enhancers.Add(new Enhancer("extremadamente", 2));
@@ -942,6 +957,11 @@ namespace AnalisisEstadistico.Modulos
             enhancers.Add(new Enhancer("no", -2));
         }
 
+        /// <summary>
+        /// Busca una palabra en la lista de stopwords.
+        /// </summary>
+        /// <param name="word">Palabra a buscar.</param>
+        /// <returns>Booleano si lo encuentra o no.</returns>
         protected bool existInStopWords(string word)
         {
             foreach (string sw in stopWords)
@@ -955,8 +975,13 @@ namespace AnalisisEstadistico.Modulos
             return false;
         }
 
+        /// <summary>
+        /// Remueve del texto los stopwords y las demas palabras las agrega a una lista.
+        /// </summary>
+        /// <returns></returns>
         protected List<string> removeStopWords()
         {
+            // Se remueven del texto caracteres que no tienen valor alguno en el analisis.
             string[] words = this.text.ToLower().Replace(",", "").Replace(".", "").Replace("!", "").Replace("¡", "").Replace("¿", "").Replace("?", "").Split(' ');
             List<string> result = new List<string>();
 
@@ -971,6 +996,11 @@ namespace AnalisisEstadistico.Modulos
             return result;
         }
 
+        /// <summary>
+        /// Busca si una palabra existe en la lista de stopwords.
+        /// </summary>
+        /// <param name="word">Palabra a buscar.</param>
+        /// <returns>Un objeto FeelingWord si la encuentra, de lo contrario null.</returns>
         protected FeelingWord existFeelingWord(string word)
         {
             foreach (FeelingWord fw in feelingWords)
@@ -984,6 +1014,11 @@ namespace AnalisisEstadistico.Modulos
             return null;
         }
 
+        /// <summary>
+        /// Busca si un emoji existe en la lista de emojis.
+        /// </summary>
+        /// <param name="emoji">Emoji a buscar.</param>
+        /// <returns>Un objeto Emoji si la encuentra, de lo contrario null.</returns>
         protected Emoji existEmoji(string emoji)
         {
             foreach (Emoji e in emojis)
@@ -997,6 +1032,12 @@ namespace AnalisisEstadistico.Modulos
             return null;
         }
 
+        /// <summary>
+        /// Potencia el valor de un feelingword de acuerdo al valor de un enhancer.
+        /// </summary>
+        /// <param name="e">Objeto enhancer.</param>
+        /// <param name="fw">Objeto feelingword.</param>
+        /// <returns>El objeto feelingword.</returns>
         protected FeelingWord getNewScore(Enhancer e, FeelingWord fw)
         {
             if (e.score > 0) // El potenciador es positivo
@@ -1025,12 +1066,20 @@ namespace AnalisisEstadistico.Modulos
             return fw;
         }
 
+        /// <summary>
+        /// Valida para un feelingword si la palabra anterior a ella es un enhancer.
+        /// </summary>
+        /// <param name="wordBefore">Palabra anterior.</param>
+        /// <param name="feelingWord">Objeto feelingword.</param>
+        /// <returns>El objeto feelingword</returns>
         protected FeelingWord validateWithEnhancers(string wordBefore, FeelingWord feelingWord)
         {
             foreach (Enhancer e in enhancers)
             {
+                // Si la palabra anterior es un enhancer
                 if (e.word.Equals(wordBefore))
                 {
+                    // Manda a potenciar el feelingword con el enhancer.
                     return getNewScore(e, feelingWord);
                 }
             }
@@ -1038,6 +1087,10 @@ namespace AnalisisEstadistico.Modulos
             return feelingWord;
         }
 
+        /// <summary>
+        /// Muestra las palabras y emojis encontrados con su puntaje.
+        /// </summary>
+        /// <returns></returns>
         public string showScores()
         {
             string result = "\n\n---> Palabras y emojis encontrados";
@@ -1055,6 +1108,10 @@ namespace AnalisisEstadistico.Modulos
             return result;
         }
 
+        /// <summary>
+        /// Suma todas los puntajes de laspalabras y emojis encontrados.
+        /// </summary>
+        /// <returns>El puntaje total resultante.</returns>
         protected int makeMeasurement()
         {
             int measurement = 0;
@@ -1072,6 +1129,11 @@ namespace AnalisisEstadistico.Modulos
             return measurement;
         }
 
+        /// <summary>
+        /// Indica el sentimiento del texto.
+        /// </summary>
+        /// <param name="result">Puntaje total resultante.</param>
+        /// <returns>Sentimiento del texto.</returns>
         protected string giveResult(int result)
         {
             string res;
@@ -1093,6 +1155,10 @@ namespace AnalisisEstadistico.Modulos
             return res;
         }
 
+        /// <summary>
+        /// Calcula las probabilidades del texto.
+        /// </summary>
+        /// <returns>String con los resultados.</returns>
         public string giveProbabilities()
         {
             string[] words = this.text.ToLower().Replace(",", "").Replace(".", "").Replace("!", "").Replace("¡", "").Replace("¿", "").Replace("?", "").Split(' ');
@@ -1144,6 +1210,10 @@ namespace AnalisisEstadistico.Modulos
             return result;
         }
 
+        /// <summary>
+        /// Se encarga de llamar a las funciones que realizan el analisis del sentimiento.
+        /// </summary>
+        /// <returns>String con los resultados.</returns>
         public string sentimentAnalysis()
         {
             string pieceBefore = "";

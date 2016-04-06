@@ -9,6 +9,15 @@ using System.Web;
 
 namespace AnalisisEstadistico.Modulos
 {
+    /// <summary>
+    /// Clase para realizar el análisis de facebook
+    /// Atributos:
+    /// accessToken: Token de acceso para realizar la petición a facebook
+    /// posts: arreglo con los post recogidos
+    /// langPercents: arreglo con los porcentajes correspondientes a cada lenguaje
+    /// langCount: arreglo con los contadores de resultados positivos para cada lenguaje
+    /// postList: lista de tipo post, utilizada para almacenar la información pertinente a cada publicación
+    /// </summary>
     public class FB
     {
         public string accessToken;
@@ -25,6 +34,9 @@ namespace AnalisisEstadistico.Modulos
             this.allMessages = "";
         }
 
+        /// <summary>
+        /// Separa los post de un determinado usuario y los agrega a una lista.
+        /// </summary>
         public void splitPosts()
         {
             this.allMessages = this.allMessages.Substring(1, this.allMessages.Length - 2);
@@ -39,6 +51,9 @@ namespace AnalisisEstadistico.Modulos
             this.allMessages = eachPost;
         }
 
+        /// <summary>
+        /// Obtiene los post de un determinado usuario.
+        /// </summary>
         public void getPosts()
         {
             var client = new FacebookClient(this.accessToken);
@@ -62,6 +77,9 @@ namespace AnalisisEstadistico.Modulos
             splitPosts();
         }
 
+        /// <summary>
+        /// Determina la cantidad y porcentaje de referencias en un determinado idioma en los posts.
+        /// </summary>
         public void generalAnalysis()
         {
             // cantidad de mensajes en un determinado idioma
@@ -114,7 +132,9 @@ namespace AnalisisEstadistico.Modulos
             this.langCount = new double[] { contSpanish, contEnglish, contGerman, contDutch, contUnknown };
         }
 
-     
+        /// <summary>
+        /// Se encarga de llamar a las funciones que realizan el analisis de los posts.
+        /// </summary>
         public void postsAnalysis()
         {
             Language language;

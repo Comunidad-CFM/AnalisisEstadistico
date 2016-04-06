@@ -5,6 +5,12 @@ using System.Web;
 
 namespace AnalisisEstadistico.Modulos
 {
+    /// <summary>
+    /// Clase para realizar el análisis de lenguaje.
+    /// Atributos:
+    /// Desviación para cada lenguaje
+    /// Diccionario de caracteres con su probabilidad respectiva.
+    /// </summary>
     public class Language
     {
         public string text;
@@ -203,6 +209,10 @@ namespace AnalisisEstadistico.Modulos
             this.dictionaryDutch.Add('ü', 0);
         }
 
+        /// <summary>
+        /// Limpia el texto a analizar, dejando solo los caracteres importantes para el analisis.
+        /// </summary>
+        /// <returns>String con el texto limpio.</returns>
         public string cleanText()
         {
             string cleanedText = "",
@@ -220,6 +230,12 @@ namespace AnalisisEstadistico.Modulos
             return cleanedText;
         }
 
+        /// <summary>
+        /// Busca una letra en la lista de ocurrencias.
+        /// </summary>
+        /// <param name="letter"></param>
+        /// <param name="occurs"></param>
+        /// <returns>Booleano si lo encuentra o no.</returns>
         public bool searchLetter(char letter, Dictionary<char, double> occurs)
         {
             foreach (KeyValuePair<char, double> item in occurs)
@@ -232,6 +248,12 @@ namespace AnalisisEstadistico.Modulos
             return false;
         }
 
+        /// <summary>
+        /// Calcula la cantidad de ocurrencias de un caracter en el texto.
+        /// </summary>
+        /// <param name="letter">Caracter a buscar.</param>
+        /// <param name="cleanedText">Texto en el que se busca.</param>
+        /// <returns>Cantidad de ocurrencias.</returns>
         public int getOccurs(char letter, string cleanedText)
         {
             int count = 0;
@@ -247,12 +269,19 @@ namespace AnalisisEstadistico.Modulos
             return count;
         }
 
+        /// <summary>
+        /// Obtiene el porcentaje para cada uno de los caractes del texto.
+        /// </summary>
+        /// <param name="cleanedText">Texto a analizar.</param>
+        /// <param name="totalLetters">Total de caracteres del texto.</param>
+        /// <returns>Diccionario con el caracter y su probabilidad de ocurrencias.</returns>
         public Dictionary<char, double> getPercent(string cleanedText, int totalLetters)
         {
             Dictionary<char, double> occurs = new Dictionary<char, double>();
 
             foreach (char letter in cleanedText)
             {
+                // Agrega al diccionario solo si no existe dicho caracter en el diccionario.
                 if (!searchLetter(letter, occurs))
                 {
                     occurs.Add(letter, ((double)getOccurs(letter, cleanedText) / totalLetters) * 100);
@@ -262,6 +291,12 @@ namespace AnalisisEstadistico.Modulos
             return occurs;
         }
 
+        /// <summary>
+        /// Calcula la desviacion para cada uno de los lenguajes, a partir del diccionario de probabilidad de ocurrencias.
+        /// </summary>
+        /// <param name="percents">Diccionario de probebilidad de ocurrencias.</param>
+        /// <param name="totalLetters">Total de caracteres del texto.</param>
+        /// <returns>Lenguaje del texto.</returns>
         public string calculateDeviationAndShowResults(Dictionary<char, double> percents, int totalLetters)
         {
             double spanishDeviation = 0,
@@ -304,6 +339,10 @@ namespace AnalisisEstadistico.Modulos
             }
         }
 
+        /// <summary>
+        /// Se encarga de llamar a las funciones que realizan el analisis del lenguaje.
+        /// </summary>
+        /// <returns></returns>
         public string languageAnalisys()
         {
             this.percents = new Dictionary<char, double>();

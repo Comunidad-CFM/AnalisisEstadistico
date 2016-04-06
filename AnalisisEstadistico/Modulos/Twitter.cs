@@ -10,20 +10,22 @@ using TweetSharp;
 
 namespace AnalisisEstadistico.Modulos
 {
+    /// <summary>
+    /// Clase para realizar el análisis en los tweets
+    /// </summary>
     public class Twitter
     {
-        public string tweets;
-        public Language language;
-        public Sentiment sentiment;
-        public List<Tweet> tweetList;
-        public string path;
-        public double[] langPercents;
-        public double[] langCount;
-        public List<string> contentJson;
-        public List<string> eachTweetUser;
-        public List<string> differentUsers;
+        public string tweets;// texto con los tweets almacenados todos en un string
+        public Language language;// instancia para realizar el análisis
+        public List<Tweet> tweetList; // lista de tweets para el análisis
+        public string path; // url para leer archivos con tweets masivos
+        public double[] langPercents;// porcentaje de lenguajes encontrados en los msjs masivos
+        public double[] langCount;// contadores de resultados positivos por lenguaje
+        public List<string> contentJson;// lista de string, que contiene cada tweet representado como un json
+        public List<string> eachTweetUser;// cada tweet leído para una  persona
+        public List<string> differentUsers;// lista con los diferentes usuarios(sin repetir)
 
-        public Twitter(string path)
+        public Twitter(string path)// cuando son tweets masivos
         {
             this.tweetList = new List<Tweet>();
             this.contentJson = new List<string>();
@@ -32,18 +34,19 @@ namespace AnalisisEstadistico.Modulos
             this.getJson();
         }
 
-        public Twitter()
+        public Twitter()// cuando es un único usuario, dados sus credenciales
         {
+            this.path = "";
             this.eachTweetUser = new List<string>();
             this.tweetList = new List<Tweet>();
             this.differentUsers = new List<string>();
         }
     
         /// <summary>
-        /// Función para obtener los tweets de un usuario en una lista
+        /// Obtiene los tweets de un usuario.
         /// </summary>
-        /// <param name="content">Corresponde a una cadena que indica el nombre de usuario y la cantidad máxima de twees que desea obtener</param>
-        /// <returns></returns>
+        /// <param name="content">Corresponde a una cadena que indica el nombre de usuario y la cantidad máxima de twees que desea obtener.</param>
+        /// <returns>String con los twwets.</returns>
         public string searchTweets(string content) 
         {
             string[] info = content.Split(' ');// separa el nombre de la cantidad de tweets
@@ -60,6 +63,7 @@ namespace AnalisisEstadistico.Modulos
             for (int i = 0; i < tweetsList.Count; i++)
             {
                 contentTweets += tweetsList[i].Text + "\n\n";
+                // Se almacena cada tweet en una lista para luego realizar el analisis.
                 this.eachTweetUser.Add(tweetsList[i].Text);
             }
 
@@ -82,17 +86,15 @@ namespace AnalisisEstadistico.Modulos
                 tweet.lang = this.language.languageAnalisys();
                 tweet.msg = eachTweet;
 
-                if(tweet.lang.Equals("Spanish"))
-                {
-                    this.sentiment = new Sentiment(eachTweet);
-                    tweet.sentiment = this.sentiment.sentimentAnalysis();
-                }
-
                 this.tweetList.Add(tweet);
             }
         }
 
-        // Tweets masivos
+        /// <summary>
+        /// Lee el contenido de un archivo json.
+        /// </summary>
+        /// <param name="ruta">Ruta en donde se encuentra el archivo.</param>
+        /// <returns>Contenido del json.</returns>
         protected string readJson(string ruta)
         {
             string content = "";
@@ -102,6 +104,9 @@ namespace AnalisisEstadistico.Modulos
             return content.ToLower().Replace(".", "").Replace("!", "").Replace("¡", "").Replace("¿", "").Replace("?", "").Replace("&", "");
         }
 
+        /// <summary>
+        /// Obtiene todos los archivos json de la ruta especificada en la variable path de la clase.
+        /// </summary>
         public void getJson()
         {
             try
@@ -109,10 +114,12 @@ namespace AnalisisEstadistico.Modulos
                 DirectoryInfo Dir = new DirectoryInfo(this.path);
                 FileInfo[] FileList = Dir.GetFiles("*.*", SearchOption.AllDirectories);
                 
+                // Recorre cada uno de los archivos de la ruta.
                 foreach (FileInfo file in FileList)
                 {
                     if (file.Extension == ".json")
                     {
+                        // Pide el contenido del json y lo almacena en una lista.
                         this.contentJson.Add(readJson(file.FullName));
                     }
                 }
@@ -123,6 +130,11 @@ namespace AnalisisEstadistico.Modulos
             }
         }
 
+        /// <summary>
+        /// Busca si un usuario ya se encuentra en la lista.
+        /// </summary>
+        /// <param name="user">Usuario a buscar.</param>
+        /// <returns>Booleano si lo encuentra o no.</returns>
         public bool existUser(string user) 
         {
             foreach (string eachUser in this.differentUsers)
@@ -137,7 +149,7 @@ namespace AnalisisEstadistico.Modulos
         }
 
         /// <summary>
-        /// Función para determinar la cantidad y porcentaje de referencias en un  determinado idioma
+        /// Determina la cantidad y porcentaje de referencias en un determinado idioma en los tweets.
         /// </summary>
         public void generalAnalysis()
         {
@@ -180,9 +192,13 @@ namespace AnalisisEstadistico.Modulos
                     contUnknown++;
                 }
 
-                if (!existUser(tweet.user))
+                // Solo para cuando se analizan tweets masivos.
+                if (!this.path.Equals(""))
                 {
-                    this.differentUsers.Add(tweet.user);
+                    if (!existUser(tweet.user))
+                    {
+                        this.differentUsers.Add(tweet.user);
+                    }
                 }
             }
 
@@ -192,22 +208,30 @@ namespace AnalisisEstadistico.Modulos
             percentDutch = (contDutch * 100) / totalTweets;
             percentUnknown = (contUnknown * 100) / totalTweets;
 
+            // Se almacenan los resultados para mostrarlos en los graficos.
             this.langPercents = new double[] { percentSpanish, percentEnglish, percentGerman, percentDutch, percentUnknown };
             this.langCount = new double[] { contSpanish, contEnglish, contGerman, contDutch, contUnknown };
         }
 
+        /// <summary>
+        /// Se encarga de llamar a las funciones que realizan el analisis de los tweets.
+        /// </summary>
         public void tweetsAnalysis()
         {
             JToken token;
             Tweet tweet;
             string[] infoJson;
 
+            // Se recorre cada uno de los json.
             foreach (string eachJson in this.contentJson)
             {
+                // Se separa el contenido del json por cambio de linea, esto para recorrer uno a uno cada tweet contenido en el json.
                 infoJson = eachJson.Split('\n');
 
+                // Se recorre cada uno de los tweets.
                 foreach (string subJson in infoJson)
                 {
+                    // Se utiliza un try porque algunos de los tweets no tienen el formato correcto, al parsear a json se cae.
                     try
                     {
                         tweet = new Tweet();
@@ -218,17 +242,13 @@ namespace AnalisisEstadistico.Modulos
                         tweet.user = token.SelectToken("user").SelectToken("name").ToString();
                         tweet.msg = token.SelectToken("text").ToString();
 
+                        // Si el lenguaje del texto es desconocido, se usa el lenguaje del usuario.
                         if (tweet.lang.Equals("Unknown"))
                         {
                             tweet.lang = token.SelectToken("user").SelectToken("lang").ToString();
                         }
 
-                        if (tweet.lang.Equals("Spanish"))
-                        {
-                            this.sentiment = new Sentiment(tweet.msg);
-                            tweet.sentiment = this.sentiment.sentimentAnalysis();
-                        }
-
+                        // Se agrega el tweet a una lista para luego analizarlo.
                         this.tweetList.Add(tweet);
                     }
                     catch { }
