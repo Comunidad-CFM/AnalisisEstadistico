@@ -124,7 +124,7 @@ namespace AnalisisEstadistico.Modulos
                         else
                         {
                             //Console.WriteLine("{0}%", source.ToLower().CalculateSimilarity(target.ToLower()) * 100);
-                            if (porcentajeDeSimilitud > 60 && pal != "")
+                            if (porcentajeDeSimilitud > 75 && pal != "")
                             {
                                 bool existePalabra = addPalabraLista(palabrasAgregarCategoria, pal.ToString());
                                 porcentajeDeSimilitud = 0;

@@ -521,7 +521,9 @@ namespace AnalisisEstadistico
                 List<string> listaPalabras = clasificador.dividirTexto(content);
                 List<Categoria> resultados = new List<Categoria>();
                 resultados = clasificador.clasificar(listaPalabras);
-                imprimirResultadosCategoryAnalysis(resultados);
+                string category = getCategory(resultados, idioma);
+
+                imprimirResultadosCategoryAnalysis(resultados, category);
 
                 foreach(Categoria cat in resultados)
                 {
@@ -529,10 +531,11 @@ namespace AnalisisEstadistico
                     i++;
                 }
                 generateCatCharts(percents);
+
             }
         }
 
-        public void imprimirResultadosCategoryAnalysis(List<Categoria> resultados)
+        public void imprimirResultadosCategoryAnalysis(List<Categoria> resultados, string category)
         {
             string resultado = "";
             string idiomaTemp = "";
@@ -554,9 +557,59 @@ namespace AnalisisEstadistico
                 else
                     resultado += "   - 0\n\n";
 
+                resultado += "Palabras agregadas:\n";
+                if (categoria.NombreCategoria == category)
+                    resultado += getPalabrasAgregadas(categoria.PalabrasAgregarCategoria);
+                else
+                    resultado += "   - 0\n\n";
+
             }
             resultBox.Text = "";
             resultBox.Text = resultado;
+        }
+
+        public void guardarPalabras(List<string> palabras, int lang, int cat) {
+            var context = new AnalizadorBDEntities();
+            palabra pal = new palabra();
+
+            foreach (string palabra in palabras)
+            {
+                if (palabra.Length > 2)
+                {
+                    pal.valorPalabra = palabra;
+                    pal.idIdioma = lang;
+                    pal.idCategoria = cat;
+                    context.palabras.Add(pal);
+                    context.SaveChanges();
+                }
+            }
+        }
+
+        public string getCategory(List<Categoria> resultados, string lang)
+        {
+
+            double porcentaje = 0.0d, porcentajeTemp;
+            string nombreCat = "";
+            List<string> palAdd = new List<string>();
+            foreach (Categoria cat in resultados)
+            {
+                porcentajeTemp = cat.Porcentaje;
+                if (porcentajeTemp > porcentaje)
+                {
+                    porcentaje = porcentajeTemp;
+                    nombreCat = cat.NombreCategoria;
+                    palAdd = cat.PalabrasAgregarCategoria;
+                }
+            }
+
+            int resulLang;
+            resulLang = getIdLang(lang);
+            int resulCat;
+            resulCat = getIdCategory(nombreCat);
+            if (resulLang != 0 && resulCat != 0 && palAdd != null)
+                guardarPalabras(palAdd, resulLang, resulCat);
+
+            return nombreCat;
         }
 
         public string getPalabrasEncontradas(List<string> listaPalabras)
@@ -570,16 +623,66 @@ namespace AnalisisEstadistico
             return palabrasEncontradas;
         }
 
-        public string getEspacio(int len)
+        public string getPalabrasAgregadas(List<string> listaPalabras)
         {
-            return "      ";
-            int stop = 20 - len;
-            string espacio = "    ";
-            for (var i = 0; i < stop; i++)
+            string palabrasEncontradas = "";
+            foreach (string palabra in listaPalabras)
             {
-                espacio += " ";
+                if (palabra.Length >2)
+                    palabrasEncontradas += ("   - " + palabra + "\n");
             }
-            return espacio;
+            palabrasEncontradas += "\n";
+            return palabrasEncontradas;
+        }
+
+        public int getIdLang(string lang)
+        {
+            if (lang.Equals("Español"))
+            {
+                return 2;
+            }
+            else if (lang.Equals("Inglés"))
+            {
+                return 1;
+            }
+            else if (lang.Equals("Alemán"))
+            {
+                return 3;
+            }
+            else if (lang.Equals("Holandés"))
+            {
+                return 4;
+            }
+            return 0;
+        }
+
+        public int getIdCategory(string categotry)
+        {
+            if (categotry.Equals("Arte y Cultura"))
+            {
+                return 1;
+            }
+            else if (categotry.Equals("Ciencia y Tecnologia"))
+            {
+                return 2;
+            }
+            else if (categotry.Equals("Deportes"))
+            {
+                return 3;
+            }
+            else if (categotry.Equals("Medio Ambiente"))
+            {
+                return 4;
+            }
+            else if (categotry.Equals("Economia y Negocios"))
+            {
+                return 5;
+            }
+            else if (categotry.Equals("Gastronomía"))
+            {
+                return 6;
+            }
+            return 0;
         }
     }
 }

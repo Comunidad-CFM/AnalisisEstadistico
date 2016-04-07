@@ -181,6 +181,7 @@
       <DependentUpon>AnalizadorModel.edmx</DependentUpon>
       <LastGenOutput>AnalizadorModel.cs</LastGenOutput>
     </Content>
+    <Content Include="ClassDiagram1.cd" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

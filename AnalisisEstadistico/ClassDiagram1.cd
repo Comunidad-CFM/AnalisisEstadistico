@@ -1,0 +1,130 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="AnalisisEstadistico.Data.AnalizadorBDEntities" Collapsed="true">
+    <Position X="0.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAQAAAEAAAAAAAAAAAQEAAAAAAAAAAAEAAAAAA=</HashCode>
+      <FileName>Data\AnalizadorModel.Context.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AnalisisEstadistico.Data.categoria" Collapsed="true">
+    <Position X="2.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAEAAAAAAAAAAAAAQAAAAAAAAAAAAAAAgA=</HashCode>
+      <FileName>Data\categoria.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AnalisisEstadistico.Data.idioma" Collapsed="true">
+    <Position X="4" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAEAAAAEAAAAAAAAAAAAAAAAAAAAAAAAgA=</HashCode>
+      <FileName>Data\idioma.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AnalisisEstadistico.Data.palabra" Collapsed="true">
+    <Position X="2.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAABAAAAACAAAAAIgAEAAAAAAAAAAAAAAAAAgA=</HashCode>
+      <FileName>Data\palabra.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AnalisisEstadistico.Data.sysdiagram" Collapsed="true">
+    <Position X="0.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAACAIAAAAAAAAAAAAAAAQAAAFAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Data\sysdiagram.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AnalisisEstadistico.index" Collapsed="true">
+    <Position X="5.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAQGAAAAABEIgSiEkMIBAKAIIIAElAIgyIBAAAIAQGE=</HashCode>
+      <FileName>index.aspx.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AnalisisEstadistico.Model.Categoria" Collapsed="true">
+    <Position X="4" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEAAAIAAAACAAAABAAAgBQAAIAAEAEAAAAAAAAA=</HashCode>
+      <FileName>Model\Categoria.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AnalisisEstadistico.Model.Emoji" Collapsed="true">
+    <Position X="5.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAACAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Model\Emoji.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AnalisisEstadistico.Model.Enhancer" Collapsed="true">
+    <Position X="7.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAABAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Model\Enhancer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AnalisisEstadistico.Model.FeelingWord" Collapsed="true">
+    <Position X="2.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAABAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Model\FeelingWord.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AnalisisEstadistico.Model.Post" Collapsed="true">
+    <Position X="4" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQIAAQAAAA=</HashCode>
+      <FileName>Model\Post.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AnalisisEstadistico.Modulos.Tweet" Collapsed="true">
+    <Position X="2.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAARIAAQAAQA=</HashCode>
+      <FileName>Model\Tweet.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AnalisisEstadistico.Modulos.FB" Collapsed="true">
+    <Position X="0.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABAECAAAAAAAAAAAAACAQBABAAAAgAgAEAA=</HashCode>
+      <FileName>Modulos\FB.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AnalisisEstadistico.Modulos.Language" Collapsed="true">
+    <Position X="7.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAQAAgABhAgAAAICAAAAAAAAABAAQAIAAgIAAAgAQg=</HashCode>
+      <FileName>Modulos\Language.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AnalisisEstadistico.Modulos.NaiveBayes" Collapsed="true">
+    <Position X="0.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAABAQQAAEAACAGAAAAAASEAAAACAAAAAAAAAEABA=</HashCode>
+      <FileName>Modulos\NaiveBayes.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AnalisisEstadistico.Modulos.Sentiment" Collapsed="true">
+    <Position X="5.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAEAECAgAAQAAgEAQAIAAAJAEYAAGAIIAABABAAIIA=</HashCode>
+      <FileName>Modulos\Sentiment.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AnalisisEstadistico.Modulos.SimilarityExtension" Collapsed="true">
+    <Position X="7.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAEAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAA=</HashCode>
+      <FileName>Modulos\SimilarityExtension.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AnalisisEstadistico.Modulos.Twitter" Collapsed="true">
+    <Position X="4" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAABAAAAAAEAEAgQAAASAAEBAACAAAABYIAkgAAIAAA=</HashCode>
+      <FileName>Modulos\Twitter.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
